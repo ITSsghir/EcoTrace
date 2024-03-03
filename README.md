@@ -26,6 +26,10 @@ npm install --global expo-cli
 npm install --global expo-system-ui
 ```
 
+- Android Studio (For Android Emulator) - [Download](https://developer.android.com/studio)
+
+- Xcode (For iOS Emulator) - [Download](https://developer.apple.com/xcode) (Only available on macOS)
+
 ### Steps
 
 1. Clone the repository
@@ -34,19 +38,21 @@ npm install --global expo-system-ui
 git clone https://github.com/ITSsghir/EcoTrace.git
 ```
 
-2. Install the dependencies
+1. Install the dependencies
 
 ```bash
 yarn install
 ```
 
-3. Start the development server
+1. Quick start the app
+
+> Make sure to have an emulator running
+
+- Run the following commands
 
 ```bash
-yarn expo start
+yarn expo prebuild --clean
+yarn run start # This will start the development server
 ```
 
-4. Open the app on your device
-
-- Download the Expo Go app from the App Store or Google Play Store
-- Scan the QR code with your device's camera
+- Press `a` to open the app on an Android emulator or `i` to open the app on an iOS emulator
