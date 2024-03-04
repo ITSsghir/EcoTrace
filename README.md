@@ -20,12 +20,6 @@ npm install --global yarn
 npm install --global expo-cli
 ```
 
-- expo-system-ui (Expo System UI)
-
-```bash
-npm install --global expo-system-ui
-```
-
 - Android Studio (For Android Emulator) - [Download](https://developer.android.com/studio)
 
 - Xcode (For iOS Emulator) - [Download](https://developer.apple.com/xcode) (Only available on macOS)
@@ -34,25 +28,49 @@ npm install --global expo-system-ui
 
 1. Clone the repository
 
-```bash
-git clone https://github.com/ITSsghir/EcoTrace.git
-```
+    ```bash
+    git clone https://github.com/ITSsghir/EcoTrace.git
+    ```
 
 1. Install the dependencies
 
-```bash
-yarn install
-```
+    ```bash
+    yarn install
+    ```
 
-1. Quick start the app
+1. Quick start the app (We'll use expo go to run the app on an emulator for now)
 
 > Make sure to have an emulator running
 
 - Run the following commands
 
+    ```bash
+    yarn expo prebuild --clean
+    yarn expo # This will start the development server
+    ```
+
+- Press 's' to change to expo go mode
+- Press `a` to open the app on an Android emulator or `i` to open the app on an iOS emulator
+
+> This will install expo go on your emulator and open the app
+
+## Build
+
+We'll use `eas build --local` to build the app.
+
+I created some profiles for the build process. You can find them in the `eas.json` file.
+
+### iOS
+
 ```bash
-yarn expo prebuild --clean
-yarn run start # This will start the development server
+yarn eas build --platform ios --profile preview
 ```
 
-- Press `a` to open the app on an Android emulator or `i` to open the app on an iOS emulator
+### Android
+
+```bash
+yarn eas build --platform android --profile preview
+```
+
+> The `preview` profile is made for testing, it enables ios simulator and disables the development client.
+
