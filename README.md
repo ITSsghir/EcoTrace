@@ -63,13 +63,13 @@ I created some profiles for the build process. You can find them in the `eas.jso
 ### iOS
 
 ```bash
-yarn eas build --platform ios --profile preview
+yarn eas build --platform ios --profile preview --local --non-interactive
 ```
 
 ### Android
 
 ```bash
-yarn eas build --platform android --profile preview
+yarn eas build --platform android --profile preview --local --non-interactive
 ```
 
 > The `preview` profile is made for testing, it enables ios simulator and disables the development client.
