@@ -1,0 +1,46 @@
+{
+  "cli": {
+    "version": ">= 7.3.0"
+  },
+  "build": {
+    "base": {
+      "channel": "staging",
+      "ios": {
+        "image": "latest",
+        "resourceClass": "m-medium"
+      },
+      "android": {
+        "image": "latest",
+        "resourceClass": "large"
+      },
+      "env": {
+        "APP_VARIANT": "development"
+      }
+    },
+    "production": {
+      "extends": "base",
+      "channel": "production",
+      "env": {
+        "APP_VARIANT": "production"
+      }
+    },
+    "preview": {
+      "extends": "base",
+			"distribution": "internal",
+			"developmentClient": false,
+			"ios": {
+				"simulator": true
+			},
+			"env": { "APP_VARIANT": "production" }
+    },
+    "development": {
+			"extends": "base",
+			"distribution": "internal",
+			"developmentClient": false,
+      "env": { "APP_VARIANT": "development" }
+		}
+  },
+  "submit": {
+    "production": {}
+  }
+}

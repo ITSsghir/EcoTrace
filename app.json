@@ -22,10 +22,16 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.ioe.EcoTrace"
+      "package": "com.EcoTrace"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "3ea90502-1d83-4b66-bce7-3dae9fb713ad"
+      }
+    },
+    "owner": "ioe-groupe-13"
   }
 }
