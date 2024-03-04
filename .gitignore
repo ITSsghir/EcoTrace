@@ -37,3 +37,21 @@ yarn-error.*
 # Prebuild
 android/
 ios/
+
+# builds
+*.apk
+*.aab
+*.app
+*.ipa
+
+# archives and packages
+*.deb
+*.tar.gz
+*.tar.xz
+*.tgz
+*.zip
+*.rar
+*.gz
+*.7z
+*.dmg
+*.iso
