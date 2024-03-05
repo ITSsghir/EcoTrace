@@ -39,6 +39,10 @@
     },
     "updates": {
       "url": "https://u.expo.dev/3ea90502-1d83-4b66-bce7-3dae9fb713ad"
-    }
+    },
+    "plugins": [
+      "expo-router"
+    ],
+    "scheme": "ecotrace"
   }
 }
