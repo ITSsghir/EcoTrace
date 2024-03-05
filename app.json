@@ -9,7 +9,7 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#00BF63"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -21,7 +21,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#00BF63"
       },
       "package": "com.EcoTrace"
     },
@@ -33,6 +33,12 @@
         "projectId": "3ea90502-1d83-4b66-bce7-3dae9fb713ad"
       }
     },
-    "owner": "ioe-groupe-13"
+    "owner": "ioe-groupe-13",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/3ea90502-1d83-4b66-bce7-3dae9fb713ad"
+    }
   }
 }
