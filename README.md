@@ -79,4 +79,3 @@ yarn eas build --platform ios --profile preview --local --non-interactive --outp
 ```bash
 yarn eas build --platform android --profile preview --local --non-interactive --output EcoTrace.apk
 ```
-
