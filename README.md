@@ -1,6 +1,6 @@
 # EcoTrace
 
-EcoTrace is a web application that allows users to track their carbon footprint and make more sustainable choices. Users can input their daily activities and purchases, and the app will calculate their carbon footprint. The app will also provide suggestions for more sustainable alternatives.
+EcoTrace is a mobile application that allows users to track their carbon footprint and make more sustainable choices. Users can input their daily activities and purchases, as well as automate the process, and the app will calculate their carbon footprint. The app will also provide suggestions for more sustainable alternatives.
 
 ## Installation
 
@@ -15,13 +15,14 @@ EcoTrace is a web application that allows users to track their carbon footprint 
 - yarn (Package Manager)
 
     ```bash
-    npm install --global yarn
+    corepack enable
+    yarn set version stable
     ```
 
 - expo-cli (Expo Command Line Interface)
 
     ```bash
-    npm install --global expo-cli
+    npm install --global expo-cli # or yarn global add expo-cli
     ```
 
 - Android Studio (For Android Emulator) - [Download](https://developer.android.com/studio)
@@ -51,8 +52,7 @@ EcoTrace is a web application that allows users to track their carbon footprint 
 - Run the following commands
 
     ```bash
-    yarn expo prebuild --clean
-    yarn expo # This will start the development server
+    yarn start # This will start the development server
     ```
 
 - Press 's' to change to expo go mode
