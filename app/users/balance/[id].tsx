@@ -11,9 +11,7 @@ import {
 import { useRouter } from 'expo-router';
 
 // This component is a subcomponent of the Welcome component, it will contain the monthly carbon footprint balance of the user and the daily one as well
-const Balance = () => {
-    
-    const router = useRouter();
+export default function Balance() {
 
     let FullName = 'Demo User' // Get username from the server via API call
 
@@ -33,7 +31,7 @@ const Balance = () => {
     )
 }
 
-export default Balance;
+
 
 // Create a stylesheet for the balance component (center the text, make the title large, and the subtitle medium, and the message small)
 const styles = StyleSheet.create({
@@ -51,7 +49,7 @@ const styles = StyleSheet.create({
     BigMessage: {
         fontSize: 24,
         textAlign: 'right',
-        fontWeight: 'light'
+        fontWeight: 'normal'
     },
     Monthly: {
         fontSize: 30,
