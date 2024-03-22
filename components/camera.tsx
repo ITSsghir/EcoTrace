@@ -19,7 +19,7 @@ export default function CameraView() {
 
   const takePicture = async () => {
     if (camera) {
-      const data = await camera.takePictureAsync(undefined);
+      const data = await camera.takePictureAsync();
       setImage(data.uri);
     }
   };

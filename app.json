@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "EcoTrace-new",
-    "slug": "EcoTrace-new",
+    "name": "EcoTrace",
+    "slug": "EcoTrace",
     "scheme": "ecotrace",  
     "version": "1.0.0",
     "orientation": "portrait",
