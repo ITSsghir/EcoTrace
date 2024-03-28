@@ -1,2 +1,0 @@
-Speech-to-Text: Deepgram (200$ per month) - use whisper model
-Track planes in real time : Opensky network (free)
