@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, Text, View, Button, Image, TouchableOpacity, ImageStyle } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { Camera, CameraType } from 'expo-camera';
-import icons from '@constants/icons';
+import * as FileSystem from 'expo-file-system';
+import axios from 'axios';
 
 export default function CameraView() {
 
@@ -9,6 +10,7 @@ export default function CameraView() {
   const [camera, setCamera] = useState<Camera | null>(null);
   const [image, setImage] = useState<string | null>(null);
   const [type, setType] = useState<CameraType>(CameraType.back);
+  const [labels, setLabels] = useState<any[]>([]);
 
   useEffect(() => {
     (async () => {
@@ -21,37 +23,54 @@ export default function CameraView() {
     if (camera) {
       const data = await camera.takePictureAsync();
       setImage(data.uri);
-    }
+      getPrediction(data.uri);}
   };
 
   if (hasCameraPermission === false) {
     return <Text>No access to camera</Text>;
   }
 
-  const saveAndSendPicture = async () => {
-    if (image) {
-      // Save the image as a file
-      
-      // TODO: Create some way to save the image to the device, temporarily or permanently using the uri from the image state
-      
-      const response = await fetch('https://example.com/upload', {
-        method: 'POST',
-        body: "", // TODO: Send the image file here
-      });
-      if (response.ok) {
-        console.log('Image uploaded');
-      } else {
-        console.error('Failed to upload image');
-      }
+
+
+  const getPrediction = async (uri : string) => {
+    if (!uri) {
+      return;
     }
+    try {
+      // 
+      const apiKey = 'AIzaSyB2cXdGtEfR9rw6oHHOQD7QLII9n0rmn_g';
+      const apiUrl = `https://vision.googleapis.com//v1/images:annotate?key=${apiKey}`;
+
+      const base64ImageData = await FileSystem.readAsStringAsync(uri, { 
+        encoding: FileSystem.EncodingType.Base64 
+      });
+
+      const body = {
+        requests: [
+          {
+            image: {
+              content: base64ImageData,
+            },
+            features: [
+              {
+                type: 'LABEL_DETECTION',
+                maxResults: 10,
+              },
+            ],
+          },
+        ],
+      };
+
+      const response = await axios.post(apiUrl, body);
+      setLabels(response.data.responses[0].labelAnnotations);
+
+    } catch (error) {
+      console.error(error);
+      alert('An error occurred while processing the image');
+    }
+
   }
 
-  const dimension = 40;
-  const imgStyle: ImageStyle = {
-    width: dimension,
-    height: dimension,
-    borderRadius: 10 / 1.25,
-  };
   return (
     <View style={{ flex: 1 }}>
       <View style={styles.cameraContainer}>
@@ -74,10 +93,8 @@ export default function CameraView() {
       <TouchableOpacity onPress={() => takePicture()} style={{ backgroundColor: 'blue', padding: 10, borderRadius: 5, alignContent: 'center', justifyContent: 'center', alignItems: 'center', borderColor: 'black', borderWidth: 1, margin: 10}}>
         <Text>Take Picture</Text>
       </TouchableOpacity>
-      <Image source={icons.camera} style={imgStyle} />
       <Text>
-        Image:
-        {image && <Image source={{ uri: image }} style={{ flex: 1 }} />}
+        Image content: {labels.map((label) => label.description).join(', ')}
       </Text>
     </View>
   );
