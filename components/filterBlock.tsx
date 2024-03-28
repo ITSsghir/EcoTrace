@@ -1,7 +1,7 @@
-import FilterView from "@constants/filter";
+import Filter from "@constants/filter";
 import { SafeAreaView, ViewStyle } from "react-native";
 
-const FilterBlock = ({ filter, setFilter }) => {
+export default function FilterBlock ({ filter, setFilter }) {
 
     const styles = {
         filterBlock: {
@@ -14,26 +14,24 @@ const FilterBlock = ({ filter, setFilter }) => {
 
     return (
         <SafeAreaView style={styles.filterBlock}>
-            <FilterView
-                onPress={() => setFilter("all")}
-                active={filter === "all"}
-                title="All"
+            <Filter
+                onPress={() => setFilter("High")}
+                active={filter === "High"}
+                title="High"
                 color="#000"
             />
-            <FilterView
-                onPress={() => setFilter("active")}
-                active={filter === "active"}
-                title="Active"
+            <Filter
+                onPress={() => setFilter("Medium")}
+                active={filter === "Medium"}
+                title="Medium"
                 color="#00f"
             />
-            <FilterView
-                onPress={() => setFilter("completed")}
-                active={filter === "completed"}
-                title="Completed"
+            <Filter
+                onPress={() => setFilter("Low")}
+                active={filter === "Low"}
+                title="Low"
                 color="#0f0"
             />
         </SafeAreaView>
     );
 };
-
-export default FilterBlock;

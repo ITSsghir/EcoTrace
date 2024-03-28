@@ -1,6 +1,6 @@
 import { Text, TouchableOpacity, StyleSheet } from "react-native";
 
-export default function FilterView({onPress, active, title, color}) {
+export default function Filter({onPress, active, title, color}) {
     const filterStyles = StyleSheet.create({
         filter: {
             backgroundColor: "#fff",
