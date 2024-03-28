@@ -38,8 +38,8 @@ export default function CameraView() {
     }
     try {
       // 
-      const apiKey = 'AIzaSyB2cXdGtEfR9rw6oHHOQD7QLII9n0rmn_g';
-      const apiUrl = `https://vision.googleapis.com//v1/images:annotate?key=${apiKey}`;
+      const apiKey = process.env.GOOGLE_CLOUD_VISION_API_KEY;
+      const apiUrl = process.env.GOOGLE_CLOUD_VISION_API_IMAGE_ANNOTATION_URL + `?key=${apiKey}`;
 
       const base64ImageData = await FileSystem.readAsStringAsync(uri, { 
         encoding: FileSystem.EncodingType.Base64 
