@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { Camera, CameraType } from 'expo-camera';
 import * as FileSystem from 'expo-file-system';
-import axios from 'axios';
 
 export default function CameraView() {
 
@@ -11,19 +10,23 @@ export default function CameraView() {
   const [image, setImage] = useState<string | null>(null);
   const [type, setType] = useState<CameraType>(CameraType.back);
   const [labels, setLabels] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     (async () => {
       const cameraStatus = await Camera.requestCameraPermissionsAsync();
       setHasCameraPermission(cameraStatus.status === 'granted');
+      setLoading(false);
     })();
   }, []);
 
   const takePicture = async () => {
+    setLoading(true);
     if (camera) {
       const data = await camera.takePictureAsync();
       setImage(data.uri);
-      getPrediction(data.uri);}
+      getPrediction(data.uri);
+    }
   };
 
   if (hasCameraPermission === false) {
@@ -37,9 +40,9 @@ export default function CameraView() {
       return;
     }
     try {
-      // 
-      const apiKey = process.env.GOOGLE_CLOUD_VISION_API_KEY;
-      const apiUrl = process.env.GOOGLE_CLOUD_VISION_API_IMAGE_ANNOTATION_URL + `?key=${apiKey}`;
+      // Get the API key from the environment variables (react-native-dotenv)
+      const apiKey = 'AIzaSyB2cXdGtEfR9rw6oHHOQD7QLII9n0rmn_g'
+      const apiUrl = `https://vision.googleapis.com/v1/images:annotate?key=${apiKey}`;
 
       const base64ImageData = await FileSystem.readAsStringAsync(uri, { 
         encoding: FileSystem.EncodingType.Base64 
@@ -54,24 +57,35 @@ export default function CameraView() {
             features: [
               {
                 type: 'LABEL_DETECTION',
-                maxResults: 10,
+                maxResults: 20,
               },
             ],
           },
         ],
       };
-
-      const response = await axios.post(apiUrl, body);
-      setLabels(response.data.responses[0].labelAnnotations);
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+      });
+      let responseJson = await response.json();
+      console.log(responseJson);
+      // Print response as a string
+      console.log(JSON.stringify(responseJson));
+      console.log(JSON.stringify(responseJson.responses));
+      setLabels(responseJson.responses[0].labelAnnotations[0].description);
+      // End loading
+      setLoading(false);
 
     } catch (error) {
-      console.error(error);
-      alert('An error occurred while processing the image');
+      console.log(error);
     }
+  };
 
-  }
-
-  return (
+  return ( {loading} ?
     <View style={{ flex: 1 }}>
       <View style={styles.cameraContainer}>
         <Camera
@@ -94,9 +108,10 @@ export default function CameraView() {
         <Text>Take Picture</Text>
       </TouchableOpacity>
       <Text>
-        Image content: {labels.map((label) => label.description).join(', ')}
+        Image content: {labels}
       </Text>
     </View>
+    : <Text>Loading...</Text>
   );
 }
 
