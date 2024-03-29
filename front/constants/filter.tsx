@@ -1,4 +1,5 @@
 import { Text, TouchableOpacity, StyleSheet } from "react-native";
+import React from "react";
 
 export default function Filter({onPress, active, title, color}) {
     const filterStyles = StyleSheet.create({

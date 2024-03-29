@@ -1,5 +1,6 @@
 import Filter from "@constants/filter";
 import { SafeAreaView, ViewStyle } from "react-native";
+import React from "react";
 
 export default function FilterBlock ({ filter, setFilter }) {
 

@@ -4,6 +4,7 @@ import Balance from "../balance/[id]";
 import History from "./history[id]";
 import icons from '@/constants/icons';
 import ScreenHeaderBtn from "@/components/ScreenHeaderBtn";
+import React from "react";
 
 export default function HomePage() {
     const router = useRouter();

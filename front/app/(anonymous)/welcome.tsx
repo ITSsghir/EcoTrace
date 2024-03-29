@@ -1,5 +1,6 @@
 import { Stack, useRouter } from "expo-router";
 import { Image, SafeAreaView, Text, View, useWindowDimensions } from "react-native";
+import React from "react";
 
 // Solid color background: #f0f0f0
 const Background = () => {
