@@ -8,6 +8,7 @@ let icons: Icon = {
     destination: require('../assets/icons/destination.png'),
     menu: require('../assets/icons/menu.png'),
     profile: require('../assets/icons/profile.png'),
+    back: require('../assets/icons/profile.png'),
 };
 
 
