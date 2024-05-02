@@ -4,33 +4,36 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 
 import { useLogin } from '@/hooks/use-login';
+import { useRouter } from 'expo-router';
 
-export const Signin = () => {
+const Signin = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
+    const router = useRouter();
+
     return (
         <View style={styles.container}>
-        <Text style={styles.title}>Sign in</Text>
-        <TextInput
-            style={styles.input}
-            placeholder="Email"
-            value={email}
-            onChangeText={setEmail}
-        />
-        <TextInput
-            style={styles.input}
-            placeholder="Password"
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-        />
-        <Button
-            title="Sign in"
-            onPress={() => {
-                useLogin(email, password);
-            }}
-        />
+            <Text style={styles.title}>Sign in</Text>
+            <TextInput
+                style={styles.input}
+                placeholder="Email"
+                value={email}
+                onChangeText={setEmail}
+            />
+            <TextInput
+                style={styles.input}
+                placeholder="Password"
+                value={password}
+                onChangeText={setPassword}
+                secureTextEntry
+            />
+            <Button
+                title="Sign in"
+                onPress={() => {
+                    useLogin(email, password);
+                }}
+            />
         </View>
     );
 }
@@ -53,3 +56,5 @@ const styles = StyleSheet.create({
         padding: 10,
     },
 });
+
+export default Signin;

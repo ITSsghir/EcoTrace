@@ -4,47 +4,50 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 
 import { useRegister } from '@/hooks/use-register';
+import { useRouter } from 'expo-router';
 
-export const Signup = () => {
+const Signup = () => {
     const [fullName, setFullName] = useState('');
     const [email, setEmail] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [password, setPassword] = useState('');
 
+    const router = useRouter();
+
     return (
         <View style={styles.container}>
-        <Text style={styles.title}>Create an account</Text>
-        <TextInput
-            style={styles.input}
-            placeholder="Email"
-            value={email}
-            onChangeText={setEmail}
-        />
-        <TextInput
-            style={styles.input}
-            placeholder="Full name"
-            value={fullName}
-            onChangeText={setFullName}
-        />
-        <TextInput
-            style={styles.input}
-            placeholder="Phone number"
-            value={phoneNumber}
-            onChangeText={setPhoneNumber}
-        />
-        <TextInput
-            style={styles.input}
-            placeholder="Password"
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-        />
-        <Button
-            title="Sign up"
-            onPress={() => {
-                useRegister(fullName, email, phoneNumber, password);
-            }}
-        />
+            <Text style={styles.title}>Create an account</Text>
+            <TextInput
+                style={styles.input}
+                placeholder="Email"
+                value={email}
+                onChangeText={setEmail}
+            />
+            <TextInput
+                style={styles.input}
+                placeholder="Full name"
+                value={fullName}
+                onChangeText={setFullName}
+            />
+            <TextInput
+                style={styles.input}
+                placeholder="Phone number"
+                value={phoneNumber}
+                onChangeText={setPhoneNumber}
+            />
+            <TextInput
+                style={styles.input}
+                placeholder="Password"
+                value={password}
+                onChangeText={setPassword}
+                secureTextEntry
+            />
+            <Button
+                title="Sign up"
+                onPress={() => {
+                    useRegister(fullName, email, phoneNumber, password);
+                }}
+            />
         </View>
     );
 }
@@ -66,3 +69,5 @@ const styles = StyleSheet.create({
         borderWidth: 1,
     },
 });
+
+export default Signup;
