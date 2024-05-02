@@ -1,11 +1,12 @@
 
+// Import the required modules
 const { createConnection } = require('mysql');
 const bcrypt = require('bcrypt');
-const saltRounds = 10;
-const dotenv = require('dotenv');
 
-// Load environment variables from .env file
-dotenv.config();
+const { checkInputs } = require('./utils.js');
+
+// Number of salt rounds for bcrypt
+const saltRounds =  10;
 
 // Database on port 3306 localhost, user root, password root
 let db;
@@ -53,7 +54,7 @@ const setupTables = (db) => {
     });
 }
 
-const initDatabase = () => {
+function initDatabase () {
     while (true) {
         try {
             db = connectToDatabase();
@@ -74,12 +75,11 @@ const initDatabase = () => {
 
 
 // functions to create a user and get a user
-const createUser = async (full_name, email, phone_number, password) => {
-    if (!full_name || !email || !phone_number || !password) {
-        return new Promise((resolve, reject) => {
-            reject(new Error('Missing required fields'));
-        });
-    }
+async function createUser (full_name, email, phone_number, password) {
+
+    // Check the inputs
+    await checkInputs(full_name, email, phone_number, password);
+
     // Check if the user already exists (by email)
     const user = await getUser(email);
     if (user) {
@@ -100,7 +100,7 @@ const createUser = async (full_name, email, phone_number, password) => {
     });
 }
 
-const getUser = (email) => {
+async function getUser (email) {
     return new Promise((resolve, reject) => {
         db.query('SELECT * FROM users WHERE email = ?', [email], (err, result) => {
             if (err) {
@@ -119,7 +119,7 @@ const getUser = (email) => {
 }
 
 // Check login info
-const checkLogin = async (email, password) => {
+async function checkLogin (email, password) {
     if (!email || !password) {
         return new Promise((resolve, reject) => {
             reject(new Error('Missing required fields'));
@@ -146,10 +146,87 @@ const checkLogin = async (email, password) => {
     });
 }
 
-// Export the database
+// Modify user info
+async function updateUserInfo(id, desiredModifications) {
+    if (!desiredModifications) {
+        return new Promise((resolve, reject) => {
+            reject(new Error('No modifications specified'));
+        });
+    }
+    const keys = Object.keys(desiredModifications);
+    const values = Object.values(desiredModifications);
+    let query = 'UPDATE users SET ';
+    for (let i = 0; i < keys.length; i++) {
+        query += `${keys[i]} = '${values[i]}'`;
+        if (i !== keys.length - 1) {
+            query += ', ';
+        }
+    }
+    query += ` WHERE id = ${id}`;
+
+    return new Promise((resolve, reject) => {
+        db.query(query, (err) => {
+            if (err) {
+                console.error('Error modifying user:', err.message);
+                reject(err);
+            }
+            resolve();
+        });
+    });
+}
+
+// Get the carbon footprint of the user by id
+async function getCarbonFootprint (id, time_period) {
+    return new Promise((resolve, reject) => {
+        db.query(`SELECT ${time_period} FROM carbon_footprint WHERE user_id = ${id}`, (err, result) => {
+            if (err) {
+                console.error('Error querying database:', err.message);
+                reject(err);
+            }
+            if (result.length === 0) {
+                resolve(null);
+            }
+            resolve(result[0][time_period]);
+        });
+    });
+}
+
+// Update the carbon footprint of the user by id
+async function updateCarbonFootprint (id, added) {
+    return new Promise((resolve, reject) => {
+        db.query(`SELECT * FROM carbon_footprint WHERE user_id = ${id}`, (err, result) => {
+            if (err) {
+                console.error('Error querying database:', err.message);
+                reject(err);
+            }
+            if (result.length === 0) {
+                // Add the carbon footprint to the existing one
+                db.query('INSERT INTO carbon_footprint (user_id, daily, weekly, monthly, yearly) VALUES (?, ?, ?, ?, ?)', [id, added, added, added, added], (err) => {
+                    if (err) {
+                        console.error('Error inserting carbon footprint into database:', err.message);
+                        reject(err);
+                    }
+                    resolve();
+                });
+            }
+            // Add the carbon footprint to the existing one
+            db.query(`UPDATE carbon_footprint SET daily = daily + ${added}, weekly = weekly + ${added}, monthly = monthly + ${added}, yearly = yearly + ${added5} WHERE user_id = ${id}`, (err) => {
+                if (err) {
+                    console.error('Error updating carbon footprint:', err.message);
+                    reject(err);
+                }
+                resolve();
+            });
+        });
+    });
+}
+
+// Export the functions
 module.exports = {
     initDatabase,
     createUser,
-    getUser,
-    checkLogin
+    checkLogin,
+    updateUserInfo,
+    getCarbonFootprint,
+    updateCarbonFootprint
 };
