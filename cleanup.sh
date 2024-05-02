@@ -5,7 +5,7 @@
 cd back
 
 # Delete the images
-docker rm express-api
+docker image rm back-api
 
 # Delete db data
 rm -rf db/

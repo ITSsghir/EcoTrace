@@ -4,8 +4,9 @@
 # Change directory to the backend folder
 Set-Location .\back
 
-# Delete the images
-docker rm express-api
+# Delete the images of the docker-compose
+# Get the images of the docker-compose
+docker image rm back-api
 
 # Delete db data
 Remove-Item -Recurse -Force .\db\
