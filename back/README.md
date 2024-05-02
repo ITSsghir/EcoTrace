@@ -16,6 +16,7 @@ To install the API, follow these steps:
 
 1. Run `yarn install` to install the dependencies.
 2. Run `yarn start` to start the API.
+
 > Note: The API will be running on `http://localhost:3000`.
 >
 > You have to set up the database before running the API. To do this, run `yarn setup-db`.
