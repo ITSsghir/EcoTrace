@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Dimensions } from 'react-native';
 import { Camera, CameraType } from 'expo-camera';
 import * as FileSystem from 'expo-file-system';
+import { router } from 'expo-router';
 
 export default function CameraView() {
 
@@ -15,14 +16,14 @@ export default function CameraView() {
   const [type, setType] = useState<CameraType>(CameraType.back);
   const [labels, setLabels] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
+  const [tookPicture, setTookPicture] = useState(false);
 
   useEffect(() => {
     (async () => {
       const cameraStatus = await Camera.requestCameraPermissionsAsync();
       setHasCameraPermission(cameraStatus.status === 'granted');
-      setLoading(false);
-      console.log('API key:', apiKey);
-      console.log('API URL:', apiUrl);
+      console.log('Camera permission:', cameraStatus.status);
+      console.log('Camera loaded');
     })();
   }, []);
 
@@ -31,15 +32,13 @@ export default function CameraView() {
     if (camera) {
       const data = await camera.takePictureAsync();
       setImage(data.uri);
-      getPrediction(image);
+      setTookPicture(true);
     }
   };
 
   if (hasCameraPermission === false) {
     return <Text>No access to camera</Text>;
   }
-
-
 
   const getPrediction = async (uri : string) => {
     if (!uri) {
@@ -87,43 +86,71 @@ export default function CameraView() {
     }
   };
 
-  return ( {loading} ?
-    <View style={{ flex: 1 }}>
+  return ( <>
       <View style={styles.cameraContainer}>
         <Camera
           ref={(ref) => setCamera(ref as Camera)}
           style={styles.fixedRatio}
           type={type === 'back' ? CameraType.back : CameraType.front}
-          ratio={'1:1'}
         />
       </View>
-      <TouchableOpacity style={{ backgroundColor: 'blue', padding: 10, borderRadius: 5, alignContent: 'center', justifyContent: 'center', alignItems: 'center', borderColor: 'black', borderWidth: 1, margin: 10}}
-        onPress={() => {
-          setType(
-            type === CameraType.back ? CameraType.front : CameraType.back
-          );
-        }}
-      >
-        <Text>Flip Camera</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => takePicture()} style={{ backgroundColor: 'blue', padding: 10, borderRadius: 5, alignContent: 'center', justifyContent: 'center', alignItems: 'center', borderColor: 'black', borderWidth: 1, margin: 10}}>
-        <Text>Take Picture</Text>
-      </TouchableOpacity>
-      <Text>
-        Image content: {labels}
-      </Text>
-    </View>
-    : <Text>Loading...</Text>
+      <View style={styles.cameraTriggers}>
+        <TouchableOpacity style={{ backgroundColor: 'blue', padding: 10, borderRadius: 5, alignContent: 'center', justifyContent: 'center', alignItems: 'center', borderColor: 'black', borderWidth: 1, margin: 10}}
+          onPress={() => {
+            setType(
+              type === CameraType.back ? CameraType.front : CameraType.back
+            );
+          }}
+        >
+          <Text>Flip Camera</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => takePicture()} style={{ backgroundColor: 'blue', padding: 10, borderRadius: 5, alignContent: 'center', justifyContent: 'center', alignItems: 'center', borderColor: 'black', borderWidth: 1, margin: 10}}>
+          <Text>Take Picture</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.prediction_preview}>
+        <TouchableOpacity style={{ backgroundColor: 'blue', padding: 10, borderRadius: 5, alignContent: 'center', justifyContent: 'center', alignItems: 'center', borderColor: 'black', borderWidth: 1, margin: 10}}
+            onPress={() => {
+              if (tookPicture) {
+                router.push({ pathname: '/camera/[image]', params: { image } });
+              }
+              router.push('/camera/[image]');
+            }
+          }
+        >
+          <Text>Preview Picture</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={{ backgroundColor: 'blue', padding: 10, borderRadius: 5, alignContent: 'center', justifyContent: 'center', alignItems: 'center', borderColor: 'black', borderWidth: 1, margin: 10}}
+          onPress={() => getPrediction(image)}
+        >
+          <Text>Get predictions</Text>
+        </TouchableOpacity>
+      </View>
+    </>
   );
 }
 
+const height = Dimensions.get('window').height;
+const cameraHeight = height * 0.7;
 const styles = StyleSheet.create({
   cameraContainer: {
     flex: 1,
     flexDirection: 'row',
+    height: cameraHeight,
   },
   fixedRatio: {
     flex: 1,
-    aspectRatio: 1,
+    aspectRatio: 3 / 4,
+  },
+  cameraTriggers: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: '150%',
+  },
+  prediction_preview: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
 });
