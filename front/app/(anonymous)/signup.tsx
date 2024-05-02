@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 
 import { useRegister } from '@/hooks/use-register';
-import { useRouter } from 'expo-router';
+import { Stack, useRouter } from 'expo-router';
 
 const Signup = () => {
     const [fullName, setFullName] = useState('');
@@ -16,6 +16,7 @@ const Signup = () => {
 
     return (
         <View style={styles.container}>
+            <Stack.Screen options={{ headerTitle: '' }} />
             <Text style={styles.title}>Create an account</Text>
             <TextInput
                 style={styles.input}

@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 
 import { useLogin } from '@/hooks/use-login';
-import { useRouter } from 'expo-router';
+import { Stack, useRouter } from 'expo-router';
 
 const Signin = () => {
     const [email, setEmail] = useState('');
@@ -14,6 +14,7 @@ const Signin = () => {
 
     return (
         <View style={styles.container}>
+            <Stack.Screen options={{ headerTitle: '' }} />
             <Text style={styles.title}>Sign in</Text>
             <TextInput
                 style={styles.input}
