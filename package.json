@@ -1,0 +1,13 @@
+{
+  "name": "ecotrace",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/ITSsghir/EcoTrace.git",
+  "author": "Younest9 <y.elarjouni.sq@gmail.com>",
+  "license": "TMP",
+  "scripts": {
+    "start": "node index.js",
+    "stop": "node stop.js",
+    "cleanup": "node cleanup.js"
+  }
+}
