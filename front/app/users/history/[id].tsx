@@ -1,4 +1,4 @@
-import { router } from 'expo-router';
+import { Stack, router } from 'expo-router';
 import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, ScrollView, FlatList, Dimensions } from 'react-native';
 
@@ -54,6 +54,7 @@ let history = [
 export default function History() {
 
     return (
+        <Stack>
             <ScrollView style={stylesHistory.container} showsVerticalScrollIndicator={false}>
                 <TouchableOpacity
                     onPress= {
@@ -77,5 +78,6 @@ export default function History() {
                 />
                 </TouchableOpacity>
             </ScrollView>
+        </Stack>
     )
 }

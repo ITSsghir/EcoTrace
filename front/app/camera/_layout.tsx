@@ -3,10 +3,8 @@ import React from "react";
 
 const CameraLayout = () => {
   return (
-    <Stack>
-      <Stack.Screen name="[id]" options={{ headerShown: false }} />
-    </Stack>
-  );
+    <Stack/>
+    );
 };
 
 export default CameraLayout;

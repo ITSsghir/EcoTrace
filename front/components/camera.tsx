@@ -5,6 +5,10 @@ import * as FileSystem from 'expo-file-system';
 
 export default function CameraView() {
 
+  // Get the API key from the environment variables
+  const apiKey = process.env.EXPO_PUBLIC_API_KEY;
+  const apiUrl = process.env.EXPO_PUBLIC_API_URL + apiKey;
+
   const [hasCameraPermission, setHasCameraPermission] = useState<boolean | null>(null);
   const [camera, setCamera] = useState<Camera | null>(null);
   const [image, setImage] = useState<string | null>(null);
@@ -17,6 +21,8 @@ export default function CameraView() {
       const cameraStatus = await Camera.requestCameraPermissionsAsync();
       setHasCameraPermission(cameraStatus.status === 'granted');
       setLoading(false);
+      console.log('API key:', apiKey);
+      console.log('API URL:', apiUrl);
     })();
   }, []);
 
@@ -25,7 +31,7 @@ export default function CameraView() {
     if (camera) {
       const data = await camera.takePictureAsync();
       setImage(data.uri);
-      getPrediction(data.uri);
+      getPrediction(image);
     }
   };
 
@@ -40,10 +46,6 @@ export default function CameraView() {
       return;
     }
     try {
-      // Get the API key from the environment variables (react-native-dotenv)
-      const apiKey = 'AIzaSyB2cXdGtEfR9rw6oHHOQD7QLII9n0rmn_g'
-      const apiUrl = `https://vision.googleapis.com/v1/images:annotate?key=${apiKey}`;
-
       const base64ImageData = await FileSystem.readAsStringAsync(uri, { 
         encoding: FileSystem.EncodingType.Base64 
       });

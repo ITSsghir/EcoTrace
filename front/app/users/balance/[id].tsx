@@ -2,11 +2,8 @@ import React from 'react';
 import {
     View,
     Text,
-    TouchableOpacity,
-    Image,
-    FlatList,
-    ScrollView,
-    StyleSheet
+    StyleSheet,
+    Dimensions
 } from 'react-native';
 import { useRouter } from 'expo-router';
 
@@ -31,7 +28,14 @@ export default function Balance() {
     )
 }
 
-
+// Get the screen width
+const screenWidth = Dimensions.get('window').width;
+const cardWidth = screenWidth * 0.9;
+// Font sizes based on the screen width
+const messageFontSize = screenWidth < 400 ? 16 : 20;
+const BigMessageFontSize = screenWidth < 400 ? 18 : 24;
+const MonthlyFontSize = screenWidth < 400 ? 20 : 30;
+const DailyFontSize = screenWidth < 400 ? 10 : 20;
 
 // Create a stylesheet for the balance component (center the text, make the title large, and the subtitle medium, and the message small)
 const styles = StyleSheet.create({
@@ -40,24 +44,30 @@ const styles = StyleSheet.create({
         padding: 20,
         margin: 10,
         borderRadius: 10,
+        width: cardWidth,
+        height: 'auto',
     },
     message: {
-        fontSize: 20,
+        fontSize: messageFontSize,
         fontWeight: 'bold',
         textAlign: 'left'
     },
     BigMessage: {
-        fontSize: 24,
+        fontSize: BigMessageFontSize,
         textAlign: 'right',
         fontWeight: 'normal'
     },
     Monthly: {
-        fontSize: 30,
+        fontSize: MonthlyFontSize,
         textAlign: 'right',
         fontWeight: 'bold'
     },
     Daily: {
-        fontSize: 20,
+        fontSize: DailyFontSize,
         textAlign: 'right'
     }
 });
+
+// Export height and width of the component
+// convert the height to a number
+export const balanceHeight = Number(styles.card.height);
