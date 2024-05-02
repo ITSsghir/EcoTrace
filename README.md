@@ -7,3 +7,31 @@ It consists of two main parts:
 
 - [Frontend](front/README.md)
 - [Backend](back/README.md)
+
+## Usage
+
+To run the application, you will need to set up both the frontend and the backend. Follow the instructions in the respective README files to set up each part.
+
+### Backend
+
+You can run the backend using the following command:
+
+```bash
+yarn start
+```
+
+To stop the backend, use the following command:
+
+```bash
+yarn stop
+```
+
+To clean up the db and start fresh (rebuilding images), use the following command:
+
+```bash
+yarn cleanup
+```
+
+### Frontend
+
+Coming soon...
