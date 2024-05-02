@@ -5,7 +5,6 @@ import {
     StyleSheet,
     Dimensions
 } from 'react-native';
-import { useRouter } from 'expo-router';
 
 // This component is a subcomponent of the Welcome component, it will contain the monthly carbon footprint balance of the user and the daily one as well
 export default function Balance() {

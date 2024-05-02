@@ -3,9 +3,7 @@ import React from "react"
 
 const HistoryLayout = () => {
     return (
-        <Stack>
-            <Stack.Screen name="[id]" options={{ headerShown: false }} />
-        </Stack>
+        <Stack />
     );
 };
 

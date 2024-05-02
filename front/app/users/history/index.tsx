@@ -54,13 +54,13 @@ let history = [
 export default function History() {
 
     return (
-        <Stack>
             <ScrollView style={stylesHistory.container} showsVerticalScrollIndicator={false}>
+                <Stack.Screen options={{ headerTitle: 'History' }} />
                 <TouchableOpacity
                     onPress= {
                         () => {
                             console.log('History clicked')
-                            router.push({ pathname: '/history/[id]', params: { id: 1 } })
+                            router.push({ pathname: '/history', params: { id: 1 } })
                         }
                     }
                 >
@@ -78,6 +78,5 @@ export default function History() {
                 />
                 </TouchableOpacity>
             </ScrollView>
-        </Stack>
     )
 }
