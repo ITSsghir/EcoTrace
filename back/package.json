@@ -13,7 +13,8 @@
   },
   "packageManager": "yarn@4.1.1",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "setup-db": "docker-compose up -d db"
   },
   "license": "TMP"
 }
