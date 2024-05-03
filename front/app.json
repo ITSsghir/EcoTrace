@@ -16,7 +16,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.EcoTrace"
     },
     "android": {
       "adaptiveIcon": {
@@ -27,6 +28,21 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "3ea90502-1d83-4b66-bce7-3dae9fb713ad"
+      }
+    },
+    "owner": "ioe-groupe-13",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/3ea90502-1d83-4b66-bce7-3dae9fb713ad"
+    },
+    "plugins": [
+      "expo-router"
+    ]
   }
 }
