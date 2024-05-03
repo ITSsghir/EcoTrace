@@ -80,12 +80,14 @@ async function checkFullNameAuthenticity (full_name) {
             reject(new Error('Full name is required'));
         });
     }
-    // Must include a space between first name and last name
-    if (!full_name.includes(' ')) {
+
+    // Check if the full name is at least 3 characters long
+    if (full_name.length < 3) {
         return new Promise((resolve, reject) => {
-            reject(new Error('Full name must include the first name and last name'));
+            reject(new Error('Full name must be at least 3 characters long'));
         });
     }
+
     return new Promise((resolve, reject) => {
         resolve(true);
     });

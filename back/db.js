@@ -10,8 +10,8 @@ const saltRounds =  10;
 
 // Database on port 3306 localhost, user root, password root
 let db;
-const connectToDatabase = () => {
-    return createConnection({
+const connectToDatabase = async () => {
+    return await createConnection({
         host: process.env.MYSQL_HOST,
         user: process.env.MYSQL_USER,
         password: process.env.MYSQL_PASSWORD,
@@ -50,6 +50,86 @@ const setupTables = (db) => {
             console.error('Error creating carbon_footprint table:', err.message);
         } else {
             console.log('Created carbon_footprint table');
+        }
+    });
+
+    // Create schema for user activities (a user must have a type of activity, a description, a carbon footprint (in kg) and a timestamp)
+    db.query(`CREATE TABLE IF NOT EXISTS user_activities (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        user_id INT NOT NULL,
+        activity_type VARCHAR(255) NOT NULL,
+        description TEXT NOT NULL,
+        carbon_footprint FLOAT NOT NULL,
+        timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )`, (err) => {
+        if (err) {
+            console.error('Error creating user_activities table:', err.message);
+        } else {
+            console.log('Created user_activities table');
+        }
+    });
+
+    // Create schema for user goals (a user must have a goal, a description, a timestamp and a status)
+    db.query(`CREATE TABLE IF NOT EXISTS user_goals (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        user_id INT NOT NULL,
+        goal VARCHAR(255) NOT NULL,
+        description TEXT NOT NULL,
+        timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        status VARCHAR(255) NOT NULL
+    )`, (err) => {
+        if (err) {
+            console.error('Error creating user_goals table:', err.message);
+        } else {
+            console.log('Created user_goals table');
+        }
+    });
+
+    // Create schema for user achievements (a user must have an achievement, a description, a timestamp and a status)
+    db.query(`CREATE TABLE IF NOT EXISTS user_achievements (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        user_id INT NOT NULL,
+        achievement VARCHAR(255) NOT NULL,
+        description TEXT NOT NULL,
+        timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        status VARCHAR(255) NOT NULL
+    )`, (err) => {
+        if (err) {
+            console.error('Error creating user_achievements table:', err.message);
+        } else {
+            console.log('Created user_achievements table');
+        }
+    });
+
+    // Create schema for user rewards (a user must have a reward, a description, a timestamp and a status)
+    db.query(`CREATE TABLE IF NOT EXISTS user_rewards (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        user_id INT NOT NULL,
+        reward VARCHAR(255) NOT NULL,
+        description TEXT NOT NULL,
+        timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        status VARCHAR(255) NOT NULL
+    )`, (err) => {
+        if (err) {
+            console.error('Error creating user_rewards table:', err.message);
+        } else {
+            console.log('Created user_rewards table');
+        }
+    });
+
+    // Create schema for user alerts (a user must have an alert, a description, a timestamp and a status)
+    db.query(`CREATE TABLE IF NOT EXISTS user_alerts (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        user_id INT NOT NULL,
+        alert VARCHAR(255) NOT NULL,
+        description TEXT NOT NULL,
+        timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        status VARCHAR(255) NOT NULL
+    )`, (err) => {
+        if (err) {
+            console.error('Error creating user_alerts table:', err.message);
+        } else {
+            console.log('Created user_alerts table');
         }
     });
 }
