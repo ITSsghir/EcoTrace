@@ -5,6 +5,7 @@ import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 
 import { useRegister } from '@/hooks/use-register';
 import { Stack, useRouter } from 'expo-router';
+import { useSession } from '../context/ctx';
 
 const Signup = () => {
     const [fullName, setFullName] = useState('');
@@ -14,21 +15,32 @@ const Signup = () => {
 
     const router = useRouter();
 
+    const { token, signUp } = useSession();
+
+    const handleSignUp = async () => {
+        await signUp(fullName, email, phoneNumber, password);
+        if (token) {
+            router.replace('/home');
+        } else {
+            router.replace('/');
+        }
+    }
+
     return (
         <View style={styles.container}>
             <Stack.Screen options={{ headerTitle: '' }} />
             <Text style={styles.title}>Create an account</Text>
             <TextInput
                 style={styles.input}
-                placeholder="Email"
-                value={email}
-                onChangeText={setEmail}
-            />
-            <TextInput
-                style={styles.input}
                 placeholder="Full name"
                 value={fullName}
                 onChangeText={setFullName}
+            />
+            <TextInput
+                style={styles.input}
+                placeholder="Email"
+                value={email}
+                onChangeText={setEmail}
             />
             <TextInput
                 style={styles.input}
@@ -46,7 +58,7 @@ const Signup = () => {
             <Button
                 title="Sign up"
                 onPress={() => {
-                    useRegister(fullName, email, phoneNumber, password);
+                    handleSignUp(); // Wait for signUp to complete
                 }}
             />
         </View>

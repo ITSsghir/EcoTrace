@@ -3,18 +3,32 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 
-import { useLogin } from '@/hooks/use-login';
 import { Stack, useRouter } from 'expo-router';
+import { useSession } from '../context/ctx';
+import { useLogin } from '@/hooks/use-login';
+
 
 const Signin = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const { token } = useSession();
 
     const router = useRouter();
 
+    const { signIn, signOut } = useSession();
+
+    const handleSignIn = async () => {
+        await signIn(email, password);
+        if (token) {
+            router.replace('/home');
+        } else {
+            router.replace('/signin');
+        }
+    };
+
     return (
         <View style={styles.container}>
-            <Stack.Screen options={{ headerTitle: '' }} />
+            <Stack.Screen options={{ headerTitle: '', title: 'signin' }} />
             <Text style={styles.title}>Sign in</Text>
             <TextInput
                 style={styles.input}
@@ -32,7 +46,12 @@ const Signin = () => {
             <Button
                 title="Sign in"
                 onPress={() => {
-                    useLogin(email, password);
+                    handleSignIn(); // Wait for signIn to complete
+                    if (token) {
+                        router.replace('/home');
+                    } else {
+                        router.replace('/signin');
+                    }
                 }}
             />
         </View>

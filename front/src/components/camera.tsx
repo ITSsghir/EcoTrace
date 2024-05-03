@@ -104,7 +104,7 @@ export default function CameraView() {
         >
           <Text>Flip Camera</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => takePicture()} style={{ backgroundColor: 'blue', padding: 10, borderRadius: 5, alignContent: 'center', justifyContent: 'center', alignItems: 'center', borderColor: 'black', borderWidth: 1, margin: 10}}>
+        <TouchableOpacity onPress={async () => await takePicture()} style={{ backgroundColor: 'blue', padding: 10, borderRadius: 5, alignContent: 'center', justifyContent: 'center', alignItems: 'center', borderColor: 'black', borderWidth: 1, margin: 10}}>
           <Text>Take Picture</Text>
         </TouchableOpacity>
       </View>

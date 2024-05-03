@@ -8,8 +8,8 @@ export default function Welcome() {
     const router = useRouter();
 
     return (
-            <Background style={{ flex: 1}}>
-                <Stack.Screen options={{ headerTitle: '' }} />
+            <Background style={{ flex: 1 }}>
+                <Stack.Screen options={{ headerShown: false }} />
                 <View style={welcomeStyles.bigContainer}>
                     <Text>Welcome to the app!</Text>
                     <View style={welcomeStyles.container}>

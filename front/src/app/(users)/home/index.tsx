@@ -18,6 +18,7 @@ import Balance, { balanceHeight } from "../balance/[id]";
 import icons from '@/constants/icons';
 import ScreenHeaderBtn from "@/components/ScreenHeaderBtn";
 import React, { useEffect } from "react";
+import { useSession } from "@/app/context/ctx";
 
 const screenHeight = Dimensions.get('window').height;
 
@@ -25,6 +26,14 @@ export default function HomePage() {
     const router = useRouter();
 
     let username = 'User' // Get username from the server via API call
+
+    const { signOut } = useSession();
+    // Sign out function
+    const handleSignOut = () => {
+        signOut();
+        router.push('/');
+    }
+
 
     // Camera route will pop up a modal with two options: take a picture or choose from gallery
     const choices = [
@@ -59,14 +68,18 @@ export default function HomePage() {
                         <ScreenHeaderBtn 
                             iconUrl={icons.menu} 
                             dimension={40}
-                            handlePress={() => {}}
+                            handlePress={() => {
+                                handleSignOut()
+                            }}
                         />
                     ),
                     headerRight: () => (
                         <ScreenHeaderBtn 
                             iconUrl={icons.profile} 
                             dimension={40}
-                            handlePress={() => {}}
+                            handlePress={() => {
+                                handleSignOut()
+                            }}
                         />
                     )
                 }}
@@ -127,7 +140,7 @@ export function History() {
                     onPress= {
                         () => {
                             console.log('History clicked')
-                            router.push('/users/history')
+                            router.push('/history')
                         }
                     }
                 >

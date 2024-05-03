@@ -9,20 +9,5 @@ import { useEffect } from 'react';
 
 
 export const useLogout = () => {
-    const logout = async () => {
-        const apiURL = process.env.API_URL;
-        try {
-            await axios.get(`${apiURL}/logout`);
-        } catch (error) {
-            console.error('Error logging out:', error);
-        }
-    };
 
-    useEffect(() => {
-        logout();
-    }, []);
-
-    return {
-        logout,
-    };
 };
