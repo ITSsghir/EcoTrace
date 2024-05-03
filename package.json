@@ -8,6 +8,8 @@
   "scripts": {
     "start": "node index.js",
     "stop": "node stop.js",
-    "cleanup": "node cleanup.js"
+    "cleanup": "node cleanup.js",
+    "reset" : "node stop.js && node cleanup.js",
+    "restart": "node stop.js && node cleanup.js && node index.js"
   }
 }
