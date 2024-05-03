@@ -1,12 +1,26 @@
-import { Slot, Stack } from 'expo-router';
-import { SessionProvider } from '@/context/ctx';
+import { Redirect, Slot, Stack, useRouter } from 'expo-router';
+import { Text } from 'react-native';
+import { useSession } from '../context/ctx';
 import React from 'react';
+import HomePage from '@/app/(users)/home';
+import LoadingScreen from '@constants/loading';
 
-export default function Anonymous() {
-  // Set up the auth context and render our layout inside of it.
-  return (
-    <SessionProvider>
-      <Slot />
-    </SessionProvider>
-  );
+export default function CameraLayout() {
+  const {token, isLoading } = useSession();
+
+  const router = useRouter();
+
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
+
+  if (!token) {
+    return (
+        <Stack>
+            <Stack.Screen name="index" options={{ headerShown: false }} />
+        </Stack>
+    );
+  }
+
+  return <Redirect href="/home" />;
 }

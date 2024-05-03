@@ -9,7 +9,7 @@ export default function Welcome() {
 
     return (
             <Background style={{ flex: 1 }}>
-                <Stack.Screen options={{ headerShown: false }} />
+                <Stack.Screen name='welcome' options={{ headerShown: false }} />
                 <View style={welcomeStyles.bigContainer}>
                     <Text>Welcome to the app!</Text>
                     <View style={welcomeStyles.container}>

@@ -1,11 +1,13 @@
-import { Redirect, Stack } from 'expo-router';
-import { Text } from 'react-native';
-import { useSession } from '../context/ctx';
-import React from 'react';
-import LoadingScreen from '@constants/loading';
+import { useSession } from "@/app/context/ctx";
+import { Slot, Stack } from "expo-router";
+import React from "react";
+import { Redirect } from "expo-router";
+import { Text } from "react-native";
+import LoadingScreen from "@constants/loading";
 
-export default function CameraLayout({ children }) {
-  const {token, isLoading } = useSession();
+export default function HomePage() {
+  const { token, isLoading } = useSession();
+
   // You can keep the splash screen open, or render a loading screen like we do here.
   if (isLoading) {
     return <LoadingScreen />;
@@ -16,14 +18,17 @@ export default function CameraLayout({ children }) {
   if (!token) {
     // On web, static rendering will stop here as the user is not authenticated
     // in the headless Node process that the pages are rendered in.
-    return <Redirect href="/signin" />;
+    return (
+      <Stack>
+        <Stack.Screen name="index" options={{ headerShown: true }} />
+      </Stack>
+    );
   }
 
   // This layout can be deferred because it's not the root layout.
   return (
     <Stack>
-      <Stack.Screen name="index" options={{ title: "Camera", headerShown: false }} />
-      <Stack.Screen name="[image]" options={{ headerShown: false }} />
+      <Stack.Screen name="home" options={{ headerShown: true }} />
     </Stack>
-    );
+  );
 }

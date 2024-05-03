@@ -3,13 +3,14 @@ import { Slot, Stack } from "expo-router";
 import React from "react";
 import { Redirect } from "expo-router";
 import { Text } from "react-native";
+import LoadingScreen from "@constants/loading";
 
 export default function HomePage() {
   const { token, isLoading } = useSession();
 
   // You can keep the splash screen open, or render a loading screen like we do here.
   if (isLoading) {
-    return <Text>Loading...</Text>;
+    return <LoadingScreen />;
   }
 
   // Only require authentication within the (app) group's layout as users
@@ -24,7 +25,6 @@ export default function HomePage() {
   return (
     <Stack>
       <Stack.Screen name="home" options={{ headerShown: true }} />
-      <Slot />
     </Stack>
   );
 }
