@@ -11,12 +11,7 @@ if (-not (Test-Path "C:\Program Files\Docker\Docker\Docker Desktop.exe")) {
 }
 
 # Start the docker desktop
-Start-Process -FilePath "C:\Program Files\Docker\Docker\Docker Desktop.exe"
-
-# If the docker desktop is not running, wait for it to start
-while (-not (Get-Process -Name "Docker Desktop" -ErrorAction SilentlyContinue)) {
-    Start-Sleep -Seconds 1
-}
+Start-Process -FilePath "C:\Program Files\Docker\Docker\Docker Desktop.exe" -Wait
 
 # Change the directory to the backend folder
 Set-Location .\back
@@ -25,4 +20,4 @@ Set-Location .\back
 docker-compose up -d
 
 # Change the directory to the project root
-Set-Location ..
+Set-Location .. 

@@ -9,4 +9,4 @@ Set-Location .\back
 docker-compose down
 
 # Change the directory to the project root
-Set-Location ..
+Set-Location .. 
