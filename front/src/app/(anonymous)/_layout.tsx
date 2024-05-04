@@ -16,9 +16,7 @@ export default function CameraLayout() {
 
   if (!token) {
     return (
-        <Stack>
-            <Stack.Screen name="index" options={{ headerShown: false }} />
-        </Stack>
+        <Stack />
     );
   }
 

@@ -14,18 +14,19 @@ import { Image,
     ScrollView, 
     LogBox
 } from "react-native";
-import Balance, { balanceHeight } from "../balance/[id]";
+import Balance, { balanceContainerHeight } from "@/components/balance";
 import icons from '@/constants/icons';
 import ScreenHeaderBtn from "@/components/ScreenHeaderBtn";
 import React, { useEffect } from "react";
 import { useSession } from "@/app/context/ctx";
-
-const screenHeight = Dimensions.get('window').height;
+import Choices, { choicesContainerHeight } from "@/components/choices";
 
 export default function HomePage() {
     const router = useRouter();
 
-    let username = 'User' // Get username from the server via API call
+    let full_name = 'Demo user'; // Get from context later
+    let balance = 'xxxxxx'; // Get from context later
+    let daily_balance = 'xxxxxx'; // Get from context later
 
     const { signOut } = useSession();
     // Sign out function
@@ -46,13 +47,6 @@ export default function HomePage() {
     useEffect(() => {
         LogBox.ignoreLogs(["VirtualizedLists should never be nested"])
       }, [])
-
-    const renderItem = ({ item }) => (
-        <TouchableOpacity style={stylesHome.button} onPress={item.onpress}>
-            <Image source={item.icon} style={stylesHome.icon} />
-            <Text style={stylesHome.subTitle}>{item.title}</Text>
-        </TouchableOpacity>
-    );
 
     return (
         <SafeAreaView style={stylesHome.container}>
@@ -85,28 +79,14 @@ export default function HomePage() {
                 }}
             
             />
-            <Balance />
+            <Balance full_name={full_name} balance={balance} daily_balance={daily_balance} />
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <FlatList
-                    data={choices}
-                    keyExtractor={item => item.id}
-                    renderItem={renderItem}
-                    style={stylesHome.choicesContainer}
-                    showsVerticalScrollIndicator={false}
-                    showsHorizontalScrollIndicator={false}
-                    horizontal={true}
-                />
+                <Choices />
             </View>
             <History />
         </SafeAreaView>
     );
 };
-const screenWidth = Dimensions.get('window').width;
-const choicesContainerWidth = screenWidth * 0.9;
-const choiceButtonWidth = choicesContainerWidth / 4 - 10;
-const choiceIconWidth = choiceButtonWidth * 0.5;
-// Dynamic font sizes based on screen width
-const choiceTitleFontSize = screenWidth < 400 ? 12 : 14;
 
 export function History() {
 
@@ -157,54 +137,30 @@ export function History() {
 
 const stylesHome = StyleSheet.create({
     container: {
-        flex: 1,
         alignItems: "center",
-        justifyContent: "center"
-    },
-    choicesContainer: {
+        justifyContent: "center",
         flex: 1,
-        flexDirection: "row",
-        flexWrap: "wrap",
-        borderRadius: 10 / 1.25,
-        width: choicesContainerWidth,
-        height: choiceButtonWidth * 2 + 20,
-        margin: 10
     },
     title: {
         fontSize: 24,
         fontWeight: "bold",
-    },
-    subTitle: {
-        fontSize: choiceTitleFontSize,
-    },
-    button: {
-        width: choiceButtonWidth,
-        height: choiceButtonWidth,
-        borderRadius: 10 / 1.25,
-        justifyContent: "center",
-        alignItems: "center",
-        borderWidth:  1,
-        borderColor: 'black',
-        borderStyle: 'solid',
-        margin: 5
-    },
-    icon: {
-        width: choiceIconWidth,
-        height: choiceIconWidth,
-        borderRadius: 10 / 1.25,
     }
 });
 
-const choicesContainerHeight = stylesHome.choicesContainer.height;
+const screenWidth = Dimensions.get('window').width;
+// Get the height of the choices component
+const balanceContainerHeightNet = balanceContainerHeight - 20;
+const choicesContainerHeightNet = choicesContainerHeight - 20;
+const historyContainerHeightNet = screenWidth - balanceContainerHeightNet - choicesContainerHeightNet;
+
 const stylesHistory = StyleSheet.create({
     container: {
-        flex: 1,
         backgroundColor: "#fff",
-        margin: 0,
         borderRadius: 10 / 1.25,
-        width: screenWidth - 10,
-        padding: 10,
-        marginTop: '-95%'
+        width: screenWidth * 0.9,
+        padding: 20,
+        margin: 10,
+        height: screenWidth * 19/20
     },
     title: {
         fontSize: 24,

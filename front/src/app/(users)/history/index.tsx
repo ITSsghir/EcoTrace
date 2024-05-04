@@ -1,3 +1,5 @@
+import ScreenHeaderBtn from '@/components/ScreenHeaderBtn';
+import icons from '@constants/icons';
 import { Stack, router } from 'expo-router';
 import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, ScrollView, FlatList, Dimensions } from 'react-native';
@@ -55,7 +57,6 @@ export default function History() {
 
     return (
             <ScrollView style={stylesHistory.container} showsVerticalScrollIndicator={false}>
-                <Stack.Screen options={{ headerTitle: 'History' }} />
                 <TouchableOpacity
                     onPress= {
                         () => {

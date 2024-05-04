@@ -1,10 +1,12 @@
-import { Redirect, Stack } from 'expo-router';
+import { Redirect, Slot, Stack, router } from 'expo-router';
 import { Text } from 'react-native';
 import { useSession } from '../context/ctx';
 import React from 'react';
 import LoadingScreen from '@constants/loading';
+import ScreenHeaderBtn from '@/components/ScreenHeaderBtn';
+import icons from '@/constants/icons';
 
-export default function CameraLayout({ children }) {
+export default function CameraLayout() {
   const {token, isLoading } = useSession();
   // You can keep the splash screen open, or render a loading screen like we do here.
   if (isLoading) {
@@ -21,9 +23,20 @@ export default function CameraLayout({ children }) {
 
   // This layout can be deferred because it's not the root layout.
   return (
-    <Stack>
-      <Stack.Screen name="index" options={{ title: "Camera", headerShown: false }} />
-      <Stack.Screen name="[image]" options={{ headerShown: false }} />
+    <Stack >
+      <Stack.Screen name="index" options={{
+        headerTitle: 'Camera', headerShown: true,
+        headerLeft: () => {
+          return (
+            <ScreenHeaderBtn 
+              iconUrl={icons.back} handlePress={() => {
+                  router.back();
+              }} 
+              dimension={30} 
+            />
+          );
+        }
+      }} />
     </Stack>
-    );
+  );
 }

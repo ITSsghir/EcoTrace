@@ -1,4 +1,4 @@
-import { Stack, Redirect } from "expo-router";
+import { Stack, Redirect, Slot } from "expo-router";
 import React from "react"
 import { Text } from "react-native";
 import { useSession } from "@/app/context/ctx";
@@ -22,8 +22,6 @@ export default function HistoryLayout() {
 
     // This layout can be deferred because it's not the root layout.
     return (
-    <Stack>
-        <Stack.Screen name="index" options={{ title: "History", headerShown: false }} />
-    </Stack>
+        <Stack />
     );
 }

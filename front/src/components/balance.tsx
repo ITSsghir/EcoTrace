@@ -7,22 +7,18 @@ import {
 } from 'react-native';
 
 // This component is a subcomponent of the Welcome component, it will contain the monthly carbon footprint balance of the user and the daily one as well
-export default function Balance() {
+export default function Balance({ balance, daily_balance, full_name }) {
 
-    let FullName: string = 'Demo User' // Get username from the server via API call
+    let FullBalance: string = balance + ' kg CO2'
 
-    let balance = 'xxxxxxxxxxx' // Get balance from the server via API call
-
-    let FullBalance = balance + 'CO2'
-
-    let DailyBalance = 'xxxxxx' // Get daily balance from the server via API call
+    let DailyBalance : string = daily_balance + ' kg CO2'
 
     return (
         <View style={ styles.card }>
-            <Text style={styles.message}>Welcome {FullName}</Text>
+            <Text style={styles.message}>Welcome {full_name}</Text>
             <Text style={styles.BigMessage}>Current Monthly Carbon Footprint</Text>
             <Text style={styles.Monthly}>{FullBalance}</Text>
-            <Text style={styles.Daily}>Today : {DailyBalance}CO2</Text>
+            <Text style={styles.Daily}>Today : {DailyBalance}</Text>
         </View>
     )
 }
@@ -44,7 +40,7 @@ const styles = StyleSheet.create({
         margin: 10,
         borderRadius: 10,
         width: cardWidth,
-        height: 'auto',
+        height: 145,
     },
     message: {
         fontSize: messageFontSize,
@@ -67,6 +63,4 @@ const styles = StyleSheet.create({
     }
 });
 
-// Export height and width of the component
-// convert the height to a number
-export const balanceHeight = Number(styles.card.height);
+export const balanceContainerHeight = styles.card.height;

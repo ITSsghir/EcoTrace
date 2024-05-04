@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Dimensions } from 'react-native';
 import { Camera, CameraType } from 'expo-camera';
 import * as FileSystem from 'expo-file-system';
-import { router } from 'expo-router';
+import { router, useRouter } from 'expo-router';
 
-export default function CameraView() {
+export default function CameraView({ children }: { children?: React.ReactNode }) {
 
   // Get the API key from the environment variables
   const apiKey = process.env.EXPO_PUBLIC_API_KEY;
@@ -17,6 +17,8 @@ export default function CameraView() {
   const [labels, setLabels] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [tookPicture, setTookPicture] = useState(false);
+
+  const router = useRouter();
 
   useEffect(() => {
     (async () => {
@@ -33,6 +35,7 @@ export default function CameraView() {
       const data = await camera.takePictureAsync();
       setImage(data.uri);
       setTookPicture(true);
+      router.push({ pathname: '/camera/[image]', params: { image: data.uri } });
     }
   };
 

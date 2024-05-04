@@ -23,8 +23,6 @@ export default function HomePage() {
 
   // This layout can be deferred because it's not the root layout.
   return (
-    <Stack>
-      <Stack.Screen name="home" options={{ headerShown: true }} />
-    </Stack>
+    <Stack />
   );
 }

@@ -19,16 +19,12 @@ export default function HomePage() {
     // On web, static rendering will stop here as the user is not authenticated
     // in the headless Node process that the pages are rendered in.
     return (
-      <Stack>
-        <Stack.Screen name="index" options={{ headerShown: true }} />
-      </Stack>
+      <Slot />
     );
   }
 
   // This layout can be deferred because it's not the root layout.
   return (
-    <Stack>
-      <Stack.Screen name="home" options={{ headerShown: true }} />
-    </Stack>
+    <Slot />
   );
 }

@@ -5,7 +5,6 @@ import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 
 import { Stack, useRouter } from 'expo-router';
 import { useSession } from '../context/ctx';
-import { useLogin } from '@/hooks/use-login';
 
 
 const Signin = () => {

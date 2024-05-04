@@ -14,6 +14,6 @@ export default function App() {
   }
 
   return (
-    token ? <HomePage /> : <Redirect href="/welcome" />
+    token ? <Redirect href='/home'/> : <Redirect href="/welcome" />
   );
 }

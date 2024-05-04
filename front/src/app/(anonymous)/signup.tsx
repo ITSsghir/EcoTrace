@@ -2,8 +2,6 @@
 
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
-
-import { useRegister } from '@/hooks/use-register';
 import { Stack, useRouter } from 'expo-router';
 import { useSession } from '../context/ctx';
 
