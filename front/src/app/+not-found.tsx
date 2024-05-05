@@ -1,8 +1,7 @@
-import { Redirect, Slot, Stack, useRouter } from "expo-router"
+import { Redirect } from "expo-router"
 import React from "react"
 
 export default function Missing() {
-	const router = useRouter();
 	console.log("missing");
 
 	return (

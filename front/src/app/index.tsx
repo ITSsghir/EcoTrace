@@ -1,8 +1,6 @@
 import React from 'react';
-import { Text } from 'react-native';
-import { Redirect, Stack } from 'expo-router';
-import { useSession } from './context/ctx';
-import HomePage from './(users)/home';
+import { Redirect } from 'expo-router';
+import { useSession } from '@/context/ctx';
 import LoadingScreen from '@constants/loading';
 
 export default function App() {
