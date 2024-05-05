@@ -1,9 +1,10 @@
 // Setup dotenv
-
 const dotenv = require('dotenv')
-
 // Load environment variables from .env file
 dotenv.config();
+
+// Import the required modules
+const { predict } = require('./vertex-vision-ai.js');
 
 // Setup server (Express) 
 const express = require('express');
@@ -22,11 +23,10 @@ const secretkey = process.env.SECRET_KEY;
 
 // Import modules
 const { initDatabase, createUser, checkLogin, getCarbonFootprint, updateCarbonFootprint, updateUserInfo } = require('./db.js');
-const { error } = require('console');
 
 app.use(cookieParser());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({ limit: '10mb' }));
+app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
 
 // Middleware to verify JWT token
 const verifyToken = (req, res, next) => {
@@ -161,6 +161,29 @@ app.put('/users/:id', verifyToken, (req, res) => {
     // Modify the user info
     updateUserInfo(id, desiredModifications);
     res.status(200).send('User info has been modified');
+});
+
+// Post request to get Vertex AI prediction
+app.post('/predict', async (req, res) => {
+    const { uri } = req.body;
+
+    console.log('Predicting...')
+    
+    console.log('URI:', uri);
+
+    try {
+        // Get the prediction from Vertex AI
+        const prediction = await predict(uri);
+
+        console.log('Prediction:', prediction);
+        const response = { message: 'Prediction successful', prediction: prediction };
+        res.status(200).send(response);
+    } 
+    catch (err) {
+        console.error('Error predicting:', err.message);
+        const response = { message: 'Error predicting: ' + err };
+        res.status(500).send(response);
+    }
 });
 
 // Run the server
