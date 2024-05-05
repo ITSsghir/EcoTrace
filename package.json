@@ -6,11 +6,11 @@
   "author": "Younest9 <y.elarjouni.sq@gmail.com>",
   "license": "TMP",
   "scripts": {
-    "start-back": "node scripts/back/JavaScript/start.js",
+    "start-back": "node ./scripts/back/JavaScript/start.js",
     "stop-back": "node scripts/back/JavaScript/stop.js",
     "cleanup-back": "node scripts/back/JavaScript/cleanup.js",
-    "reset-back": "yarn stop && yarn cleanup",
-    "restart-back": "yarn reset && yarn start",
+    "reset-back": "yarn stop-back && yarn cleanup-back",
+    "restart-back": "yarn reset-back && yarn start-back",
     "start-front": "node scripts/front/JavaScript/start.js",
     "stop-front": "node scripts/front/JavaScript/stop.js",
     "cleanup-front": "node scripts/front/JavaScript/cleanup.js",
@@ -22,5 +22,8 @@
     "reset": "concurrently \"yarn reset-back\" \"yarn reset-front\"",
     "restart": "concurrently \"yarn restart-back\" \"yarn restart-front\""
   },
-  "packageManager": "yarn@4.2.1"
+  "packageManager": "yarn@4.2.1",
+  "dependencies": {
+    "concurrently": "^8.2.2"
+  }
 }
