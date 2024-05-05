@@ -1,20 +1,18 @@
 // Get the os type
 const osType = process.platform;
-console.log(osType);
 
 if (osType === 'win32') {
   // Windows, run the pwsh script
     const { spawn } = require('child_process');
     const child = spawn('pwsh', ['./start.ps1'], {shell: true});
     child.stdout.on('data', (data) => {
-
     });
     child.stderr.on('data', (data) => {
         data = data.toString();
         console.log(data);
     });
     child.on('close', (code) => {
-      
+      console.log(`child process exited with code ${code}`);
     });
 }
 else {

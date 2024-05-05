@@ -1,6 +1,5 @@
 // Get the OSTYPE
 const osType = process.platform;
-console.log(osType);
 
 if (osType === 'win32') {
     // Windows, run the pwsh script
