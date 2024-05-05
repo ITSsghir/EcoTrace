@@ -165,15 +165,13 @@ app.put('/users/:id', verifyToken, (req, res) => {
 
 // Post request to get Vertex AI prediction
 app.post('/predict', async (req, res) => {
-    const { uri } = req.body;
-
-    console.log('Predicting...')
+    const { base64Image, extension , prompt } = req.body;
     
-    console.log('URI:', uri);
+    console.log('Predicting...')
 
     try {
         // Get the prediction from Vertex AI
-        const prediction = await predict(uri);
+        const prediction = await predict(base64Image, extension, prompt);
 
         console.log('Prediction:', prediction);
         const response = { message: 'Prediction successful', prediction: prediction };
