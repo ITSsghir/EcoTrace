@@ -76,10 +76,15 @@ export default function Preview() {
           return;
         }
 
+        const fileExtension = uri.split('.').pop();
+        console.log(fileExtension);
+
         // convert image to base64
         const base64ImageData = await FileSystem.readAsStringAsync(uri, { 
           encoding: FileSystem.EncodingType.Base64 
         });
+
+        const prompt = "Can you estimate the carbon foorprint of what's in this image? Give me just the number + unit (e.g. 10 kg CO2e)";
 
         const url = 'http://100.114.128.64:3000/predict';
         const response = await fetch(url, {
@@ -89,7 +94,8 @@ export default function Preview() {
           },
           body: JSON.stringify({ 
             base64Image: base64ImageData,
-            uri: base64ImageData,
+            extension: `${fileExtension}`,
+            prompt: prompt
           }),
         });
 
