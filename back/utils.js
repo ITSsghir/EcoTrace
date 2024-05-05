@@ -1,13 +1,10 @@
 // Description: This file contains the utility functions that are used in the back-end.
 
-// Function to initialize all necessary modules
-const initModules = (...modules) => {
-    for (const module of modules) {
-        module();
-    }
-}
-
-// Function to check if the email is authentic
+/**
+ * 
+ * @param {string} email 
+ * @returns {Promise<boolean>} if the email is authentic, return true, else return an error
+ */
 const checkEmailAuthenticity = async (email) => {
 
     if (!email) {
@@ -26,7 +23,11 @@ const checkEmailAuthenticity = async (email) => {
     });
 }
 
-// Function to check if the password is authentic
+/**
+ * 
+ * @param {string} password 
+ * @returns {Promise<boolean>} if the password is authentic, return true, else return an error
+ */
 const checkPasswordAuthenticity = async (password) => {
 
     if (!password) {
@@ -45,7 +46,11 @@ const checkPasswordAuthenticity = async (password) => {
     });
 }
 
-// Function to check if the phone number is authentic
+/**
+ * 
+ * @param {number} phone_number 
+ * @returns {Promise<boolean>} if the phone number is authentic, return true, else return an error
+ */
 const checkPhoneNumberAuthenticity = async (phone_number) => {
 
     if (!phone_number) {
@@ -74,6 +79,11 @@ const checkPhoneNumberAuthenticity = async (phone_number) => {
     });
 }
 
+/**
+ * 
+ * @param {string} full_name 
+ * @returns {Promise<boolean>} if the full name is authentic, return true, else return an error
+ */
 async function checkFullNameAuthenticity (full_name) {
     if (!full_name) {
         return new Promise((resolve, reject) => {
@@ -92,6 +102,15 @@ async function checkFullNameAuthenticity (full_name) {
         resolve(true);
     });
 }
+
+/**
+ * 
+ * @param {string} full_name 
+ * @param {string} email 
+ * @param {number} phone_number 
+ * @param {string} password 
+ * @returns {Promise<boolean>} if all the inputs are authentic, return true, else return an error
+ */
 async function checkInputs (full_name, email, phone_number, password) {
     
     // Check if the full name is authentic
@@ -113,6 +132,5 @@ async function checkInputs (full_name, email, phone_number, password) {
 
 // Export the functions
 module.exports = {
-    initModules,
-    checkInputs,
+    checkInputs
 };
