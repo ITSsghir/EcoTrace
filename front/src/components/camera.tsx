@@ -43,52 +43,6 @@ export default function CameraView({ children }: { children?: React.ReactNode })
     return <Text>No access to camera</Text>;
   }
 
-  const getPrediction = async (uri : string) => {
-    if (!uri) {
-      return;
-    }
-    try {
-      const base64ImageData = await FileSystem.readAsStringAsync(uri, { 
-        encoding: FileSystem.EncodingType.Base64 
-      });
-
-      const body = {
-        requests: [
-          {
-            image: {
-              content: base64ImageData,
-            },
-            features: [
-              {
-                type: 'LABEL_DETECTION',
-                maxResults: 20,
-              },
-            ],
-          },
-        ],
-      };
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(body),
-      });
-      let responseJson = await response.json();
-      console.log(responseJson);
-      // Print response as a string
-      console.log(JSON.stringify(responseJson));
-      console.log(JSON.stringify(responseJson.responses));
-      setLabels(responseJson.responses[0].labelAnnotations[0].description);
-      // End loading
-      setLoading(false);
-
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   return ( <>
       <View style={styles.cameraContainer}>
         <Camera
@@ -109,24 +63,6 @@ export default function CameraView({ children }: { children?: React.ReactNode })
         </TouchableOpacity>
         <TouchableOpacity onPress={async () => await takePicture()} style={{ backgroundColor: 'blue', padding: 10, borderRadius: 5, alignContent: 'center', justifyContent: 'center', alignItems: 'center', borderColor: 'black', borderWidth: 1, margin: 10}}>
           <Text>Take Picture</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.prediction_preview}>
-        <TouchableOpacity style={{ backgroundColor: 'blue', padding: 10, borderRadius: 5, alignContent: 'center', justifyContent: 'center', alignItems: 'center', borderColor: 'black', borderWidth: 1, margin: 10}}
-            onPress={() => {
-              if (tookPicture) {
-                router.push({ pathname: '/camera/[image]', params: { image } });
-              }
-              router.push('/camera/[image]');
-            }
-          }
-        >
-          <Text>Preview Picture</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={{ backgroundColor: 'blue', padding: 10, borderRadius: 5, alignContent: 'center', justifyContent: 'center', alignItems: 'center', borderColor: 'black', borderWidth: 1, margin: 10}}
-          onPress={() => getPrediction(image)}
-        >
-          <Text>Get predictions</Text>
         </TouchableOpacity>
       </View>
     </>

@@ -5,7 +5,7 @@ import React from 'react';
 import HomePage from '@/app/(users)/home';
 import LoadingScreen from '@constants/loading';
 
-export default function CameraLayout() {
+export default function AnonymousLayout() {
   const {token, isLoading } = useSession();
 
   const router = useRouter();

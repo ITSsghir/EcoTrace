@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { useStorageState } from '@/utils/useStorageState';
-import axios from 'axios';
 import { JwtPayload, jwtDecode } from 'jwt-decode';
 
 const API_URL =  'https://100.114.128.64:3000'
@@ -9,12 +8,16 @@ const AuthContext = React.createContext<{
   signIn: (email: string, password: string) => void;
   signOut: () => void;
   signUp: (full_name: string, email: string, phone_number: string, password: string) => void;
+  predict: (image: string) => void;
+  prediction: string,
   token?: string | null;
   isLoading: boolean;
 }>({
   signIn: () => null,
   signOut: () => null,
   signUp: () => null,
+  predict: () => null,
+  prediction: '',
   token: null,
   isLoading: false,
 });
@@ -33,10 +36,10 @@ export function useSession() {
 
 export function SessionProvider(props: React.PropsWithChildren) {
   const [[isLoading, token], setToken] = useStorageState('token');
+  const [prediction, setPrediction] = React.useState<string>('');
 
   // Set a timer to log out the user after the token expires
   useEffect(() => {
-    
     if (token) {
       let decodedToken = jwtDecode<JwtPayload>(token);
       console.log("Decoded Token", decodedToken);
@@ -124,10 +127,34 @@ export function SessionProvider(props: React.PropsWithChildren) {
     console.log('Token set:', token); // Log token here
   }
 
+  const predict = async (image: string) => {
+    const url = API_URL + '/predict';
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ 
+        uri: image,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+
+    const data = await response.json();
+    console.log(data);
+    setPrediction(data.prediction);
+    console.log(prediction);
+  }
+
   const value = {
     signIn: login,
     signOut: logout,
     signUp: register,
+    predict: predict,
+    prediction,
     token,
     isLoading,
   };

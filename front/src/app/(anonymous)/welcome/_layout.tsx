@@ -5,7 +5,7 @@ import { Redirect } from "expo-router";
 import { Text } from "react-native";
 import LoadingScreen from "@constants/loading";
 
-export default function HomePage() {
+export default function WelcomeLayout() {
   const { token, isLoading } = useSession();
 
   // You can keep the splash screen open, or render a loading screen like we do here.
