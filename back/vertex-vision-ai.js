@@ -23,7 +23,6 @@ async function getFileAsBase64(filePath) {
         const response = await axios.get(url, { responseType: 'arraybuffer' });
         return Buffer.from(response.data).toString('base64');
     }
-    // If it's in base64 already, return it
     return filePath;
 }
 
@@ -32,7 +31,7 @@ async function getFileAsBase64(filePath) {
  * @param {string} filePath 
  * @returns {string} the mimetype of the file
  */
-function getMimeType(filePath) {
+function getMimeType(extension) {
     const extensionToMimeType = {
         png: "image/png",
         jpeg: "image/jpeg",
@@ -50,7 +49,6 @@ function getMimeType(filePath) {
         flv: "video/flv",
     };
 
-    const extension = filePath.split(".").pop().toLowerCase();
     return extensionToMimeType[extension] || null;
 }
 
@@ -68,7 +66,8 @@ async function callGeminiAPI(
     projectLocation,
     model,
     inputFilePath,
-    userPrompt
+    userPrompt,
+    extension
 ) {
     // Initialize Vertex with your Cloud project and location
     const vertexAI = new VertexAI({
@@ -91,12 +90,12 @@ async function callGeminiAPI(
     if (inputFilePath) {
         // Gemini requires the file in base64 and with a mimetype
         const base64File = await getFileAsBase64(inputFilePath);
-        const mimeType = getMimeType(inputFilePath);
+        const mimeType = getMimeType(extension);
 
         const filePart = {
             inlineData: {
                 data: base64File,
-                mimeType: 'image/jpeg'
+                mimeType: mimeType,
             },
         };
 
@@ -132,14 +131,13 @@ async function callGeminiAPI(
  * @param {string} imagePath 
  * @returns {Promise<string>} the prediction from the API
  */
-async function predict(imagePath) {
+async function predict(imagePath, extension, prompt) {
     if (!imagePath) {
         return new Promise((_, reject) => {
             reject('No image provided');
         });
     }
-    const prompt = 'Describe the image';
-    const response = await callGeminiAPI(projectId, locationId, model, imagePath, prompt)
+    const response = await callGeminiAPI(projectId, locationId, model, imagePath, prompt, extension)
             .then((prediction) => {
                 return new Promise((resolve) => {
                     resolve(prediction);
