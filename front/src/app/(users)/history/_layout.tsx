@@ -1,6 +1,5 @@
-import { Stack, Redirect, Slot } from "expo-router";
+import { Stack, Redirect } from "expo-router";
 import React from "react"
-import { Text } from "react-native";
 import { useSession } from "@/app/context/ctx";
 import LoadingScreen from "@constants/loading";
 

@@ -1,8 +1,7 @@
-import { Stack, useLocalSearchParams, useRouter } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import React, { useEffect } from "react";
-import { Dimensions, Image, ImageURISource, SafeAreaView, Text, TouchableOpacity, View } from "react-native";
+import { Dimensions, Image, SafeAreaView, Text, TouchableOpacity, View } from "react-native";
 import * as FileSystem from 'expo-file-system';
-import { useSession } from "../context/ctx";
 
 export default function Preview() {
 

@@ -16,7 +16,7 @@ export default function SettingsLayout() {
     if (!token) {
     // On web, static rendering will stop here as the user is not authenticated
     // in the headless Node process that the pages are rendered in.
-        return <Redirect href="/(anonymous)/signin" />;
+        return <Redirect href="/signin" />;
     }
 
     // This layout can be deferred because it's not the root layout.
