@@ -1,4 +1,4 @@
-import { Slot, Stack } from 'expo-router';
+import { Slot } from 'expo-router';
 import { SessionProvider } from './context/ctx';
 import React from 'react';
 
