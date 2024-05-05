@@ -14,7 +14,7 @@ const Signin = () => {
 
     const router = useRouter();
 
-    const { signIn, signOut } = useSession();
+    const { signIn } = useSession();
 
     const handleSignIn = async () => {
         await signIn(email, password);
