@@ -10,6 +10,8 @@ services:
       no_cache: true
     ports:
       - "3000:3000"
+    volumes:
+      - C:\Users\Younes\AppData\Roaming\gcloud:/app/gcloud:/app/gcloud
     depends_on:
       - db
     environment:
@@ -18,6 +20,7 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      GOOGLE_APPLICATON_CREDENTIALS: ${GOOGLE_APPLICATON_CREDENTIALS}
   db:
     container_name: mysql-db
     labels:
