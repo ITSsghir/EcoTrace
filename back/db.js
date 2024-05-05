@@ -11,7 +11,7 @@ const saltRounds =  10;
 // Database on port 3306 localhost, user root, password root
 let db;
 const connectToDatabase = async () => {
-    return await createConnection({
+    return createConnection({
         host: process.env.MYSQL_HOST,
         user: process.env.MYSQL_USER,
         password: process.env.MYSQL_PASSWORD,
@@ -135,22 +135,18 @@ const setupTables = (db) => {
 }
 
 function initDatabase () {
-    while (true) {
-        try {
-            db = connectToDatabase();
-            db.connect((err) => {
-                if (err) {
-                    console.error('Database connection error:', err.message);
-                    return;
-                }
-                console.log('Connected to the database');
+    return new Promise((resolve, reject) => {
+        connectToDatabase()
+            .then((connection) => {
+                db = connection;
                 setupTables(db);
+                resolve();
+            })
+            .catch((err) => {
+                console.error('Error connecting to database:', err.message);
+                reject(err);
             });
-            break;
-        } catch (err) {
-            console.error('Database connection error:', err.message);
-        }
-    }
+    });
 }
 
 
