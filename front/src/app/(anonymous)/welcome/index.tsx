@@ -1,12 +1,9 @@
-import { Link, Redirect, Stack, useRouter } from "expo-router";
-import { Button, Dimensions, Image, Pressable, SafeAreaView, Text, TouchableOpacity, View } from "react-native";
+import { Link, Stack } from "expo-router";
+import { Dimensions, Pressable, Text, View } from "react-native";
 import React from "react";
 import { Background } from "@/components/background";
 
 export default function Welcome() {
-
-    const router = useRouter();
-
     return (
             <Background>
                 <Stack.Screen options={{

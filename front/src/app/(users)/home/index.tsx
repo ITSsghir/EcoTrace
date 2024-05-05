@@ -3,7 +3,7 @@ import {
     router,
     useRouter 
 } from "expo-router";
-import { Image, 
+import { 
     View, 
     Text, 
     TouchableOpacity, 
