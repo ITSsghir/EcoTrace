@@ -2,7 +2,7 @@
 ## It deletes the images and db data
 
 # Change directory to the backend folder
-cd back
+cd ./back
 
 # Delete the images
 docker image rm back-api

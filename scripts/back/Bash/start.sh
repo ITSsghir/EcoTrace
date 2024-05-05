@@ -5,7 +5,7 @@
 sudo apt-get update && sudo apt-get install -y docker.io docker-compose 2>&1 /dev/null && echo "Packages installed successfully" || echo "Failed to install packages"
 
 # Change directory to the backend
-cd back 2>&1 /dev/null && echo "Changed directory to back" || echo "Failed to change directory to back"
+cd ./back 2>&1 /dev/null && echo "Changed directory to back" || echo "Failed to change directory to back"
 
 # Launch docker daemon
 sudo systemctl start docker 2>&1 /dev/null && echo "Docker daemon started successfully" || echo "Failed to start docker daemon"

@@ -6,11 +6,21 @@
   "author": "Younest9 <y.elarjouni.sq@gmail.com>",
   "license": "TMP",
   "scripts": {
-    "start": "node index.js",
-    "stop": "node stop.js",
-    "cleanup": "node cleanup.js",
-    "reset": "node stop.js && node cleanup.js",
-    "restart": "node stop.js && node cleanup.js && node index.js"
+    "start-back": "node scripts/back/JavaScript/start.js",
+    "stop-back": "node scripts/back/JavaScript/stop.js",
+    "cleanup-back": "node scripts/back/JavaScript/cleanup.js",
+    "reset-back": "yarn stop && yarn cleanup",
+    "restart-back": "yarn reset && yarn start",
+    "start-front": "node scripts/front/JavaScript/start.js",
+    "stop-front": "node scripts/front/JavaScript/stop.js",
+    "cleanup-front": "node scripts/front/JavaScript/cleanup.js",
+    "reset-front": "yarn stop-front && yarn cleanup-front",
+    "restart-front": "yarn reset-front && yarn start-front",
+    "start": "concurrently \"yarn start-back\" \"yarn start-front\"",
+    "stop": "concurrently \"yarn stop-back\" \"yarn stop-front\"",
+    "cleanup": "concurrently \"yarn cleanup-back\" \"yarn cleanup-front\"",
+    "reset": "concurrently \"yarn reset-back\" \"yarn reset-front\"",
+    "restart": "concurrently \"yarn restart-back\" \"yarn restart-front\""
   },
-  "dependencies": {}
+  "packageManager": "yarn@4.2.1"
 }
