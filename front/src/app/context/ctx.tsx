@@ -57,7 +57,8 @@ export function SessionProvider(props: React.PropsWithChildren) {
 
   const login = async (email: string, password: string) => {
     try {
-      const url = 'http://100.114.128.64:3000/login';
+      const url = process.env.EXPO_PUBLIC_AUTH_API_URL + '/login';
+      console.log(url);
       const response = await fetch(url, {
         method: 'POST',
         headers: {
@@ -84,7 +85,7 @@ export function SessionProvider(props: React.PropsWithChildren) {
   
   const logout = () => {
     // GET request to the API to the endpoint /logout
-    fetch('http://100.114.128.64:3000/logout', {
+    fetch(process.env.EXPO_PUBLIC_AUTH_API_URL + '/logout', {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`
@@ -98,7 +99,9 @@ export function SessionProvider(props: React.PropsWithChildren) {
 
   const register = async (full_name: string, email: string, phone_number: string, password: string) => {
     // POST request to the API to the endpoint /register
-    const url = 'http://100.114.128.64:3000/register';
+
+    const url = process.env.EXPO_PUBLIC_AUTH_API_URL + '/register';
+    console.log(url);
     const response = await fetch(url, {
       method: 'POST',
       headers: {
@@ -164,8 +167,5 @@ export function SessionProvider(props: React.PropsWithChildren) {
       {props.children}
     </AuthContext.Provider>
   );
-}
-function jwt_decode(token: string) {
-  throw new Error('Function not implemented.');
 }
 
