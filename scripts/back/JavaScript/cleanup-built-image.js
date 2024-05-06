@@ -6,7 +6,7 @@ const path = require('node:path');
 const osType = process.platform;
 
 // Script type
-const scriptType = 'cleanup';
+const scriptType = 'cleanup-built-image';
 
 // PowerShell script Path
 const pwshScript = path.join(__dirname, `../PowerShell/${scriptType}.ps1`);
