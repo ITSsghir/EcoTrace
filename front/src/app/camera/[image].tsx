@@ -76,16 +76,16 @@ export default function Preview() {
         }
 
         const fileExtension = uri.split('.').pop();
-        console.log(fileExtension);
 
         // convert image to base64
         const base64ImageData = await FileSystem.readAsStringAsync(uri, { 
           encoding: FileSystem.EncodingType.Base64 
         });
 
-        const prompt = "Can you estimate the carbon foorprint of what's in this image? Give me just the number + unit (e.g. 10 kg CO2e)";
+        // Prompt for the model (for more information on the prompt, check the Vertex AI API documentation https://cloud.google.com/vertex-ai/generative-ai/docs/multimodal/design-multimodal-prompts?hl=fr)
+        const prompt = "Give me the carbon footprint of what's in this image, it needs to be a number in kg CO2e (Give me only the number)";
 
-        const url = 'http://100.114.128.64:3000/predict';
+        const url = process.env.EXPO_PUBLIC_AUTH_API_URL + '/predict';
         const response = await fetch(url, {
           method: 'POST',
           headers: {
@@ -105,8 +105,7 @@ export default function Preview() {
       const handleGetPrediction = async () => {
         const response = await getPredictionVertexAI(image);
         const prediction = response.prediction;
-        setLabels(prediction);
-        console.log(prediction);
+        setLabels(prediction + " kg CO2e");
       }
 
     return (
