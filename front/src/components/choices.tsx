@@ -11,13 +11,13 @@ export default function Choices() {
     return (
         <ScrollView showsVerticalScrollIndicator={false} horizontal={true} style={styles.choicesContainer}>
             <View>
-            <TouchableOpacity style={styles.button} onPress={
-                () => {
-                    router.push({ pathname: '/camera'})
-                }
-            }>
-                <Image source={icons.camera} style={styles.icon} />
-            </TouchableOpacity>
+                <TouchableOpacity style={styles.button} onPress={
+                    () => {
+                        router.push({ pathname: '/camera'})
+                    }
+                }>
+                    <Image source={icons.camera} style={styles.icon} />
+                </TouchableOpacity>
             </View>
             <View>
                 <TouchableOpacity style={styles.button} onPress={
