@@ -1,9 +1,6 @@
 import React, { useEffect } from 'react';
 import { useStorageState } from '@/utils/useStorageState';
 import { JwtPayload, jwtDecode } from 'jwt-decode';
-import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
-
-const API_URL =  'https://100.114.128.64:3000'
 
 const AuthContext = React.createContext<{
   signIn: (email: string, password: string) => void;
@@ -15,6 +12,7 @@ const AuthContext = React.createContext<{
   email?: string;
   phone_number?: string;
   password?: string;
+  userId: number;
 }>({
   signIn: () => null,
   signOut: () => null,
@@ -25,6 +23,7 @@ const AuthContext = React.createContext<{
   email: null,
   phone_number: null,
   password: null,
+  userId: 0,
 });
 
 // This hook can be used to access the user info.
@@ -41,6 +40,7 @@ export function useSession() {
 
 export function SessionProvider(props: React.PropsWithChildren) {
   const [[isLoading, token], setToken] = useStorageState('token');
+  const [userId, setUserId] = React.useState<number>(0);
   const [full_name, setFullName] = React.useState<string>('');
   const [email, setEmail] = React.useState<string>('');
   const [phone_number, setPhoneNumber] = React.useState<string>('');
@@ -157,6 +157,7 @@ export function SessionProvider(props: React.PropsWithChildren) {
       const data = await response.json();
 
       const user = data.user;
+      setUserId(user.id);
       setFullName(user.full_name);
       setEmail(user.email);
       setPhoneNumber(user.phone_number);
@@ -173,6 +174,7 @@ export function SessionProvider(props: React.PropsWithChildren) {
     email,
     phone_number,
     password,
+    userId
   };
 
   return (
