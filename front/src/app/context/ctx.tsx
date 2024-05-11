@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useStorageState } from '@/utils/useStorageState';
 import { JwtPayload, jwtDecode } from 'jwt-decode';
+import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 
 const AuthContext = React.createContext<{
   signIn: (email: string, password: string) => void;
@@ -13,6 +14,12 @@ const AuthContext = React.createContext<{
   phone_number?: string;
   password?: string;
   userId: number;
+  daily_balance?: number;
+  daily_unit?: string;
+  monthly_balance?: number;
+  monthly_unit?: string;
+  balance?: number;
+  unit?: string;
 }>({
   signIn: () => null,
   signOut: () => null,
@@ -24,6 +31,12 @@ const AuthContext = React.createContext<{
   phone_number: null,
   password: null,
   userId: 0,
+  daily_balance: 0,
+  daily_unit: 'kgCO2e',
+  monthly_balance: 0,
+  monthly_unit: 'kgCO2e',
+  balance: 0,
+  unit: 'kgCO2e',
 });
 
 // This hook can be used to access the user info.
@@ -45,6 +58,12 @@ export function SessionProvider(props: React.PropsWithChildren) {
   const [email, setEmail] = React.useState<string>('');
   const [phone_number, setPhoneNumber] = React.useState<string>('');
   const [password, setPassword] = React.useState<string>('');
+  const [daily_balance, setDailyBalance] = React.useState<number>(0);
+  const [daily_unit, setDailyUnit] = React.useState<string>('kgCO2e');
+  const [monthly_balance, setMonthlyBalance] = React.useState<number>(0);
+  const [monthly_unit, setMonthlyUnit] = React.useState<string>('kgCO2e');
+  const [balance, setBalance] = React.useState<number>(0);
+  const [unit, setUnit] = React.useState<string>('kgCO2e');
 
   // Set a timer to log out the user after the token expires
   useEffect(() => {
@@ -62,7 +81,8 @@ export function SessionProvider(props: React.PropsWithChildren) {
       }
     }
     getUser(token);
-  }, [token]);
+    getCarbonFootprintInfo(userId);
+  }, [token, userId]);
 
   const login = async (email: string, password: string) => {
     try {
@@ -164,6 +184,34 @@ export function SessionProvider(props: React.PropsWithChildren) {
       setPassword(user.password);
   }
 
+  const getCarbonFootprintInfo = async (id: number) => {
+    const url = process.env.EXPO_PUBLIC_AUTH_API_URL + '/users/' + id + '/carbon_footprint';
+    // Send the token as a parameter in the request
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'content-type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+    // Process the response
+    const data = await response.json();
+
+    const daily_balance = data.daily;
+    const daily_unit = data.daily_unit;
+    const monthly_balance = data.monthly;
+    const monthly_unit = data.monthly_unit;
+    const balance = data.total;
+    const unit = data.total_unit;
+    setDailyBalance(daily_balance);
+    setDailyUnit(daily_unit);
+    setMonthlyBalance(monthly_balance);
+    setMonthlyUnit(monthly_unit);
+    setBalance(balance);
+    setUnit(unit);
+  }
+
+
   const value = {
     signIn: login,
     signOut: logout,
@@ -174,7 +222,13 @@ export function SessionProvider(props: React.PropsWithChildren) {
     email,
     phone_number,
     password,
-    userId
+    userId,
+    daily_balance,
+    daily_unit,
+    monthly_balance,
+    monthly_unit,
+    balance,
+    unit,
   };
 
   return (

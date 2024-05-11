@@ -21,9 +21,7 @@ import styles from "@/styles/home";
 export default function HomePage() {
     const router = useRouter();
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
-    let balance = 'xxxxxx'; // Get from context later
-    let daily_balance = 'xxxxxx'; // Get from context later
+    const { daily_balance, daily_unit, balance, unit } = useSession();
 
     const { full_name, signOut } = useSession();
     // Sign out function
@@ -108,7 +106,7 @@ export default function HomePage() {
                 }}
             
             />
-            <Balance full_name={full_name} balance={balance} daily_balance={daily_balance} />
+            <Balance full_name={full_name} balance={balance} daily_balance={daily_balance} unit={unit} daily_unit={daily_unit} />
             <View style={styles.choicesContainer}>
                 <Choices />
             </View>
