@@ -25,6 +25,6 @@ export default function WelcomeLayout() {
 
   // This layout can be deferred because it's not the root layout.
   return (
-    <Slot />
+    <Redirect href="/home" />
   );
 }
