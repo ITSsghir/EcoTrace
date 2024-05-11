@@ -1,11 +1,9 @@
-# Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
+# Database data
+/db
 
 # dependencies
 node_modules/*
 .yarn/*
-
-
-.pnp.*
 
 # IDE
 .idea/
@@ -15,6 +13,8 @@ node_modules/*
 .expo/
 dist/
 web-build/
+
+.env.*
 
 # Native
 *.orig.*

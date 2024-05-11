@@ -1,0 +1,49 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "jsx": "react",
+    "baseUrl": ".",
+    "paths": {
+      "@/components/*": [
+        "src/components/*"
+      ],
+      "@constants/*": [
+        "src/constants/*"
+      ],
+      "@/*": [
+        "src/*"
+      ],
+      "@/hooks/*": [
+        "src/hooks/*"
+      ],
+      "@/navigation/*": [
+        "src/navigation/*"
+      ],
+      "@/routes/*": [
+        "src/app/*"
+      ],
+      "@/styles/*": [
+        "src/styles/*"
+      ],
+      "@/utils/*": [
+        "src/utils/*"
+      ],
+      "@/types/*": [
+        "src/types/*"
+      ],
+      "@/assets/*": [
+        "src/assets/*"
+      ],
+      "@/context/*": [
+        "src/app/context/*"
+      ],
+    },
+    "module": "commonjs", // or "esnext" if you're using ES modules
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx"
+  ]
+}

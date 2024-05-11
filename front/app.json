@@ -2,6 +2,7 @@
   "expo": {
     "name": "EcoTrace",
     "slug": "EcoTrace",
+    "scheme": "ecotrace",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -9,7 +10,7 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#00BF63"
+      "backgroundColor": "#ffffff"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -21,7 +22,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#00BF63"
+        "backgroundColor": "#ffffff"
       },
       "package": "com.EcoTrace"
     },
@@ -41,8 +42,8 @@
       "url": "https://u.expo.dev/3ea90502-1d83-4b66-bce7-3dae9fb713ad"
     },
     "plugins": [
-      "expo-router"
-    ],
-    "scheme": "ecotrace"
+      "expo-router",
+      "expo-secure-store"
+    ]
   }
 }
