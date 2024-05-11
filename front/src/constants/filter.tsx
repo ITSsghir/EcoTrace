@@ -14,6 +14,9 @@ export default function Filter({ onPress, title, color, active }) {
             height: 30,
             justifyContent: 'center',
             alignItems: 'center',
+            borderStyle: 'solid',
+            borderWidth: 1,
+            borderColor: color,
         },
     });
 
