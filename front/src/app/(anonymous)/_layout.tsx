@@ -2,6 +2,7 @@ import { Redirect, Slot, Stack, useRouter } from 'expo-router';
 import { useSession } from '../context/ctx';
 import React from 'react';
 import LoadingScreen from '@constants/loading';
+import { Header } from 'react-native/Libraries/NewAppScreen';
 
 export default function AnonymousLayout() {
   const {token, isLoading } = useSession();
@@ -14,7 +15,9 @@ export default function AnonymousLayout() {
 
   if (!token) {
     return (
-        <Stack />
+        <Stack>
+          <Stack.Screen name="welcome" options={{ headerShown: false }}/>
+        </Stack>
     );
   }
 
