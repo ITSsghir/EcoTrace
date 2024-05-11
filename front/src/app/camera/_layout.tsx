@@ -39,6 +39,22 @@ export default function CameraLayout() {
           );
         }
       }} />
+      <Stack.Screen name="[image]" options={{
+        headerTitle: 'Preview', headerShown: true,
+        headerStyle: {
+          backgroundColor: '#f0f0f0',
+        },
+        headerLeft: () => {
+          return (
+            <ScreenHeaderBtn 
+              iconUrl={icons.back} handlePress={() => {
+                  router.back();
+              }} 
+              dimension={30} 
+            />
+          );
+        }
+      }} />
     </Stack>
   );
 }
