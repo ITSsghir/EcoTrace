@@ -1,37 +1,25 @@
-import { Text, TouchableOpacity, StyleSheet } from "react-native";
-import React from "react";
+import React from 'react';
+import { Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 
-export default function Filter({onPress, active, title, color}) {
+
+const screenWidth = Dimensions.get('window').width;
+export default function Filter({ onPress, title, color, active }) {
     const filterStyles = StyleSheet.create({
         filter: {
-            backgroundColor: "#fff",
+            backgroundColor: active ? color : '#fff',
             borderRadius: 10 / 1.25,
-            color: color,
-            padding: 10,
+            padding: 0,
             margin: 5,
-            width: 100,
+            width: screenWidth * 0.2,
             height: 30,
-            justifyContent: "center",
-            alignItems: "center"
+            justifyContent: 'center',
+            alignItems: 'center',
         },
-        filterActive: {
-            backgroundColor: color,
-            borderRadius: 10 / 1.25,
-            color: "#fff",
-            padding: 10,
-            margin: 5,
-            width: 100,
-            height: 30,
-            justifyContent: "center",
-            alignItems: "center"
-        }
     });
-    
+
     return (
-        <TouchableOpacity onPress={onPress} style={active ? filterStyles.filterActive : filterStyles.filter}>
-            <Text style={active ? {color: "#fff"} : {color: color}}>{title}</Text>
+        <TouchableOpacity onPress={onPress} style={filterStyles.filter}>
+            <Text style={{ color: active ?  '#fff': color }}>{title}</Text>
         </TouchableOpacity>
     );
 }
-
-

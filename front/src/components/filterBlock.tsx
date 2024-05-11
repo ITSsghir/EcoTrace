@@ -1,38 +1,15 @@
-import Filter from "@constants/filter";
-import { SafeAreaView, ViewStyle } from "react-native";
-import React from "react";
+import React from 'react';
+import { ScrollView, View, StyleSheet } from 'react-native';
+import Filter from '@/constants/filter';
+import styles from '@/styles/filterBlock';
 
-export default function FilterBlock ({ filter, setFilter }) {
-
-    const styles = {
-        filterBlock: {
-            justifyContent: "center",
-            alignItems: "center",
-            flexDirection: "row",
-            margin: 10,
-        } as ViewStyle,
-    };
-
+export default function FilterBlock({ filterHistory, activeFilter }) {
     return (
-        <SafeAreaView style={styles.filterBlock}>
-            <Filter
-                onPress={() => setFilter("High")}
-                active={filter === "High"}
-                title="High"
-                color="#000"
-            />
-            <Filter
-                onPress={() => setFilter("Medium")}
-                active={filter === "Medium"}
-                title="Medium"
-                color="#00f"
-            />
-            <Filter
-                onPress={() => setFilter("Low")}
-                active={filter === "Low"}
-                title="Low"
-                color="#0f0"
-            />
-        </SafeAreaView>
+        <ScrollView horizontal={true} style={styles.filterBlock}>
+            <Filter onPress={() => filterHistory('All')} title="All" color="#000" active={activeFilter === 'All'} />
+            <Filter onPress={() => filterHistory('High')} title="High" color="#FF0000" active={activeFilter === 'High'} />
+            <Filter onPress={() => filterHistory('Medium')} title="Medium" color="#ff8000" active={activeFilter === 'Medium'} />
+            <Filter onPress={() => filterHistory('Low')} title="Low" color="#008000" active={activeFilter === 'Low'} />
+        </ScrollView>
     );
-};
+}

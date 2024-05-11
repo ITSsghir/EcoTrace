@@ -11,6 +11,9 @@ const styles = StyleSheet.create({
         padding: 10,
         width: screenWidth - 20
     },
+    historyContainer: {
+        flex: 1,
+    },
     homeContainer: {
         backgroundColor: "#fff",
         borderRadius: 10 / 1.25,
@@ -45,7 +48,13 @@ const styles = StyleSheet.create({
         borderColor: '#000000', 
         borderBottomWidth: 2, 
         paddingBottom: 10, 
-        marginTop: 5 }
+        marginTop: 5 
+    },
+    filterBlock: {
+        flexDirection: 'row',
+        paddingVertical: 10,
+        backgroundColor: '#f0f0f0',
+    },
 });
 
 export default styles;
