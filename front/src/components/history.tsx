@@ -10,7 +10,7 @@ export default function History({data}) {
     const renderItem = ({ item }) => (
         <View style={{ flex: 1, justifyContent: 'space-between', margin: 20, borderColor: '#000000', borderBottomWidth: 2, paddingBottom: 10, marginTop: 5 }}>
             <Text style={styles.subTitle}>{item.title}</Text>
-            <Text style={styles.subSubTitle}>{item.carbon_footprint}</Text>
+            <Text style={styles.subSubTitle}>{item.carbon_footprint + ' ' + item.unit}</Text>
             <Text style={styles.subSubTitle}>{item.method}</Text>
         </View>
     );
