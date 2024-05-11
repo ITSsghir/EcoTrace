@@ -300,6 +300,7 @@ async function updateCarbonFootprint (id, added) {
 // Export the functions
 module.exports = {
     initDatabase,
+    getUser,
     createUser,
     checkLogin,
     updateUserInfo,

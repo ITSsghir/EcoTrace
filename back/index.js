@@ -22,7 +22,7 @@ const bodyParser = require('body-parser');
 const secretkey = process.env.SECRET_KEY;
 
 // Import modules
-const { initDatabase, createUser, checkLogin, getCarbonFootprint, updateCarbonFootprint, updateUserInfo } = require('./db.js');
+const { initDatabase, createUser, checkLogin, getCarbonFootprint, updateCarbonFootprint, updateUserInfon, getUser } = require('./db.js');
 
 app.use(cookieParser());
 app.use(bodyParser.json({ limit: '10mb' }));
@@ -130,6 +130,24 @@ app.get('/logout', verifyToken, (req, res) => {
     console.log('Logout successful');
     const response = { message: 'Logout successful' };
     res.status(200).send('Logout successful');
+});
+
+app.get('/users/:token', verifyToken, (req, res) => {
+    const { token } = req.params;
+    const decoded = jwt.verify(token, secretkey);
+    const { email } = decoded;
+    console.log('User info requested');
+    getUser(email)
+        .then((user) => {
+            const response = { message: 'User info retrieved', user };
+            res.status(200).send(response);
+        })
+        .catch((err) => {
+            console.error('Error getting user info:', err.message);
+            const response = { message: 'Error getting user info: ' + err.message };
+            res.status(500).send(response);
+        }
+    );
 });
 
 // Get the carbon footprint of the user by id
