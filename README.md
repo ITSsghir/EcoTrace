@@ -16,8 +16,12 @@ But first, let's set up the project.
 
 - [Git](https://git-scm.com/downloads)
 - [Node.js](https://nodejs.org/en/download/), Better to use the LTS version and install it via NVM Windows.
+- [Yarn](https://yarnpkg.com/getting-started/install)
+- [Winget](https://docs.microsoft.com/en-us/windows/package-manager/winget/)
+- [WSL2](https://docs.microsoft.com/en-us/windows/wsl/install)
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 - [Android Studio](https://developer.android.com/studio) or [Xcode](https://developer.apple.com/xcode/)
+- [Expo CLI](https://docs.expo.dev/get-started/installation/) (Optional)
 - [gcloud CLI](https://cloud.google.com/sdk/docs/install) (for the backend Google API)
 
 ### Prepare the environment
@@ -83,6 +87,15 @@ But first, let's set up the project.
         > corepack enable
         > yarn set version latest
         > ```
+
+    - Install Expo CLI globally (Optional, we're using `yarn expo` instead of `expo` anyway).
+
+        ```bash
+        # It doesn't matter if you use npm or yarn to install it, it will work with both.
+        yarn global add expo-cli
+        # Or
+        npm install -g expo-cli
+        ```
 
     - Install gcloud CLI for the backend Google API.
 
