@@ -19,6 +19,7 @@ const AuthContext = React.createContext<{
   monthly_unit?: string;
   balance?: number;
   unit?: string;
+  history?: string[];
 }>({
   signIn: () => null,
   signOut: () => null,
@@ -36,6 +37,7 @@ const AuthContext = React.createContext<{
   monthly_unit: 'kgCO2e',
   balance: 0,
   unit: 'kgCO2e',
+  history: [],
 });
 
 // This hook can be used to access the user info.
@@ -63,6 +65,8 @@ export function SessionProvider(props: React.PropsWithChildren) {
   const [monthly_unit, setMonthlyUnit] = React.useState<string>('kgCO2e');
   const [balance, setBalance] = React.useState<number>(0);
   const [unit, setUnit] = React.useState<string>('kgCO2e');
+
+  const [history, setHistory] = React.useState<string[]>([]);
 
   // Set a timer to log out the user after the token expires
   useEffect(() => {
@@ -257,6 +261,7 @@ export function SessionProvider(props: React.PropsWithChildren) {
     monthly_unit,
     balance,
     unit,
+    history,
   };
 
   return (
