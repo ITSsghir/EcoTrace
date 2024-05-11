@@ -229,17 +229,10 @@ app.post('/predict', async (req, res) => {
     }
 });
 
-app.get('/verify/:token', verifyToken, (req, res) => {
-    // Verify the token in the cookies and compare it with the token in the URL
-    const { token } = req.params;
-    const current_token = req.cookies.token;
-    if (token === current_token) {
-        const response = { message: 'Token verified', success: true };
-        res.status(200).send(response);
-    } else {
-        const response = { message: 'Token not verified', success: false };
-        res.status(403).send(response);
-    }
+app.get('/verify', verifyToken, (req, res) => {
+    // Verify the token
+    const response = { message: 'Token verified' };
+    res.status(200).send(response);
 });
 
 // Run the server

@@ -139,7 +139,7 @@ export function SessionProvider(props: React.PropsWithChildren) {
     const response = await fetch(url, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
         full_name: full_name,
@@ -179,7 +179,9 @@ export function SessionProvider(props: React.PropsWithChildren) {
         },
       });
       // Process the response
-      const data = await response.json();
+      const data = await response.json().catch((error) => {
+        console.error('Error:', error);
+      });
 
       const user = data.user;
       setUserId(user.id);
@@ -200,7 +202,9 @@ export function SessionProvider(props: React.PropsWithChildren) {
       },
     });
     // Process the response
-    const data = await response.json();
+    const data = await response.json().catch((error) => {
+      console.error('Error:', error);
+    });
 
     const daily_balance = data.daily;
     const daily_unit = data.daily_unit;
@@ -217,7 +221,7 @@ export function SessionProvider(props: React.PropsWithChildren) {
   }
 
   const verifyToken = async (token: string) => {
-    const url = process.env.EXPO_PUBLIC_AUTH_API_URL + '/verify' + token;
+    const url = process.env.EXPO_PUBLIC_AUTH_API_URL + '/verify';
     const response = await fetch(url, {
       method: 'GET',
       headers: {
@@ -225,9 +229,15 @@ export function SessionProvider(props: React.PropsWithChildren) {
         'Authorization': `Bearer ${token}`,
       },
     });
-    const data = await response.json();
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    const data = await response.json().catch(error => {
+      console.error('Error parsing JSON:', error);
+      throw error; // Rethrow the error to propagate it
+    });
     console.log(data.message);
-    return data.success;
+    return true ? data.message === 'Token verified' : false;
   }
 
   const value = {
