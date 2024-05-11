@@ -76,8 +76,15 @@ export function SessionProvider(props: React.PropsWithChildren) {
         setToken(null);
       } else {
         console.log("Valid token");
-        getUser(token);
-        getCarbonFootprintInfo(userId);
+        const verification = verifyToken(token);
+        if (verification) {
+          getUser(token);
+          getCarbonFootprintInfo(userId);
+        }
+        else {
+          console.log("Token invalid.");
+          setToken(null);
+        }
       }
     }
   }, [token, userId]);
@@ -209,6 +216,19 @@ export function SessionProvider(props: React.PropsWithChildren) {
     setUnit(unit);
   }
 
+  const verifyToken = async (token: string) => {
+    const url = process.env.EXPO_PUBLIC_AUTH_API_URL + '/verify' + token;
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'content-type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+    const data = await response.json();
+    console.log(data.message);
+    return data.success;
+  }
 
   const value = {
     signIn: login,

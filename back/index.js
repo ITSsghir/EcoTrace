@@ -47,6 +47,16 @@ const verifyToken = (req, res, next) => {
     return next();
 };
 
+const verifyJWTToken = (token) => {
+    try {
+        const decoded = jwt.verify(token, secretkey);
+        return decoded;
+    } catch (err) {
+        console.error('Invalid token:', err.message);
+        return null;
+    }
+}
+
 // Register endpoint
 app.post('/register', async (req, res) => {
     if (!req.body) {
@@ -216,6 +226,19 @@ app.post('/predict', async (req, res) => {
         console.error('Error predicting:', err.message);
         const response = { message: 'Error predicting: ' + err };
         res.status(500).send(response);
+    }
+});
+
+app.get('/verify/:token', verifyToken, (req, res) => {
+    // Verify the token in the cookies and compare it with the token in the URL
+    const { token } = req.params;
+    const current_token = req.cookies.token;
+    if (token === current_token) {
+        const response = { message: 'Token verified', success: true };
+        res.status(200).send(response);
+    } else {
+        const response = { message: 'Token not verified', success: false };
+        res.status(403).send(response);
     }
 });
 
