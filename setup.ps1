@@ -32,7 +32,7 @@ if (-not (Get-Command nvm -ErrorAction SilentlyContinue)) {
 # Install node using nvm (lts)
 # Check the current node version
 $nodeVersion = node --version
-$latestNodeVersionLTS = 'v20.12.2'
+$latestNodeVersionLTS = 'v20.13.0'
 
 # If it doesn't includes the node version, install it
 #
