@@ -14,15 +14,19 @@ import {
     ScrollView, 
     LogBox
 } from "react-native";
-import Balance, { balanceContainerHeight } from "@/components/balance";
+import Balance from "@/components/balance";
 import icons from '@/constants/icons';
 import ScreenHeaderBtn from "@/components/ScreenHeaderBtn";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSession } from "@/app/context/ctx";
-import Choices, { choicesContainerHeight } from "@/components/choices";
+import Choices from "@/components/choices";
+
+// Get the screen width
+const screenWidth = Dimensions.get('window').width;
 
 export default function HomePage() {
     const router = useRouter();
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     let full_name = 'Demo user'; // Get from context later
     let balance = 'xxxxxx'; // Get from context later
@@ -35,6 +39,20 @@ export default function HomePage() {
         router.push('/');
     }
 
+    // Toggle sidebar
+    const toggleSidebar = () => {
+        setIsSidebarOpen(!isSidebarOpen);
+    }
+
+    // Sidebar content
+    const Sidebar = (
+        <View style={stylesHome.sidebar}>
+            <TouchableOpacity onPress={toggleSidebar}>
+                <Text>Close Sidebar</Text>
+            </TouchableOpacity>
+            {/* Add more sidebar items here */}
+        </View>
+    );
 
     // Camera route will pop up a modal with two options: take a picture or choose from gallery
     const choices = [
@@ -50,6 +68,7 @@ export default function HomePage() {
 
     return (
         <SafeAreaView style={stylesHome.container}>
+            {isSidebarOpen && Sidebar}
             <Stack.Screen
                 options={{
                     headerStyle: {
@@ -63,7 +82,7 @@ export default function HomePage() {
                             iconUrl={icons.menu} 
                             dimension={40}
                             handlePress={() => {
-                                handleSignOut()
+                                toggleSidebar()
                             }}
                         />
                     ),
@@ -144,14 +163,32 @@ const stylesHome = StyleSheet.create({
     title: {
         fontSize: 24,
         fontWeight: "bold",
-    }
+    },
+    header: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: '#ccc',
+    },
+    content: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    sidebar: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        bottom: 0,
+        width: 4/6 * screenWidth,
+        backgroundColor: '#fff',
+        zIndex: 1,
+        padding: 20,
+    },
 });
-
-const screenWidth = Dimensions.get('window').width;
-// Get the height of the choices component
-const balanceContainerHeightNet = balanceContainerHeight - 20;
-const choicesContainerHeightNet = choicesContainerHeight - 20;
-const historyContainerHeightNet = screenWidth - balanceContainerHeightNet - choicesContainerHeightNet;
 
 const stylesHistory = StyleSheet.create({
     container: {
