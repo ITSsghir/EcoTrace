@@ -14,13 +14,13 @@ But first, let's set up the project.
 
 ### Prerequisites
 
-- [Git](https://git-scm.com/downloads)
+- [Git](https://git-scm.com/downloads) (Mandatory for the project)
 - [Node.js](https://nodejs.org/en/download/), Better to use the LTS version and install it via NVM Windows.
-- [Yarn](https://yarnpkg.com/getting-started/install)
-- [Winget](https://docs.microsoft.com/en-us/windows/package-manager/winget/)
-- [WSL2](https://docs.microsoft.com/en-us/windows/wsl/install)
-- [Docker Desktop](https://www.docker.com/products/docker-desktop)
-- [Android Studio](https://developer.android.com/studio) or [Xcode](https://developer.apple.com/xcode/)
+- [Yarn](https://yarnpkg.com/getting-started/install) (Mandatory for the project)
+- [Winget](https://docs.microsoft.com/en-us/windows/package-manager/winget/) (Required for the setup script)
+- [WSL2](https://docs.microsoft.com/en-us/windows/wsl/install) (Required for Docker Desktop)
+- [Docker Desktop](https://www.docker.com/products/docker-desktop) (Required for the backend)
+- [Android Studio](https://developer.android.com/studio) or [Xcode](https://developer.apple.com/xcode/) (Optional, you can use Expo Go on your device instead of an emulator, but it's recommended to have an emulator for testing purposes)
 - [Expo CLI](https://docs.expo.dev/get-started/installation/) (Optional)
 - [gcloud CLI](https://cloud.google.com/sdk/docs/install) (for the backend Google API)
 - [PowerShell 7](https://learn.microsoft.com/fr-fr/powershell/scripting/install/installing-powershell-on-windows) (Optional but recommended for running the scripts)
