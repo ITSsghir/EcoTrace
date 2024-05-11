@@ -1,22 +1,23 @@
-import { Link, Stack } from "expo-router";
-import { Dimensions, Pressable, Text, View } from "react-native";
+import { Link } from "expo-router";
+import { Pressable, Text, View } from "react-native";
 import React from "react";
 import { Background } from "@/components/background";
+import styles from "@/styles/welcome";
 
 export default function Welcome() {
     return (
             <Background>
-                <View style={welcomeStyles.bigContainer}>
-                    <Text style={welcomeStyles.title}>Welcome to the app!</Text>
-                    <View style={welcomeStyles.container}>
-                        <Link href="/signin" style={welcomeStyles.btn}>
+                <View style={styles.bigContainer}>
+                    <Text style={styles.title}>Welcome to the app!</Text>
+                    <View style={styles.container}>
+                        <Link href="/signin" style={styles.btn}>
                             <Pressable>
-                                <Text style={welcomeStyles.btnText}>Sign in</Text>
+                                <Text style={styles.btnText}>Sign in</Text>
                             </Pressable>
                         </Link>
-                        <Link href="/signup" style={welcomeStyles.btn}>
+                        <Link href="/signup" style={styles.btn}>
                             <Pressable>
-                                <Text style={welcomeStyles.btnText}>Sign up</Text>
+                                <Text style={styles.btnText}>Sign up</Text>
                             </Pressable>
                         </Link>
                     </View>
@@ -24,36 +25,3 @@ export default function Welcome() {
             </Background>
     );
 }
-
-
-const width = Dimensions.get('window').width;
-
-const welcomeStyles = {
-    container: {
-        flex: 1,
-    },
-    title: {
-        fontSize: 24,
-        marginBottom: 16,
-        marginRight: width * 0.1,
-        marginLeft: width * 0.1,
-    },
-    bigContainer: {
-        flex: 1,
-        marginTop: width /2
-    },
-    btn:{
-        backgroundColor: 'blue',
-        color: 'white',
-        padding: 10,
-        marginRight: width * 0.1,
-        marginLeft: width * 0.1,
-        marginTop: 10,
-        marginBottom: 10,
-        width: width * 0.8,
-        borderRadius: 5,
-    },
-    btnText: {
-        color: 'white'
-    }
-};

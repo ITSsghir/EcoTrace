@@ -1,22 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Dimensions, SafeAreaView } from 'react-native';
+import React from 'react';
+import { Text, View, TouchableOpacity, SafeAreaView } from 'react-native';
 import { Camera, CameraType } from 'expo-camera/legacy';
 import { useRouter } from 'expo-router';
+import styles from '@/styles/camera';
 
-export default function CameraView({ children }: { children?: React.ReactNode }) {
+export default function CameraView() {
 
-  // Get the API key from the environment variables
-  const apiKey = process.env.EXPO_PUBLIC_API_KEY;
-  const apiUrl = process.env.EXPO_PUBLIC_API_URL + apiKey;
-
-  const [hasCameraPermission, setHasCameraPermission] = useState<boolean | null>(null);
-  const [camera, setCamera] = useState<Camera | null>(null);
-  const [image, setImage] = useState<string | null>(null);
-  const [type, setType] = useState<CameraType>(CameraType.back);
+  const [hasCameraPermission, setHasCameraPermission] = React.useState<boolean | null>(null);
+  const [camera, setCamera] = React.useState<Camera | null>(null);
+  const [image, setImage] = React.useState<string | null>(null);
+  const [type, setType] = React.useState<CameraType>(CameraType.back);
 
   const router = useRouter();
 
-  useEffect(() => {
+  React.useEffect(() => {
     (async () => {
       const cameraStatus = await Camera.requestCameraPermissionsAsync();
       setHasCameraPermission(cameraStatus.status === 'granted');
@@ -39,14 +36,14 @@ export default function CameraView({ children }: { children?: React.ReactNode })
 
   return ( 
     <SafeAreaView style={{ flex: 1 }}>
-      <View style={styles.cameraContainer}>
+      <View style={styles.CameraStyles.cameraContainer}>
         <Camera
           ref={(ref) => setCamera(ref as Camera)}
-          style={styles.fixedRatio}
+          style={styles.CameraStyles.fixedRatio}
           type={type === 'back' ? CameraType.back : CameraType.front}
         />
       </View>
-      <View style={styles.cameraTriggers}>
+      <View style={styles.CameraStyles.cameraTriggers}>
         <TouchableOpacity style={{ backgroundColor: 'blue', padding: 10, borderRadius: 5, alignContent: 'center', justifyContent: 'center', alignItems: 'center', borderColor: 'black', borderWidth: 1, margin: 10}}
           onPress={() => {
             setType(
@@ -63,23 +60,3 @@ export default function CameraView({ children }: { children?: React.ReactNode })
     </SafeAreaView>
   );
 }
-
-const height = Dimensions.get('window').height;
-const cameraHeight = height * 0.7;
-const styles = StyleSheet.create({
-  cameraContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    height: cameraHeight,
-  },
-  fixedRatio: {
-    flex: 1,
-    aspectRatio: 3 / 4
-  },
-  cameraTriggers: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: '150%',
-  }
-});

@@ -5,13 +5,14 @@ import {
     StyleSheet,
     Dimensions
 } from 'react-native';
+import styles from '@/styles/balance';
 
 // This component is a subcomponent of the Welcome component, it will contain the monthly carbon footprint balance of the user and the daily one as well
 export default function Balance({ balance, daily_balance, full_name }) {
 
-    let FullBalance: string = balance + ' kg CO2'
+    let FullBalance: string = balance + ' kg CO2e'
 
-    let DailyBalance : string = daily_balance + ' kg CO2'
+    let DailyBalance : string = daily_balance + ' kg CO2e'
 
     return (
         <View style={ styles.card }>
@@ -22,45 +23,3 @@ export default function Balance({ balance, daily_balance, full_name }) {
         </View>
     )
 }
-
-// Get the screen width
-const screenWidth = Dimensions.get('window').width;
-const cardWidth = screenWidth * 0.9;
-// Font sizes based on the screen width
-const messageFontSize = screenWidth < 400 ? 16 : 20;
-const BigMessageFontSize = screenWidth < 400 ? 18 : 24;
-const MonthlyFontSize = screenWidth < 400 ? 20 : 30;
-const DailyFontSize = screenWidth < 400 ? 10 : 20;
-
-// Create a stylesheet for the balance component (center the text, make the title large, and the subtitle medium, and the message small)
-const styles = StyleSheet.create({
-    card: {
-        backgroundColor: '#ffffff',
-        padding: 20,
-        margin: 10,
-        borderRadius: 10,
-        width: cardWidth,
-        height: 145,
-    },
-    message: {
-        fontSize: messageFontSize,
-        fontWeight: 'bold',
-        textAlign: 'left'
-    },
-    BigMessage: {
-        fontSize: BigMessageFontSize,
-        textAlign: 'right',
-        fontWeight: 'normal'
-    },
-    Monthly: {
-        fontSize: MonthlyFontSize,
-        textAlign: 'right',
-        fontWeight: 'bold'
-    },
-    Daily: {
-        fontSize: DailyFontSize,
-        textAlign: 'right'
-    }
-});
-
-export const balanceContainerHeight = styles.card.height;

@@ -6,9 +6,7 @@ import {
     View, 
     Text, 
     TouchableOpacity,
-    StyleSheet, 
-    SafeAreaView, 
-    Dimensions,
+    SafeAreaView,
     LogBox
 } from "react-native";
 import Balance from "@/components/balance";
@@ -18,10 +16,7 @@ import React, { useEffect, useState } from "react";
 import { useSession } from "@/app/context/ctx";
 import Choices from "@/components/choices";
 import History from "@/components/history";
-
-
-// Get the screen width
-const screenWidth = Dimensions.get('window').width;
+import styles from "@/styles/home";
 
 export default function HomePage() {
     const router = useRouter();
@@ -49,7 +44,7 @@ export default function HomePage() {
 
     // Sidebar content
     const Sidebar = (
-        <View style={stylesHome.sidebar}>
+        <View style={styles.sidebar}>
             <TouchableOpacity onPress={toggleSidebar}>
                 <Text>Close Sidebar</Text>
             </TouchableOpacity>
@@ -58,18 +53,18 @@ export default function HomePage() {
     );
 
     let history = [
-        { id: '1', title: 'Activity 1', carbon_footprint: 'xxxxxxCO2', method: 'Camera' },
-        { id: '2', title: 'Activity 2', carbon_footprint: 'xxxxxxCO2', method: 'Microphone' },
-        { id: '3', title: 'Activity 3', carbon_footprint: 'xxxxxxCO2', method: 'Vehicle' },
-        { id: '4', title: 'Activity 4', carbon_footprint: 'xxxxxxCO2', method: 'Destination' },
-        { id: '5', title: 'Activity 5', carbon_footprint: 'xxxxxxCO2', method: 'Camera' },
-        { id: '6', title: 'Activity 6', carbon_footprint: 'xxxxxxCO2', method: 'Microphone' },
-        { id: '7', title: 'Activity 7', carbon_footprint: 'xxxxxxCO2', method: 'Vehicle' },
-        { id: '8', title: 'Activity 8', carbon_footprint: 'xxxxxxCO2', method: 'Destination' },
-        { id: '9', title: 'Activity 9', carbon_footprint: 'xxxxxxCO2', method: 'Camera' },
-        { id: '10', title: 'Activity 10', carbon_footprint: 'xxxxxxCO2', method: 'Microphone' },
-        { id: '11', title: 'Activity 11', carbon_footprint: 'xxxxxxCO2', method: 'Vehicle' },
-        { id: '12', title: 'Activity 12', carbon_footprint: 'xxxxxxCO2', method: 'Destination' }
+        { id: '1', title: 'Activity 1', carbon_footprint: 'xxxxxxCO2e', method: 'Camera' },
+        { id: '2', title: 'Activity 2', carbon_footprint: 'xxxxxxCO2e', method: 'Microphone' },
+        { id: '3', title: 'Activity 3', carbon_footprint: 'xxxxxxCO2e', method: 'Vehicle' },
+        { id: '4', title: 'Activity 4', carbon_footprint: 'xxxxxxCO2e', method: 'Destination' },
+        { id: '5', title: 'Activity 5', carbon_footprint: 'xxxxxxCO2e', method: 'Camera' },
+        { id: '6', title: 'Activity 6', carbon_footprint: 'xxxxxxCO2e', method: 'Microphone' },
+        { id: '7', title: 'Activity 7', carbon_footprint: 'xxxxxxCO2e', method: 'Vehicle' },
+        { id: '8', title: 'Activity 8', carbon_footprint: 'xxxxxxCO2e', method: 'Destination' },
+        { id: '9', title: 'Activity 9', carbon_footprint: 'xxxxxxCO2e', method: 'Camera' },
+        { id: '10', title: 'Activity 10', carbon_footprint: 'xxxxxxCO2e', method: 'Microphone' },
+        { id: '11', title: 'Activity 11', carbon_footprint: 'xxxxxxCO2e', method: 'Vehicle' },
+        { id: '12', title: 'Activity 12', carbon_footprint: 'xxxxxxCO2e', method: 'Destination' }
     ];
 
     useEffect(() => {
@@ -77,10 +72,10 @@ export default function HomePage() {
       }, [])
 
     return (
-        <SafeAreaView style={stylesHome.container}>
+        <SafeAreaView style={styles.container}>
             {isSidebarOpen && (
                 <>
-                    <View style={stylesHome.overlay} onTouchStart={closeSidebar} />
+                    <View style={styles.overlay} onTouchStart={closeSidebar} />
                     {Sidebar}
                 </>
             )}
@@ -114,52 +109,10 @@ export default function HomePage() {
             
             />
             <Balance full_name={full_name} balance={balance} daily_balance={daily_balance} />
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <View style={styles.choicesContainer}>
                 <Choices />
             </View>
             <History data={history} />
         </SafeAreaView>
     );
 };
-
-const stylesHome = StyleSheet.create({
-    container: {
-        alignItems: "center",
-        justifyContent: "center",
-        flex: 1,
-        backgroundColor: '#f0f0f0',
-    },
-    title: {
-        fontSize: 24,
-        fontWeight: "bold",
-    },
-    header: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        paddingHorizontal: 20,
-        paddingVertical: 10,
-        borderBottomWidth: 1,
-        borderBottomColor: '#ccc',
-    },
-    content: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    sidebar: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        bottom: 0,
-        width: 4/6 * screenWidth,
-        backgroundColor: '#fff',
-        zIndex: 6,
-        padding: 20,
-    },
-    overlay: {
-        ...StyleSheet.absoluteFillObject,
-        backgroundColor: 'rgba(0, 0, 0, 0.5)', // Adjust opacity as needed
-        zIndex: 5, // Render behind the sidebar
-    },
-});

@@ -1,7 +1,8 @@
 import { useLocalSearchParams, useRouter } from "expo-router";
 import React, { useEffect } from "react";
-import { Dimensions, Image, SafeAreaView, Text, TouchableOpacity, View } from "react-native";
+import { Image, SafeAreaView, Text, TouchableOpacity, View } from "react-native";
 import * as FileSystem from 'expo-file-system';
+import styles from "@/styles/camera";
 
 export default function Preview() {
 
@@ -136,9 +137,9 @@ export default function Preview() {
       }
 
     return (
-        <SafeAreaView style={styles.container}>
-            <View style={styles.Imagecontainer}>
-                <Image source={{ uri: image }} style={styles.imagePreview} />
+        <SafeAreaView style={styles.PreviewStyles.container}>
+            <View style={styles.PreviewStyles.Imagecontainer}>
+                <Image source={{ uri: image }} style={styles.PreviewStyles.imagePreview} />
                 <TouchableOpacity style={{ backgroundColor: 'blue', padding: 10, borderRadius: 5, alignContent: 'center', justifyContent: 'center', alignItems: 'center', borderColor: 'black', borderWidth: 1, margin: 10}}
                     onPress={() => {
                       handleGetPrediction();
@@ -148,47 +149,9 @@ export default function Preview() {
                 </TouchableOpacity>
             </View>
             <View style={{ padding: 10 }}>
-                <Text style={styles.subTitle}>Predictions:</Text>
+                <Text style={styles.PreviewStyles.subTitle}>Predictions:</Text>
                 <Text>{labels}</Text>
             </View>
         </SafeAreaView>
     );
 }
-
-const width = Dimensions.get('window').width;
-const height = Dimensions.get('window').height;
-const cameraHeight = height * 0.7;
-const styles = {
-    container: {
-        flex: 1,
-    },
-    Imagecontainer : {
-        flex: 1,
-        height: cameraHeight,
-    },
-    button: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: 10,
-        margin: 10,
-        borderRadius: 10,
-        backgroundColor: '#f0f0f0',
-    },
-    fixedRatio: {
-        flex: 1,
-        aspectRatio: 3 / 4,
-    },
-    icon: {
-        width: 30,
-        height: 30,
-        marginRight: 10,
-    },
-    subTitle: {
-        fontSize: 12
-    },
-    imagePreview: {
-        width: width,
-        height: height * 0.7,
-    }
-};

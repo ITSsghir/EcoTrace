@@ -1,15 +1,16 @@
 // Register page for anonymous users to create an account (react-native)
 
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 import { Stack, useRouter } from 'expo-router';
-import { useSession } from '../context/ctx';
+import { useSession } from '@/context/ctx';
+import styles from '@/styles/auth';
 
 const Signup = () => {
-    const [fullName, setFullName] = useState('');
-    const [email, setEmail] = useState('');
-    const [phoneNumber, setPhoneNumber] = useState('');
-    const [password, setPassword] = useState('');
+    const [fullName, setFullName] = React.useState('');
+    const [email, setEmail] = React.useState('');
+    const [phoneNumber, setPhoneNumber] = React.useState('');
+    const [password, setPassword] = React.useState('');
 
     const router = useRouter();
 
@@ -19,8 +20,6 @@ const Signup = () => {
         await signUp(fullName, email, phoneNumber, password);
         if (token) {
             router.replace('/home');
-        } else {
-            router.replace('/');
         }
     }
 
@@ -55,30 +54,10 @@ const Signup = () => {
             />
             <Button
                 title="Sign up"
-                onPress={() => {
-                    handleSignUp(); // Wait for signUp to complete
-                }}
+                onPress={() => { handleSignUp() }}
             />
         </View>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    title: {
-        fontSize: 24,
-        marginBottom: 16,
-    },
-    input: {
-        width: '80%',
-        padding: 8,
-        marginBottom: 16,
-        borderWidth: 1,
-    },
-});
 
 export default Signup;

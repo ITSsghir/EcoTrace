@@ -1,15 +1,16 @@
 // SignIn Page
 
-import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import React from 'react';
+import { View, Text, TextInput, Button } from 'react-native';
 
 import { Stack, useRouter } from 'expo-router';
-import { useSession } from '../context/ctx';
+import styles from '@/styles/auth';
+import { useSession } from '@/context/ctx';
 
 
 const Signin = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [email, setEmail] = React.useState('');
+    const [password, setPassword] = React.useState('');
     const { token } = useSession();
 
     const router = useRouter();
@@ -20,8 +21,6 @@ const Signin = () => {
         await signIn(email, password);
         if (token) {
             router.replace('/home');
-        } else {
-            router.replace('/signin');
         }
     };
 
@@ -44,36 +43,10 @@ const Signin = () => {
             />
             <Button
                 title="Sign in"
-                onPress={() => {
-                    handleSignIn(); // Wait for signIn to complete
-                    if (token) {
-                        router.replace('/home');
-                    } else {
-                        router.replace('/signin');
-                    }
-                }}
+                onPress={() => { handleSignIn() }}
             />
         </View>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    title: {
-        fontSize: 24,
-        marginBottom: 16,
-    },
-    input: {
-        width: '80%',
-        height: 40,
-        margin: 12,
-        borderWidth: 1,
-        padding: 10,
-    },
-});
 
 export default Signin;

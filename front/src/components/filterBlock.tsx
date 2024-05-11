@@ -10,7 +10,7 @@ export default function FilterBlock ({ filter, setFilter }) {
             alignItems: "center",
             flexDirection: "row",
             margin: 10,
-        } as ViewStyle
+        } as ViewStyle,
     };
 
     return (

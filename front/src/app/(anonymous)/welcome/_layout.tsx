@@ -1,8 +1,7 @@
 import { useSession } from "@/app/context/ctx";
-import { Slot, Stack } from "expo-router";
+import { Slot } from "expo-router";
 import React from "react";
 import { Redirect } from "expo-router";
-import { Text } from "react-native";
 import LoadingScreen from "@constants/loading";
 
 export default function WelcomeLayout() {
