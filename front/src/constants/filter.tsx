@@ -26,6 +26,7 @@ export default function Filter({onPress, active, title, color}) {
             alignItems: "center"
         }
     });
+    
     return (
         <TouchableOpacity onPress={onPress} style={active ? filterStyles.filterActive : filterStyles.filter}>
             <Text style={active ? {color: "#fff"} : {color: color}}>{title}</Text>
