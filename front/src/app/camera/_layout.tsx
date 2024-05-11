@@ -24,7 +24,10 @@ export default function CameraLayout() {
   return (
     <Stack >
       <Stack.Screen name="index" options={{
-        headerTitle: 'Camera', headerShown: true,
+        headerTitle: ' Camera', headerShown: true,
+        headerStyle: {
+          backgroundColor: '#f0f0f0',
+        },
         headerLeft: () => {
           return (
             <ScreenHeaderBtn 
