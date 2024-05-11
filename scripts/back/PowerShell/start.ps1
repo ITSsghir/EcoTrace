@@ -5,7 +5,7 @@
 Set-Location .\back
 
 # Run the docker-compose file
-docker-compose up -d
+docker-compose up -d --build -V
 
 # Change the directory to the project root
 Set-Location .. 
