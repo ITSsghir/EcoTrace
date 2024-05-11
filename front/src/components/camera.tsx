@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Dimensions } from 'react-native';
-import { Camera, CameraType } from 'expo-camera';
+import { Camera, CameraType } from 'expo-camera/legacy';
 import * as FileSystem from 'expo-file-system';
 import { router, useRouter } from 'expo-router';
 
