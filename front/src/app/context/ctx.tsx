@@ -68,7 +68,6 @@ export function SessionProvider(props: React.PropsWithChildren) {
   useEffect(() => {
     if (token) {
       let decodedToken = jwtDecode<JwtPayload>(token);
-      console.log("Decoded Token", decodedToken);
       let currentDate = new Date();
 
       // JWT exp is in seconds
@@ -77,10 +76,10 @@ export function SessionProvider(props: React.PropsWithChildren) {
         setToken(null);
       } else {
         console.log("Valid token");
+        getUser(token);
+        getCarbonFootprintInfo(userId);
       }
     }
-    getUser(token);
-    getCarbonFootprintInfo(userId);
   }, [token, userId]);
 
   const login = async (email: string, password: string) => {
