@@ -18,6 +18,7 @@ But first, let's set up the project.
 - [Node.js](https://nodejs.org/en/download/), Better to use the LTS version and install it via NVM Windows.
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 - [Android Studio](https://developer.android.com/studio) or [Xcode](https://developer.apple.com/xcode/)
+- [gcloud CLI](https://cloud.google.com/sdk/docs/install) (for the backend Google API)
 
 ### Prepare the environment
 
@@ -64,13 +65,13 @@ But first, let's set up the project.
         > $env:Path += ";$env:USERPROFILE\.nvm"
         > ```
 
-        Setup yarn as the default package manager.
+    - Setup yarn as the default package manager.
 
         ```bash
         npm install -g yarn
         ```
 
-        Update yarn to the latest stable version.
+    - Update yarn to the latest stable version.
 
         ```bash
         yarn set version stable
@@ -82,6 +83,14 @@ But first, let's set up the project.
         > corepack enable
         > yarn set version latest
         > ```
+
+    - Install gcloud CLI for the backend Google API.
+
+        ```bash
+        gcloud init
+        ```
+
+        > We'll provide the necessary credentials for the backend later.
 
 3. Install the project dependencies in the root directory, front, and back.
 
