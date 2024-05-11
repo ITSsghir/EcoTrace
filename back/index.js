@@ -22,7 +22,7 @@ const bodyParser = require('body-parser');
 const secretkey = process.env.SECRET_KEY;
 
 // Import modules
-const { initDatabase, createUser, checkLogin, getCarbonFootprint, updateCarbonFootprint, updateUserInfon, getUser } = require('./db.js');
+const { initDatabase, createUser, checkLogin, getCarbonFootprintAll, updateCarbonFootprint, updateUserInfon, getUser } = require('./db.js');
 
 app.use(cookieParser());
 app.use(bodyParser.json({ limit: '10mb' }));
@@ -154,12 +154,29 @@ app.get('/users/:token', verifyToken, (req, res) => {
 app.get('/users/:id/carbon_footprint', verifyToken, (req, res) => {
     const { id } = req.params;
     // Get the carbon footprint of the user
-    const daily = getCarbonFootprint(id, 'daily');
-    const weekly = getCarbonFootprint(id, 'weekly');
-    const monthly = getCarbonFootprint(id, 'monthly');
-    const yearly = getCarbonFootprint(id, 'yearly');
-    res.status(200).send({ daily, weekly, monthly, yearly });
+    getCarbonFootprintAll(id)
+        .then((carbonFootprint) => {
+            if (carbonFootprint === null) {
+                // If no data found, send a specific response
+                const response = { message: 'No carbon footprint data found for this user' };
+                res.status(404).send(response);
+            } else {
+                let { daily, daily_unit, monthly, monthly_unit, total, total_unit } = carbonFootprint;
+                // Add CO2e units to the response
+                daily_unit += ' CO2e';
+                monthly_unit += ' CO2e';
+                total_unit += ' CO2e';
+                const response = { message: 'Carbon footprint retrieved', daily, daily_unit, monthly, monthly_unit, total, total_unit };
+                res.status(200).send(response);
+            }
+        })
+        .catch((err) => {
+            console.error('Error getting carbon footprint:', err.message);
+            const response = { message: 'Error getting carbon footprint: ' + err.message };
+            res.status(500).send(response);
+        });
 });
+
 
 // Modify the carbon footprint of the user by id
 app.put('/users/:id/carbon_footprint/:added', verifyToken, (req, res) => {

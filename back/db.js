@@ -41,9 +41,11 @@ const setupTables = (db) => {
         id INT AUTO_INCREMENT PRIMARY KEY,
         user_id INT NOT NULL,
         daily FLOAT NOT NULL,
-        weekly FLOAT NOT NULL,
+        daily_unit VARCHAR(255) NOT NULL,
         monthly FLOAT NOT NULL,
-        yearly FLOAT NOT NULL,
+        monthly_unit VARCHAR(255) NOT NULL,
+        total FLOAT NOT NULL,
+        total_unit VARCHAR(255) NOT NULL,
         timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )`, (err) => {
         if (err) {
@@ -214,6 +216,21 @@ async function checkLogin (email, password) {
                 reject(err);
             }
             if (result) {
+                // Create entry in carbon_footprint table, if it doesn't exist
+                db.query(`SELECT * FROM carbon_footprint WHERE user_id = ${user.id}`, (err, result) => {
+                    if (err) {
+                        console.error('Error querying database:', err.message);
+                        reject(err);
+                    }
+                    if (result.length === 0) {
+                        db.query('INSERT INTO carbon_footprint (user_id, daily, daily_unit, monthly, monthly_unit, total, total_unit) VALUES (?, ?, ?, ?, ?, ?, ?)', [user.id, 0, 'kg', 0, 'kg', 0, 'kg'], (err) => {
+                            if (err) {
+                                console.error('Error inserting carbon footprint into database:', err.message);
+                                reject(err);
+                            }
+                        });
+                    }
+                });
                 resolve(user);
             } else {
                 reject(new Error('Incorrect password'));
@@ -267,6 +284,23 @@ async function getCarbonFootprint (id, time_period) {
     });
 }
 
+async function getCarbonFootprintAll(id) {
+    return new Promise((resolve, reject) => {
+        db.query(`SELECT daily, daily_unit, monthly, monthly_unit, total, total_unit FROM carbon_footprint WHERE user_id = ${id}`, (err, result) => {
+            if (err) {
+                console.error('Error querying database:', err.message);
+                reject(err);
+            }
+            console.log('Result from getCarbonFootprintAll:', result); // Add this line for logging
+            if (result.length === 0) {
+                resolve(null);
+            }
+            resolve(result[0]);
+        });
+    });
+}
+
+
 // Update the carbon footprint of the user by id
 async function updateCarbonFootprint (id, added) {
     return new Promise((resolve, reject) => {
@@ -304,6 +338,6 @@ module.exports = {
     createUser,
     checkLogin,
     updateUserInfo,
-    getCarbonFootprint,
+    getCarbonFootprintAll,
     updateCarbonFootprint
 };
