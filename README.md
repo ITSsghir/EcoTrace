@@ -54,6 +54,16 @@ But first, let's set up the project.
         nvm use lts
         ```
 
+        > If NVM is not recognized as a command, you may need to reinstall it manually by running the following commands:
+        >
+        > ```bash
+        > # Install NVM for Windows
+        > winget install -e --id CoreyButler.NVMforWindows
+        >
+        > # Add nvm to PATH
+        > $env:Path += ";$env:USERPROFILE\.nvm"
+        > ```
+
         Setup yarn as the default package manager.
 
         ```bash
