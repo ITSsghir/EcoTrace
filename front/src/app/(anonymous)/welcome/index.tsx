@@ -6,10 +6,6 @@ import { Background } from "@/components/background";
 export default function Welcome() {
     return (
             <Background>
-                <Stack.Screen options={{
-                    headerTitle: '',
-                    headerShown: true
-                }} />
                 <View style={welcomeStyles.bigContainer}>
                     <Text style={welcomeStyles.title}>Welcome to the app!</Text>
                     <View style={welcomeStyles.container}>
