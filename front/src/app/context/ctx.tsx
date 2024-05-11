@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useStorageState } from '@/utils/useStorageState';
 import { JwtPayload, jwtDecode } from 'jwt-decode';
-import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 
 const AuthContext = React.createContext<{
   signIn: (email: string, password: string) => void;
