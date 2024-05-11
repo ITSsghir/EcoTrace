@@ -1,17 +1,14 @@
 import { 
-    Stack, 
-    router,
+    Stack,
     useRouter 
 } from "expo-router";
 import { 
     View, 
     Text, 
-    TouchableOpacity, 
-    FlatList, 
+    TouchableOpacity,
     StyleSheet, 
     SafeAreaView, 
-    Dimensions, 
-    ScrollView, 
+    Dimensions,
     LogBox
 } from "react-native";
 import Balance from "@/components/balance";
@@ -20,6 +17,8 @@ import ScreenHeaderBtn from "@/components/ScreenHeaderBtn";
 import React, { useEffect, useState } from "react";
 import { useSession } from "@/app/context/ctx";
 import Choices from "@/components/choices";
+import History from "@/components/history";
+
 
 // Get the screen width
 const screenWidth = Dimensions.get('window').width;
@@ -57,6 +56,21 @@ export default function HomePage() {
             {/* Add more sidebar items here */}
         </View>
     );
+
+    let history = [
+        { id: '1', title: 'Activity 1', carbon_footprint: 'xxxxxxCO2', method: 'Camera' },
+        { id: '2', title: 'Activity 2', carbon_footprint: 'xxxxxxCO2', method: 'Microphone' },
+        { id: '3', title: 'Activity 3', carbon_footprint: 'xxxxxxCO2', method: 'Vehicle' },
+        { id: '4', title: 'Activity 4', carbon_footprint: 'xxxxxxCO2', method: 'Destination' },
+        { id: '5', title: 'Activity 5', carbon_footprint: 'xxxxxxCO2', method: 'Camera' },
+        { id: '6', title: 'Activity 6', carbon_footprint: 'xxxxxxCO2', method: 'Microphone' },
+        { id: '7', title: 'Activity 7', carbon_footprint: 'xxxxxxCO2', method: 'Vehicle' },
+        { id: '8', title: 'Activity 8', carbon_footprint: 'xxxxxxCO2', method: 'Destination' },
+        { id: '9', title: 'Activity 9', carbon_footprint: 'xxxxxxCO2', method: 'Camera' },
+        { id: '10', title: 'Activity 10', carbon_footprint: 'xxxxxxCO2', method: 'Microphone' },
+        { id: '11', title: 'Activity 11', carbon_footprint: 'xxxxxxCO2', method: 'Vehicle' },
+        { id: '12', title: 'Activity 12', carbon_footprint: 'xxxxxxCO2', method: 'Destination' }
+    ];
 
     useEffect(() => {
         LogBox.ignoreLogs(["VirtualizedLists should never be nested"])
@@ -103,57 +117,10 @@ export default function HomePage() {
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                 <Choices />
             </View>
-            <History />
+            <History data={history} />
         </SafeAreaView>
     );
 };
-
-export function History() {
-
-    let history = [
-        { id: '1', title: 'Activity 1', carbon_footprint: 'xxxxxxCO2', method: 'Camera' },
-        { id: '2', title: 'Activity 2', carbon_footprint: 'xxxxxxCO2', method: 'Microphone' },
-        { id: '3', title: 'Activity 3', carbon_footprint: 'xxxxxxCO2', method: 'Vehicle' },
-        { id: '4', title: 'Activity 4', carbon_footprint: 'xxxxxxCO2', method: 'Destination' },
-        { id: '5', title: 'Activity 5', carbon_footprint: 'xxxxxxCO2', method: 'Camera' },
-        { id: '6', title: 'Activity 6', carbon_footprint: 'xxxxxxCO2', method: 'Microphone' },
-        { id: '7', title: 'Activity 7', carbon_footprint: 'xxxxxxCO2', method: 'Vehicle' },
-        { id: '8', title: 'Activity 8', carbon_footprint: 'xxxxxxCO2', method: 'Destination' },
-        { id: '9', title: 'Activity 9', carbon_footprint: 'xxxxxxCO2', method: 'Camera' },
-        { id: '10', title: 'Activity 10', carbon_footprint: 'xxxxxxCO2', method: 'Microphone' },
-        { id: '11', title: 'Activity 11', carbon_footprint: 'xxxxxxCO2', method: 'Vehicle' },
-        { id: '12', title: 'Activity 12', carbon_footprint: 'xxxxxxCO2', method: 'Destination' }
-    ];
-
-    const renderItem = ({ item }) => (
-        <View style={{ flex: 1, justifyContent: 'space-between', margin: 20, borderColor: '#000000', borderBottomWidth: 2, paddingBottom: 10, marginTop: 5 }}>
-            <Text style={stylesHistory.subTitle}>{item.title}</Text>
-            <Text style={stylesHistory.subSubTitle}>{item.carbon_footprint}</Text>
-            <Text style={stylesHistory.subSubTitle}>{item.method}</Text>
-        </View>
-    );
-
-
-    return (
-            <ScrollView style={stylesHistory.container} showsVerticalScrollIndicator={false} horizontal={false}>
-                <TouchableOpacity
-                    onPress= {
-                        () => {
-                            console.log('History clicked')
-                            router.push('/history')
-                        }
-                    }
-                >
-                <Text style={stylesHistory.title}>History</Text>
-                <FlatList
-                    data={history}
-                    keyExtractor={item => item.id}
-                    renderItem={renderItem}
-                />
-                </TouchableOpacity>
-            </ScrollView>
-    )
-}
 
 const stylesHome = StyleSheet.create({
     container: {
@@ -195,34 +162,4 @@ const stylesHome = StyleSheet.create({
         backgroundColor: 'rgba(0, 0, 0, 0.5)', // Adjust opacity as needed
         zIndex: 5, // Render behind the sidebar
     },
-});
-
-const stylesHistory = StyleSheet.create({
-    container: {
-        backgroundColor: "#fff",
-        borderRadius: 10 / 1.25,
-        width: screenWidth * 0.9,
-        padding: 20,
-        margin: 10,
-        height: screenWidth * 19/20
-    },
-    title: {
-        fontSize: 24,
-        fontWeight: "bold",
-        margin: 15,
-        marginBottom: 20
-    },
-    subTitle: {
-        fontSize: 18,
-    },
-    btnContainer: {
-        borderRadius: 10 / 1.25,
-        justifyContent: "center",
-        alignItems: "center",
-    },
-    subSubTitle: {
-        fontSize: 14,
-        fontWeight: "bold",
-        textAlign: "right"
-    }
 });
