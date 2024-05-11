@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useStorageState } from '@/utils/useStorageState';
 import { JwtPayload, jwtDecode } from 'jwt-decode';
+import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 
 const API_URL =  'https://100.114.128.64:3000'
 
@@ -8,18 +9,22 @@ const AuthContext = React.createContext<{
   signIn: (email: string, password: string) => void;
   signOut: () => void;
   signUp: (full_name: string, email: string, phone_number: string, password: string) => void;
-  predict: (image: string) => void;
-  prediction: string,
   token?: string | null;
   isLoading: boolean;
+  full_name?: string;
+  email?: string;
+  phone_number?: string;
+  password?: string;
 }>({
   signIn: () => null,
   signOut: () => null,
   signUp: () => null,
-  predict: () => null,
-  prediction: '',
   token: null,
   isLoading: false,
+  full_name: null,
+  email: null,
+  phone_number: null,
+  password: null,
 });
 
 // This hook can be used to access the user info.
@@ -36,7 +41,10 @@ export function useSession() {
 
 export function SessionProvider(props: React.PropsWithChildren) {
   const [[isLoading, token], setToken] = useStorageState('token');
-  const [prediction, setPrediction] = React.useState<string>('');
+  const [full_name, setFullName] = React.useState<string>('');
+  const [email, setEmail] = React.useState<string>('');
+  const [phone_number, setPhoneNumber] = React.useState<string>('');
+  const [password, setPassword] = React.useState<string>('');
 
   // Set a timer to log out the user after the token expires
   useEffect(() => {
@@ -53,7 +61,8 @@ export function SessionProvider(props: React.PropsWithChildren) {
         console.log("Valid token");
       }
     }
-  }, []);
+    getUser(token);
+  }, [token]);
 
   const login = async (email: string, password: string) => {
     try {
@@ -129,37 +138,41 @@ export function SessionProvider(props: React.PropsWithChildren) {
 
     console.log('Token set:', token); // Log token here
   }
+  
+  const getUser = async (token: string) => {
+      if (!token) {
+        return;
+      }
 
-  const predict = async (image: string) => {
-    const url = API_URL + '/predict';
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ 
-        uri: image,
-      }),
-    });
+      const url = process.env.EXPO_PUBLIC_AUTH_API_URL + '/users/' + token;
+      // Send the token as a parameter in the request
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'content-type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+      // Process the response
+      const data = await response.json();
 
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-
-    const data = await response.json();
-    console.log(data);
-    setPrediction(data.prediction);
-    console.log(prediction);
+      const user = data.user;
+      setFullName(user.full_name);
+      setEmail(user.email);
+      setPhoneNumber(user.phone_number);
+      setPassword(user.password);
   }
 
   const value = {
     signIn: login,
     signOut: logout,
     signUp: register,
-    predict: predict,
-    prediction,
     token,
     isLoading,
+    full_name,
+    email,
+    phone_number,
+    password,
   };
 
   return (
