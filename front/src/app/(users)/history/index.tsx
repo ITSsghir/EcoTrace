@@ -6,18 +6,18 @@ import FilterBlock from '@/components/filterBlock';
 
 
 let history = [
-    { id: '1', title: 'Activity 1', carbon_footprint: 0 , unit: 'CO2e', method: 'Camera' },
-    { id: '2', title: 'Activity 2', carbon_footprint: 0 , unit: 'CO2e', method: 'Microphone' },
-    { id: '3', title: 'Activity 3', carbon_footprint: 0 , unit: 'CO2e', method: 'Vehicle' },
-    { id: '4', title: 'Activity 4', carbon_footprint: 5 , unit: 'CO2e', method: 'Destination' },
-    { id: '5', title: 'Activity 5', carbon_footprint: 0 , unit: 'CO2e', method: 'Camera' },
-    { id: '6', title: 'Activity 6', carbon_footprint: 1 , unit: 'CO2e', method: 'Microphone' },
-    { id: '7', title: 'Activity 7', carbon_footprint: 0 , unit: 'CO2e', method: 'Vehicle' },
-    { id: '8', title: 'Activity 8', carbon_footprint: 7 , unit: 'CO2e', method: 'Destination' },
-    { id: '9', title: 'Activity 9', carbon_footprint: 0 , unit: 'CO2e', method: 'Camera' },
-    { id: '10', title: 'Activity 10', carbon_footprint: 0 , unit: 'CO2e', method: 'Microphone' },
-    { id: '11', title: 'Activity 11', carbon_footprint: 3 , unit: 'CO2e', method: 'Vehicle' },
-    { id: '12', title: 'Activity 12', carbon_footprint: 0 , unit: 'CO2e', method: 'Destination' }
+    { id: '1', title: 'Activity 1', carbon_footprint: 0 , unit: 'KgCO2e', method: 'Camera' },
+    { id: '2', title: 'Activity 2', carbon_footprint: 0 , unit: 'KgCO2e', method: 'Microphone' },
+    { id: '3', title: 'Activity 3', carbon_footprint: 0 , unit: 'kgCO2e', method: 'Vehicle' },
+    { id: '4', title: 'Activity 4', carbon_footprint: 5 , unit: 'kgCO2e', method: 'Destination' },
+    { id: '5', title: 'Activity 5', carbon_footprint: 0 , unit: 'kgCO2e', method: 'Camera' },
+    { id: '6', title: 'Activity 6', carbon_footprint: 1 , unit: 'kgCO2e', method: 'Microphone' },
+    { id: '7', title: 'Activity 7', carbon_footprint: 0 , unit: 'kgCO2e', method: 'Vehicle' },
+    { id: '8', title: 'Activity 8', carbon_footprint: 7 , unit: 'kgCO2e', method: 'Destination' },
+    { id: '9', title: 'Activity 9', carbon_footprint: 0 , unit: 'kgCO2e', method: 'Camera' },
+    { id: '10', title: 'Activity 10', carbon_footprint: 0 , unit: 'kgCO2e', method: 'Microphone' },
+    { id: '11', title: 'Activity 11', carbon_footprint: 3 , unit: 'kgCO2e', method: 'Vehicle' },
+    { id: '12', title: 'Activity 12', carbon_footprint: 0 , unit: 'kgCO2e', method: 'Destination' }
 ];
 
 export default function History() {
