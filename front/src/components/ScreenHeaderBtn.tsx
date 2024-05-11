@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, TouchableOpacity, StyleSheet, ImageStyle, ViewStyle, ImageURISource } from "react-native";
+import { Image, TouchableOpacity, ImageStyle } from "react-native";
 import { ScreenHeaderBtnProps } from "@/types/ScreenHeaderBtn";
 import styles from "@/styles/ScreenHeaderBtn";
 

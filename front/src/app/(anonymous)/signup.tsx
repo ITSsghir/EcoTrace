@@ -1,7 +1,5 @@
-// Register page for anonymous users to create an account (react-native)
-
 import React from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button } from 'react-native';
 import { Stack, useRouter } from 'expo-router';
 import { useSession } from '@/context/ctx';
 import styles from '@/styles/auth';

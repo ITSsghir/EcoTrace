@@ -1,4 +1,4 @@
-import { Redirect, Slot, Stack, router } from 'expo-router';
+import { Redirect, Stack, router } from 'expo-router';
 import { useSession } from '../context/ctx';
 import React from 'react';
 import LoadingScreen from '@constants/loading';
