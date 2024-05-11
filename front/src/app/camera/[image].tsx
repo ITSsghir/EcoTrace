@@ -83,7 +83,25 @@ export default function Preview() {
         });
 
         // Prompt for the model (for more information on the prompt, check the Vertex AI API documentation https://cloud.google.com/vertex-ai/generative-ai/docs/multimodal/design-multimodal-prompts?hl=fr)
-        const prompt = "Give me the carbon footprint of what's in this image, it needs to be a number in kg CO2e (Give me only the number)";
+        const prompt = "Fournissez la liste de tous les attributs suivants :\n"
+          + "ingrédients (estimation quantité, unité (en gramme)), l'empreinte carbone totale de la recette, et l'unité, au format JSON\n"
+          + "Exemple :\n"
+          + "{\n"
+          + "  \"ingrédients\": [\n"
+          + "    {\n"
+          + "      \"nom\": \"tomate\",\n"
+          + "      \"quantité\": 100,\n"
+          + "      \"unité\": \"g\"\n"
+          + "    },\n"
+          + "    {\n"
+          + "      \"nom\": \"pomme\",\n"
+          + "      \"quantité\": 200,\n"
+          + "      \"unité\": \"g\"\n"
+          + "    }\n"
+          + "  ],\n"
+          + "  \"total_carbon_footprint\": 100,\n"
+          + "  \"unité\": \"g CO2e\"\n" // or "kg CO2e"
+          + "}";
 
         const url = process.env.EXPO_PUBLIC_AUTH_API_URL + '/predict';
         const response = await fetch(url, {
@@ -99,27 +117,34 @@ export default function Preview() {
         });
 
         const data = await response.json();
+
         return data;
       }
 
       const handleGetPrediction = async () => {
         const response = await getPredictionVertexAI(image);
         const prediction = response.prediction;
-        setLabels(prediction + " kg CO2e");
+
+        // Trim the prediction (remove the '```json' and '```' from the string)
+        const predictionTrimmed = prediction.replace('```json', '').replace('```', '');
+        
+        // Store the prediction in a variable as a json object
+        const predictionJson = JSON.parse(predictionTrimmed);
+
+        // Set the labels
+        setLabels(predictionJson.total_carbon_footprint + ' ' + predictionJson.unité);
       }
 
     return (
         <SafeAreaView style={styles.container}>
-            <View style={styles.container}>
-                <View style={{ flexDirection: 'row', padding: 10, marginTop: 20 }}>
-                </View>
+            <View style={styles.Imagecontainer}>
                 <Image source={{ uri: image }} style={styles.imagePreview} />
                 <TouchableOpacity style={{ backgroundColor: 'blue', padding: 10, borderRadius: 5, alignContent: 'center', justifyContent: 'center', alignItems: 'center', borderColor: 'black', borderWidth: 1, margin: 10}}
                     onPress={() => {
                       handleGetPrediction();
                     }
-                    }>
-                <Text>Get predictions</Text>
+                }>
+                  <Text>Get predictions</Text>
                 </TouchableOpacity>
             </View>
             <View style={{ padding: 10 }}>
@@ -132,12 +157,15 @@ export default function Preview() {
 
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
-
+const cameraHeight = height * 0.7;
 const styles = {
     container: {
         flex: 1,
     },
-    
+    Imagecontainer : {
+        flex: 1,
+        height: cameraHeight,
+    },
     button: {
         flexDirection: 'row',
         alignItems: 'center',
