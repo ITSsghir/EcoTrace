@@ -38,6 +38,11 @@ export default function HomePage() {
         router.push('/');
     }
 
+    // Close sidebar
+    const closeSidebar = () => {
+        setIsSidebarOpen(false);
+    }
+
     // Toggle sidebar
     const toggleSidebar = () => {
         setIsSidebarOpen(!isSidebarOpen);
@@ -53,21 +58,18 @@ export default function HomePage() {
         </View>
     );
 
-    // Camera route will pop up a modal with two options: take a picture or choose from gallery
-    const choices = [
-        { id: '1', title: 'Camera', icon: icons.camera, route: 'Camera', onpress: () => router.push({ pathname: '/camera'})},
-        { id: '2', title: 'Microphone', icon: icons.microphone, route: 'Microphone', onpress: () => router.push({ pathname: '/microphone', params: { id: 1 } })},
-        { id: '3', title: 'Vehicle', icon: icons.car, route: 'Vehicle', onpress: () => router.push({ pathname: '/vehicle', params: { id: 1 } })},
-        { id: '4', title: 'Destination', icon: icons.destination, route: 'Destination', onpress: () => router.push({ pathname: '/destination', params: { id: 1 } })},
-    ];
-
     useEffect(() => {
         LogBox.ignoreLogs(["VirtualizedLists should never be nested"])
       }, [])
 
     return (
         <SafeAreaView style={stylesHome.container}>
-            {isSidebarOpen && Sidebar}
+            {isSidebarOpen && (
+                <>
+                    <View style={stylesHome.overlay} onTouchStart={closeSidebar} />
+                    {Sidebar}
+                </>
+            )}
             <Stack.Screen
                 options={{
                     headerStyle: {
@@ -158,6 +160,7 @@ const stylesHome = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         flex: 1,
+        backgroundColor: '#f0f0f0',
     },
     title: {
         fontSize: 24,
@@ -184,8 +187,13 @@ const stylesHome = StyleSheet.create({
         bottom: 0,
         width: 4/6 * screenWidth,
         backgroundColor: '#fff',
-        zIndex: 1,
+        zIndex: 6,
         padding: 20,
+    },
+    overlay: {
+        ...StyleSheet.absoluteFillObject,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)', // Adjust opacity as needed
+        zIndex: 5, // Render behind the sidebar
     },
 });
 
