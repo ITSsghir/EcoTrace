@@ -28,11 +28,10 @@ export default function HomePage() {
     const router = useRouter();
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-    let full_name = 'Demo user'; // Get from context later
     let balance = 'xxxxxx'; // Get from context later
     let daily_balance = 'xxxxxx'; // Get from context later
 
-    const { signOut } = useSession();
+    const { full_name, signOut } = useSession();
     // Sign out function
     const handleSignOut = () => {
         signOut();
