@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Dimensions, SafeAreaView } from 'react-native';
 import { Camera, CameraType } from 'expo-camera/legacy';
-import * as FileSystem from 'expo-file-system';
-import { router, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 
 export default function CameraView({ children }: { children?: React.ReactNode }) {
 
@@ -14,9 +13,6 @@ export default function CameraView({ children }: { children?: React.ReactNode })
   const [camera, setCamera] = useState<Camera | null>(null);
   const [image, setImage] = useState<string | null>(null);
   const [type, setType] = useState<CameraType>(CameraType.back);
-  const [labels, setLabels] = useState<any[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [tookPicture, setTookPicture] = useState(false);
 
   const router = useRouter();
 
@@ -30,11 +26,9 @@ export default function CameraView({ children }: { children?: React.ReactNode })
   }, []);
 
   const takePicture = async () => {
-    setLoading(true);
     if (camera) {
       const data = await camera.takePictureAsync();
       setImage(data.uri);
-      setTookPicture(true);
       router.push({ pathname: '/camera/[image]', params: { image: data.uri } });
     }
   };
@@ -43,7 +37,8 @@ export default function CameraView({ children }: { children?: React.ReactNode })
     return <Text>No access to camera</Text>;
   }
 
-  return ( <>
+  return ( 
+    <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.cameraContainer}>
         <Camera
           ref={(ref) => setCamera(ref as Camera)}
@@ -65,7 +60,7 @@ export default function CameraView({ children }: { children?: React.ReactNode })
           <Text>Take Picture</Text>
         </TouchableOpacity>
       </View>
-    </>
+    </SafeAreaView>
   );
 }
 
@@ -79,17 +74,12 @@ const styles = StyleSheet.create({
   },
   fixedRatio: {
     flex: 1,
-    aspectRatio: 3 / 4,
+    aspectRatio: 3 / 4
   },
   cameraTriggers: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: '150%',
-  },
-  prediction_preview: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
+  }
 });
