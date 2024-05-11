@@ -85,7 +85,7 @@ export default function Preview() {
 
         // Prompt for the model (for more information on the prompt, check the Vertex AI API documentation https://cloud.google.com/vertex-ai/generative-ai/docs/multimodal/design-multimodal-prompts?hl=fr)
         const prompt = "Fournissez la liste de tous les attributs suivants :\n"
-          + "ingrédients (estimation quantité, unité (en gramme)), l'empreinte carbone totale de la recette, et l'unité, au format JSON\n"
+          + "Nom du plat, ingrédients (estimation quantité, unité (en gramme)), l'empreinte carbone totale de la recette, et l'unité, au format JSON\n"
           + "Exemple :\n"
           + "{\n"
           + "  \"ingrédients\": [\n"
@@ -95,11 +95,12 @@ export default function Preview() {
           + "      \"unité\": \"g\"\n"
           + "    },\n"
           + "    {\n"
-          + "      \"nom\": \"pomme\",\n"
+          + "      \"nom\": \"spaghetti\",\n"
           + "      \"quantité\": 200,\n"
-          + "      \"unité\": \"g\"\n"
+          + "      \"unité\": \"g CO2z\"\n"
           + "    }\n"
           + "  ],\n"
+          + "  \"nom\": \"plat de pâtes\",\n"
           + "  \"total_carbon_footprint\": 100,\n"
           + "  \"unité\": \"g CO2e\"\n" // or "kg CO2e"
           + "}";
@@ -132,6 +133,8 @@ export default function Preview() {
         // Store the prediction in a variable as a json object
         const predictionJson = JSON.parse(predictionTrimmed);
 
+        console.log(predictionJson);
+        
         // Set the labels
         setLabels(predictionJson.total_carbon_footprint + ' ' + predictionJson.unité);
       }
