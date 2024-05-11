@@ -1,10 +1,13 @@
-import { Stack, Redirect } from "expo-router";
+import { Stack, Redirect, useRouter } from "expo-router";
 import React from "react"
 import { useSession } from "@/app/context/ctx";
 import LoadingScreen from "@constants/loading";
+import ScreenHeaderBtn from "@/components/ScreenHeaderBtn";
+import icons from "@constants/icons";
 
 export default function HistoryLayout() {
     const { token, isLoading } = useSession();
+    const router = useRouter();
 
     // You can keep the splash screen open, or render a loading screen like we do here.
     if (isLoading) {
@@ -21,6 +24,20 @@ export default function HistoryLayout() {
 
     // This layout can be deferred because it's not the root layout.
     return (
-        <Stack />
+        <Stack>
+            <Stack.Screen name="index" options={{
+                headerTitle: ' History', headerShown: true,
+                headerShadowVisible: false,
+                headerLeft: () =>(
+                    <ScreenHeaderBtn 
+                        iconUrl={icons.back} 
+                        dimension={30}
+                        handlePress={() => {
+                            router.back();
+                        }}
+                    />
+                ),
+            }} />
+        </Stack>
     );
 }
