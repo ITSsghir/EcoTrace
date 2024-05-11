@@ -9,7 +9,7 @@ const screenWidth = Dimensions.get('window').width;
 const stylesHistory = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#fff",
+        backgroundColor: "#f0f0f0",
         margin: 10,
         borderRadius: 10 / 1.25,
         padding: 10,
@@ -65,7 +65,6 @@ export default function History() {
                         }
                     }
                 >
-                <Text style={stylesHistory.title}>History</Text>
                 <FlatList
                     data={history}
                     keyExtractor={item => item.id}
