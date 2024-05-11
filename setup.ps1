@@ -17,6 +17,12 @@ if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
     Remove-Item "Setup.msix"
 }
 
+# Install PowerShell latest version if not installed
+if (-not (Get-Command pwsh -ErrorAction SilentlyContinue)) {
+    # Install PowerShell
+    winget install -e --id Microsoft.PowerShell
+}
+
 # Check if nvm is installed
 if (-not (Get-Command nvm -ErrorAction SilentlyContinue)) {
     # Install nvm
