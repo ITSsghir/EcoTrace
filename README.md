@@ -23,6 +23,7 @@ But first, let's set up the project.
 - [Android Studio](https://developer.android.com/studio) or [Xcode](https://developer.apple.com/xcode/)
 - [Expo CLI](https://docs.expo.dev/get-started/installation/) (Optional)
 - [gcloud CLI](https://cloud.google.com/sdk/docs/install) (for the backend Google API)
+- [PowerShell 7](https://learn.microsoft.com/fr-fr/powershell/scripting/install/installing-powershell-on-windows) (Optional but recommended for running the scripts)
 
 ### Prepare the environment
 
@@ -35,7 +36,7 @@ But first, let's set up the project.
 
 2. Install the prerequisites
 
-    - First, run the [setup.ps1](./setup.ps1) script to install Winget, NVM.
+    - First, run the [setup.ps1](./setup.ps1) script to install Winget, NVM, and PowerShell 7.
 
         > You may need to run the script as an administrator, and enable the execution of PowerShell scripts.
         >
@@ -54,8 +55,11 @@ But first, let's set up the project.
     - Enable NVM, and install Node.js LTS version using NVM (You have it already installed if you ran the setup script).
 
         ```bash
+        # Enable NVM
         nvm on
+        # Install Node.js LTS version
         nvm install lts
+        # Use Node.js LTS version
         nvm use lts
         ```
 
