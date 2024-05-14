@@ -23,12 +23,6 @@ export default function Welcome() {
                                 <Text style={welcomeStyles.btnText}>Sign up</Text>
                             </Pressable>
                         </Link>
-
-                        <Link href="/profile" style={welcomeStyles.btn}>
-                            <Pressable>
-                                <Text style={welcomeStyles.btnText}>Profile</Text>
-                            </Pressable>
-                        </Link>
                     </View>
                 </View>
             </Background>

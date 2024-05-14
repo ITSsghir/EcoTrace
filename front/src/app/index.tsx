@@ -12,6 +12,6 @@ export default function App() {
   }
 
   return (
-    token ? <Redirect href='/home'/> : <Redirect href="/welcome" />
+    token ? <Redirect href='/home'/> : <Redirect href="/manual/clothes" />
   );
 }

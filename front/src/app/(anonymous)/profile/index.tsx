@@ -1,31 +1,44 @@
 import React from 'react';
+import { Redirect } from 'expo-router';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { FontAwesome5 } from '@expo/vector-icons';
 
-const UserProfile = ({ username, lastLogin, onAccountPress, onDeletePress, onServicesPress, onHistoryPress, onSettingsPress, onLogoutPress }) => {
+const UserProfile = ({ username, lastLogin, onAccountPress, onDeletePress, onServicesPress, onHistoryPress, onSettingsPress, onLogoutPress }) =>
+{
+
+    const handleServicesPress = () => {
+        return <Redirect href="/services" />;
+    };
+
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Profil Utilisateur</Text>
+            <Text style={styles.title}>User Profile</Text>
             <View style={styles.infoContainer}>
-                <Text style={styles.infoText}>Nom d'utilisateur: {username}</Text>
-                <Text style={styles.infoText}>Dernière connexion: {lastLogin}</Text>
+                <Text style={styles.infoText}>Username: {username}</Text>
+                <Text style={styles.infoText}>Last Login: {lastLogin}</Text>
             </View>
             <TouchableOpacity style={styles.button} onPress={onAccountPress}>
-                <Text style={styles.buttonText}>Compte</Text>
+                <FontAwesome5 name="user" size={20} color="#fff" style={styles.icon} />
+                <Text style={styles.buttonText}>Account</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.button} onPress={onDeletePress}>
-                <Text style={styles.buttonText}>Supprimer le compte</Text>
+                <FontAwesome5 name="trash-alt" size={20} color="#fff" style={styles.icon} />
+                <Text style={styles.buttonText}>Delete Account</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={onServicesPress}>
-                <Text style={styles.buttonText}>Mes Services</Text>
+            <TouchableOpacity style={styles.button} onPress={handleServicesPress}>
+                <Text style={styles.buttonText}>My Services</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.button} onPress={onHistoryPress}>
-                <Text style={styles.buttonText}>Historique</Text>
+                <FontAwesome5 name="history" size={20} color="#fff" style={styles.icon} />
+                <Text style={styles.buttonText}>History</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.button} onPress={onSettingsPress}>
-                <Text style={styles.buttonText}>Paramètres et Aide</Text>
+                <FontAwesome5 name="cog" size={20} color="#fff" style={styles.icon} />
+                <Text style={styles.buttonText}>Settings & Help</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.button} onPress={onLogoutPress}>
-                <Text style={styles.buttonText}>Déconnexion</Text>
+                <FontAwesome5 name="sign-out-alt" size={20} color="#fff" style={styles.icon} />
+                <Text style={styles.buttonText}>Logout</Text>
             </TouchableOpacity>
         </View>
     );
@@ -52,7 +65,9 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     button: {
-        backgroundColor: '#007bff',
+        backgroundColor: '#4CAF50',
+        flexDirection: 'row',
+        alignItems: 'center',
         paddingVertical: 10,
         paddingHorizontal: 20,
         borderRadius: 5,
@@ -62,6 +77,10 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontSize: 16,
         fontWeight: 'bold',
+        marginLeft: 10,
+    },
+    icon: {
+        marginRight: 10,
     },
 });
 
