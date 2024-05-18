@@ -1,9 +1,9 @@
 import { Redirect, Stack, router } from 'expo-router';
 import { useSession } from '../context/ctx';
 import React from 'react';
-import LoadingScreen from '@constants/loading';
+import LoadingScreen from '@/components/loading';
 import ScreenHeaderBtn from '@/components/ScreenHeaderBtn';
-import icons from '@/constants/icons';
+import icons from '@/components/icons';
 
 export default function CameraLayout() {
   const {token, isLoading } = useSession();
