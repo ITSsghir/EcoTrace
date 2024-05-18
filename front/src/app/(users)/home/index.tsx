@@ -10,7 +10,7 @@ import {
     LogBox
 } from "react-native";
 import Balance from "@/components/balance";
-import icons from '@/constants/icons';
+import icons from '@/components/icons';
 import ScreenHeaderBtn from "@/components/ScreenHeaderBtn";
 import React, { useEffect, useState } from "react";
 import { useSession } from "@/app/context/ctx";
