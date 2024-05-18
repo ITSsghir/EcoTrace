@@ -1,9 +1,9 @@
 import { Stack, Redirect, useRouter } from "expo-router";
 import React from "react"
 import { useSession } from "@/app/context/ctx";
-import LoadingScreen from "@constants/loading";
+import LoadingScreen from "@/components/loading";
 import ScreenHeaderBtn from "@/components/ScreenHeaderBtn";
-import icons from "@constants/icons";
+import icons from "@/components/icons";
 
 export default function HistoryLayout() {
     const { token, isLoading } = useSession();

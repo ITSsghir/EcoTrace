@@ -2,7 +2,7 @@ import { useSession } from "@/app/context/ctx";
 import { Slot } from "expo-router";
 import React from "react";
 import { Redirect } from "expo-router";
-import LoadingScreen from "@constants/loading";
+import LoadingScreen from "@/components/loading";
 
 export default function WelcomeLayout() {
   const { token, isLoading } = useSession();

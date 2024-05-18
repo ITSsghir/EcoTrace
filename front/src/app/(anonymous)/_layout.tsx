@@ -1,7 +1,7 @@
 import { Redirect, Stack } from 'expo-router';
 import { useSession } from '../context/ctx';
 import React from 'react';
-import LoadingScreen from '@constants/loading';
+import LoadingScreen from '@/components/loading';
 
 export default function AnonymousLayout() {
   const {token, isLoading } = useSession();

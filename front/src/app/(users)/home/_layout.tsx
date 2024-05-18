@@ -2,7 +2,7 @@ import { useSession } from "@/app/context/ctx";
 import { Stack } from "expo-router";
 import React from "react";
 import { Redirect } from "expo-router";
-import LoadingScreen from "@constants/loading";
+import LoadingScreen from "@/components/loading";
 
 export default function HomeLayout() {
   const { token, isLoading } = useSession();
