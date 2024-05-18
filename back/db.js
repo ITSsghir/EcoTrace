@@ -82,7 +82,8 @@ const setupTables = (db) => {
     )`, (err) => {
         if (err) {
             console.error('Error creating user_goals table:', err.message);
-        } else {
+        } 
+        else {
             console.log('Created user_goals table');
         }
     });
