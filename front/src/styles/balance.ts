@@ -1,3 +1,4 @@
+import colors from '@constants/Colors';
 import { StyleSheet, Dimensions } from 'react-native';
 
 // Get the screen width
@@ -12,7 +13,7 @@ const DailyFontSize = screenWidth < 400 ? 10 : 20;
 // Create a stylesheet for the balance component (center the text, make the title large, and the subtitle medium, and the message small)
 const styles = StyleSheet.create({
     card: {
-        backgroundColor: '#ffffff',
+        backgroundColor: colors.white,
         padding: 20,
         margin: 10,
         borderRadius: 10,

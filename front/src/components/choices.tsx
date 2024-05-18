@@ -1,6 +1,6 @@
 import { FlatList, TouchableOpacity, Image, View, ScrollView } from "react-native";
 import React from "react";
-import icons from "@constants/icons";
+import icons from "@/components/icons";
 import { useRouter } from "expo-router";
 import styles from "@/styles/choices";
 

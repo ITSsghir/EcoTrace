@@ -1,11 +1,12 @@
 import { StyleSheet, Dimensions } from 'react-native';
+import Colors from '@/constants/Colors'
 
 const screenWidth = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#f0f0f0",
+        backgroundColor: Colors.white,
         margin: 10,
         borderRadius: 10 / 1.25,
         padding: 10,
@@ -15,7 +16,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     homeContainer: {
-        backgroundColor: "#fff",
+        backgroundColor: Colors.white,
         borderRadius: 10 / 1.25,
         width: screenWidth * 0.9,
         padding: 20,
@@ -45,7 +46,7 @@ const styles = StyleSheet.create({
         flex: 1, 
         justifyContent: 'space-between', 
         margin: 20, 
-        borderColor: '#000000', 
+        borderColor: Colors.black,
         borderBottomWidth: 2, 
         paddingBottom: 10, 
         marginTop: 5 
@@ -53,7 +54,7 @@ const styles = StyleSheet.create({
     filterBlock: {
         flexDirection: 'row',
         paddingVertical: 10,
-        backgroundColor: '#f0f0f0',
+        backgroundColor: Colors.primary,
     },
 });
 

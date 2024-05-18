@@ -1,3 +1,4 @@
+import colors from '@constants/Colors';
 import { Dimensions, StyleSheet } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
@@ -5,7 +6,7 @@ const { width, height } = Dimensions.get('window');
 const backgroundStyles = StyleSheet.create({
     green: {
         flex: 1,
-        backgroundColor: '#00bf63',
+        backgroundColor: colors.secondary,
         width: width,
         height: height,
     },

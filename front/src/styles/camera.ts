@@ -1,4 +1,5 @@
 import { Dimensions, StyleSheet } from 'react-native';
+import Colors from '@/constants/Colors'
 
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
@@ -19,7 +20,7 @@ const PreviewStyles = StyleSheet.create({
         padding: 10,
         margin: 10,
         borderRadius: 10,
-        backgroundColor: '#f0f0f0',
+        backgroundColor: Colors.white,
     },
     fixedRatio: {
         flex: 1,
@@ -54,6 +55,17 @@ const CameraStyles = StyleSheet.create({
       justifyContent: 'center',
       alignItems: 'center',
       marginTop: '150%',
+    },
+    button: { 
+        backgroundColor: Colors.green,
+        padding: 10,
+        borderRadius: 5,
+        alignContent: 'center', 
+        justifyContent: 'center',
+        borderColor: 'black', 
+        textAlign: 'center',
+        borderWidth: 1, 
+        margin: 10
     }
 });
 

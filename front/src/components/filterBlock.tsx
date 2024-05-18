@@ -1,6 +1,6 @@
 import React from 'react';
 import { ScrollView, View, StyleSheet } from 'react-native';
-import Filter from '@/constants/filter';
+import Filter from '@/components/filter';
 import styles from '@/styles/filterBlock';
 
 export default function FilterBlock({ filterHistory, activeFilter }) {

@@ -1,4 +1,5 @@
 import { StyleSheet, Dimensions } from "react-native";
+import Colors from '@/constants/Colors'
 
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
@@ -29,7 +30,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
     },
     btnText: {
-        color: 'white'
+        color: Colors.white,
     }
 });
 

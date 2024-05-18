@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useStorageState } from '@/utils/useStorageState';
+import { useStorageState } from '@/hooks/useStorageState';
 import { JwtPayload, jwtDecode } from 'jwt-decode';
 
 const AuthContext = React.createContext<{
