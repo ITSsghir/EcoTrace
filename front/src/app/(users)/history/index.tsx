@@ -1,6 +1,3 @@
-import ScreenHeaderBtn from '@/components/ScreenHeaderBtn';
-import icons from '@constants/icons';
-import { Stack, router } from 'expo-router';
 import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, ScrollView, FlatList, Dimensions } from 'react-native';
 
@@ -11,7 +8,7 @@ const stylesHistory = StyleSheet.create({
         flex: 1,
         backgroundColor: "#fff",
         margin: 10,
-        borderRadius: 10 / 1.25,
+        borderRadius: 10,
         padding: 10,
         width: screenWidth - 20
     },
@@ -19,23 +16,27 @@ const stylesHistory = StyleSheet.create({
         fontSize: 24,
         fontWeight: "bold",
         margin: 15,
-        marginBottom: 20
+        marginBottom: 20,
+        color: "#4CAF50",
+    },
+    itemContainer: {
+        borderWidth: 1,
+        borderColor: '#4CAF50',
+        borderRadius: 5,
+        padding: 10,
+        marginBottom: 15,
     },
     subTitle: {
         fontSize: 18,
-    },
-    btnContainer: {
-        borderRadius: 10 / 1.25,
-        justifyContent: "center",
-        alignItems: "center",
-    },
-    subSubTitle: {
-        fontSize: 14,
         fontWeight: "bold",
-        textAlign: "right"
-    }
+        marginBottom: 5,
+        color: '#333',
+    },
+    subText: {
+        fontSize: 16,
+        color: '#555',
+    },
 });
-
 
 let history = [
     { id: '1', title: 'Activity 1', carbon_footprint: 'xxxxxxCO2', method: 'Camera' },
@@ -52,32 +53,25 @@ let history = [
     { id: '12', title: 'Activity 12', carbon_footprint: 'xxxxxxCO2', method: 'Destination' }
 ];
 
-
-export default function History() {
-
+const History = () => {
     return (
-            <ScrollView style={stylesHistory.container} showsVerticalScrollIndicator={false}>
-                <TouchableOpacity
-                    onPress= {
-                        () => {
-                            console.log('History clicked')
-                            router.push({ pathname: '/history', params: { id: 1 } })
-                        }
-                    }
-                >
-                <Text style={stylesHistory.title}>History</Text>
-                <FlatList
-                    data={history}
-                    keyExtractor={item => item.id}
-                    renderItem={({ item }) => (
-                        <View style={{ flex: 1, justifyContent: 'space-between', margin: 20, borderColor: '#000000', borderBottomWidth: 2, paddingBottom: 10, marginTop: 5 }}>
+        <ScrollView style={stylesHistory.container} showsVerticalScrollIndicator={false}>
+            <Text style={stylesHistory.title}>History</Text>
+            <FlatList
+                data={history}
+                keyExtractor={item => item.id}
+                renderItem={({ item }) => (
+                    <TouchableOpacity onPress={() => console.log('History clicked')}>
+                        <View style={stylesHistory.itemContainer}>
                             <Text style={stylesHistory.subTitle}>{item.title}</Text>
-                            <Text style={stylesHistory.subSubTitle}>{item.carbon_footprint}</Text>
-                            <Text style={stylesHistory.subSubTitle}>{item.method}</Text>
+                            <Text style={stylesHistory.subText}>Carbon Footprint: {item.carbon_footprint}</Text>
+                            <Text style={stylesHistory.subText}>Method: {item.method}</Text>
                         </View>
-                    )}
-                />
-                </TouchableOpacity>
-            </ScrollView>
-    )
-}
+                    </TouchableOpacity>
+                )}
+            />
+        </ScrollView>
+    );
+};
+
+export default History;

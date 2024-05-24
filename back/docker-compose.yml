@@ -11,7 +11,7 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - C:\Users\Younes\AppData\Roaming\gcloud:/app/gcloud:/app/gcloud
+      - ${USERPROFILE}\AppData\Roaming\gcloud:/app/gcloud:/app/gcloud
     depends_on:
       - db
     environment:
@@ -27,7 +27,7 @@ services:
     image: mysql:5.7
     restart: unless-stopped
     ports:
-      - "3306:3306"
+      - "3307:3306"
     volumes:
       - ./db:/var/lib/mysql
     environment:

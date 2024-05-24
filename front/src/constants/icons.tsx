@@ -10,6 +10,11 @@ const icons: Icon = {
     car: require("../../(public)/icons/car.png"),
     destination: require("../../(public)/icons/destination.png"),   
     back: require("../../(public)/icons/itinerary.png"),
+    manual: require("../../(public)/icons/manual.png"),
+    food: require("../../(public)/icons/food.png"),
+    clothes: require("../../(public)/icons/clothes.png"),
+    eco: require("../../(public)/icons/ecoTrace.png"),
+    sorry: require("../../(public)/icons/sorry.png"),
 };
 
 export default icons;

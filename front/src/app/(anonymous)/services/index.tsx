@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
+import {router} from "expo-router";
 
 const Services = () => {
     const [currentTime, setCurrentTime] = useState('');
@@ -11,20 +12,49 @@ const Services = () => {
     }, []);
 
     const handleServiceClick = (serviceName) => {
-        // Add your logic for handling service click here
         console.log('Service clicked:', serviceName);
-        // You can add navigation logic here to redirect to respective pages
+        router.push({
+            pathname: '/services/advice'
+        });
     };
+    const handleDataClick = (serviceName) => {
+        console.log('Data clicked:', serviceName);
+        router.push({
+            pathname: '/services/excuse'
+        });
+    };
+
+    const handleAccountClick = (serviceName) => {
+        console.log('Account clicked:', serviceName);
+        router.push({
+            pathname: '/profile'
+        });
+    };
+
+    const handleAlertClick = (serviceName) => {
+        console.log('Account clicked:', serviceName);
+        router.push({
+            pathname: '/services/setUpAlert'
+        });
+    };
+
+    const handleHistoryClick = (serviceName) => {
+        console.log('Account clicked:', serviceName);
+        router.push({
+            pathname: '/history'
+        });
+    };
+
 
     return (
         <View style={styles.container}>
             <Text style={styles.myServices}>My Services</Text>
             <View style={styles.serviceContainer}>
-                <ServiceButton icon="database" label="Data" onPress={() => handleServiceClick('Data')} />
-                <ServiceButton icon="bell" label="Setup Alert" onPress={() => handleServiceClick('Setup Alert')} />
-                <ServiceButton icon="user" label="Account Officer" onPress={() => handleServiceClick('Account Officer')} />
+                <ServiceButton icon="database" label="Data" onPress={() => handleDataClick('Data')} />
+                <ServiceButton icon="bell" label="Setup Alert" onPress={() => handleAlertClick('Setup Alert')} />
+                <ServiceButton icon="user" label="Account Officer" onPress={() => handleAccountClick('Account Officer')} />
                 <ServiceButton icon="lightbulb" label="Advice" onPress={() => handleServiceClick('Advice')} />
-                <ServiceButton icon="history" label="History" onPress={() => handleServiceClick('History')} />
+                <ServiceButton icon="history" label="History" onPress={() => handleHistoryClick('History')} />
             </View>
             <Text style={styles.timeText}>Current Time: {currentTime}</Text>
         </View>

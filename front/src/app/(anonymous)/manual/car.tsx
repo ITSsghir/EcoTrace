@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, Text, StyleSheet } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
+import {router} from "expo-router";
 
 const TransportationCarbonCalculator = ({ navigation }) => {
     const [vehicle, setVehicle] = useState('');
@@ -24,11 +25,13 @@ const TransportationCarbonCalculator = ({ navigation }) => {
             vehicle: vehicle,
             startLocation: startLocation,
             endLocation: endLocation,
-            carbonFootprint: 100 // Replace with actual carbon footprint calculation
+            carbonFootprint: 100
         };
 
-        // Redirect to the result page with the calculated data
-        navigation.navigate('CarbonFootprintResult', { result });
+
+        router.push({
+            pathname: '/manual/excuse' }
+        );
     };
 
     return (

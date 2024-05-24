@@ -6,7 +6,7 @@ WORKDIR /app
 RUN yarn set version stable
 
 # Copy package.json and yarn.lock
-COPY package.json yarn.lock .yarnrc.yml ./
+COPY package.json yarn.lock ./
 
 # Install dependencies
 RUN yarn install

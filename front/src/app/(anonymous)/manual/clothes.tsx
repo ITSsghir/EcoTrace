@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, Text, StyleSheet } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
+import {router} from "expo-router";
 
 const CarbonFootprintCalculator = () => {
     const [origin, setOrigin] = useState('');
@@ -25,14 +26,14 @@ const CarbonFootprintCalculator = () => {
     };
 
     const calculateCarbonFootprint = () => {
-        // Add your carbon footprint calculation logic here
-        // Using the entered data
-        // This function could display the result or save it to a database, etc.
-        // For this example, we simply log the entered data.
+
         console.log('Origin:', origin);
         console.log('Texture:', texture);
         console.log('Brand:', brand);
         console.log('Size:', size);
+        router.push({
+            pathname: '/manual/excuse' }
+        );
     };
 
     return (

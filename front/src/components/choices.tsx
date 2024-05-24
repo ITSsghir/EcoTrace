@@ -12,6 +12,7 @@ export default function Choices() {
         { id: '2', title: 'Microphone', icon: icons.microphone, route: 'Microphone', onpress: () => router.push({ pathname: '/microphone', params: { id: 1 } })},
         { id: '3', title: 'Vehicle', icon: icons.car, route: 'Vehicle', onpress: () => router.push({ pathname: '/vehicle', params: { id: 1 } })},
         { id: '4', title: 'Destination', icon: icons.destination, route: 'Destination', onpress: () => router.push({ pathname: '/destination', params: { id: 1 } })},
+        { id: '5', title: 'manual', icon: icons.manual, route: 'manual', onpress: () => router.push({ pathname: '/choice', params: { id: 1 } })},
     ];
 
     const renderItem = ({ item }) => (
@@ -36,7 +37,7 @@ export default function Choices() {
 
 const screenWidth = Dimensions.get('window').width;
 const choicesContainerWidth = screenWidth * 0.9;
-const choiceButtonWidth = choicesContainerWidth / 4 - 10;
+const choiceButtonWidth = choicesContainerWidth / 5 - 10;
 const choiceIconWidth = choiceButtonWidth * 0.5;
 const choiceTitleFontSize = screenWidth < 400 ? 12 : 14;
 

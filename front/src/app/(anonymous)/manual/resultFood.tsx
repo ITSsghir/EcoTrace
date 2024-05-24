@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 
@@ -6,8 +6,12 @@ const ResultFood = () => {
     const params = useLocalSearchParams();
     const [data, setData] = useState({ ingredients: [], carbonFootprints: [] });
     const [isCalculating, setIsCalculating] = useState(true);
-//Ne pas utiliser le UseEffect
-    useEffect(() => {
+
+    const calculateCarbonFootprint = (ingredient) => {
+        return Math.random() * 10; // Remplacer par votre calcul réel
+    };
+
+    const processIngredients = () => {
         if (params.ingredients) {
             try {
                 let ingredients = [];
@@ -16,10 +20,6 @@ const ResultFood = () => {
                 } else {
                     ingredients = JSON.parse(params.ingredients);
                 }
-
-                const calculateCarbonFootprint = (ingredient) => {
-                    return Math.random() * 10; // Remplacer par votre calcul réel
-                };
 
                 const footprints = ingredients.map(ingredient => ({
                     ...ingredient,
@@ -34,8 +34,10 @@ const ResultFood = () => {
         } else {
             console.error("No ingredients found in params");
         }
-    }, [params, data]);
+    };
 
+    // Appeler la fonction directement pour initialiser les données
+    processIngredients();
 
     return (
         <View style={styles.container}>
