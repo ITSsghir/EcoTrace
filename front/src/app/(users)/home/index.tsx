@@ -43,6 +43,11 @@ export default function HomePage() {
     // Sidebar content
     const Sidebar = (
         <View style={styles.sidebar}>
+            <TouchableOpacity onPress={() => {
+                router.push('/manual');
+            }}>
+                <Text>Manual input</Text>
+            </TouchableOpacity>
             <TouchableOpacity onPress={toggleSidebar}>
                 <Text>Close Sidebar</Text>
             </TouchableOpacity>
