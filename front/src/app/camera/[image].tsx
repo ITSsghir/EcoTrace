@@ -88,7 +88,7 @@ export default function Preview() {
           + "Nom du plat, ingrédients (estimation quantité, unité (en gramme)), l'empreinte carbone totale de la recette, et l'unité, au format JSON\n"
           + "Exemple :\n"
           + "{\n"
-          + "  \"ingrédients\": [\n"
+          + "  \"ingredients\": [\n"
           + "    {\n"
           + "      \"nom\": \"tomate\",\n"
           + "      \"quantité\": 100,\n"
@@ -96,13 +96,13 @@ export default function Preview() {
           + "    },\n"
           + "    {\n"
           + "      \"nom\": \"spaghetti\",\n"
-          + "      \"quantité\": 200,\n"
-          + "      \"unité\": \"g CO2z\"\n"
+          + "      \"quantite\": 200,\n"
+          + "      \"unite\": \"g CO2z\"\n"
           + "    }\n"
           + "  ],\n"
           + "  \"nom\": \"plat de pâtes\",\n"
           + "  \"total_carbon_footprint\": 100,\n"
-          + "  \"unité\": \"g CO2e\"\n" // or "kg CO2e"
+          + "  \"unite\": \"g CO2e\"\n" // or "kg CO2e"
           + "}";
 
         const url = process.env.EXPO_PUBLIC_AUTH_API_URL + '/predict';
@@ -135,8 +135,11 @@ export default function Preview() {
 
         console.log(predictionJson);
         
-        // Set the labels
-        setLabels(predictionJson.total_carbon_footprint + ' ' + predictionJson.unité);
+        // Send the prediction to the result page
+        router.push({
+          pathname: '/camera/(result)/[result]',
+          params: { result: predictionJson }
+        });
       }
 
     return (
