@@ -59,7 +59,7 @@ export default function Preview() {
             },
             body: JSON.stringify(body),
           });
-          let responseJson = await response.json();
+          const responseJson = await response.json();
           console.log(JSON.stringify(responseJson.responses));
           setLabels(responseJson.responses[0].labelAnnotations[0].description);
     
@@ -105,7 +105,7 @@ export default function Preview() {
           + "  \"unite\": \"g CO2e\"\n" // or "kg CO2e"
           + "}";
 
-        const url = process.env.EXPO_PUBLIC_AUTH_API_URL + '/predict';
+        const url = `${process.env.EXPO_PUBLIC_AUTH_API_URL}/predict`;
         const response = await fetch(url, {
           method: 'POST',
           headers: {
