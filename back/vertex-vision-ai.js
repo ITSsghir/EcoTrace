@@ -1,7 +1,7 @@
 const { VertexAI } = require('@google-cloud/vertexai');
 const { default: axios } = require('axios');
-const fs = require('fs');
-const { URL } = require('url');
+const fs = require('node:fs');
+const { URL } = require('node:url');
 
 // Initialize Vertex with your Cloud project and location
 const projectId = 'tactile-octagon-418317';
