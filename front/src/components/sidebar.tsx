@@ -14,7 +14,7 @@ export default function SidebarComponent({ full_name, closeSidebar, router, hand
     const manualInputOptions = [
         { label: "Food", value: "food" },
         { label: "Destination", value: "destination" },
-        { label: "Clothing", value: "clothing"},
+        { label: "Clothes", value: "clothes"},
     ];
 
     const toggleDropdown = () => {
