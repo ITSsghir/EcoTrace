@@ -23,6 +23,7 @@ const AuthContext = React.createContext<{
   unit?: string;
   predictionJson?: string;
   history?: string[];
+  lastLogin?: string;
 }>({
   signIn: () => null,
   signOut: () => null,
@@ -43,6 +44,7 @@ const AuthContext = React.createContext<{
   unit: 'kgCO2e',
   predictionJson: null,
   history: [],
+  lastLogin: null,
 });
 
 // This hook can be used to access the user info.
@@ -71,11 +73,13 @@ export function SessionProvider(props: React.PropsWithChildren) {
   const [balance, setBalance] = React.useState<number>(0);
   const [unit, setUnit] = React.useState<string>('kgCO2e');
   const [predictionJson, setPredictionJson] = React.useState<any>(null);
+  const [[isloading, lastLogin], setLastLogin] = useStorageState('lastLogin');
 
   const [history, setHistory] = React.useState<string[]>([]);
 
   // Set a timer to log out the user after the token expires
   useEffect(() => {
+
     if (token) {
       let decodedToken = jwtDecode<JwtPayload>(token);
       let currentDate = new Date();
@@ -84,6 +88,7 @@ export function SessionProvider(props: React.PropsWithChildren) {
       if (decodedToken.exp * 1000 < currentDate.getTime()) {
         console.log("Token expired.");
         setToken(null);
+        setLastLogin(null);
       } else {
         console.log("Valid token");
         const verification = verifyToken(token);
@@ -94,6 +99,7 @@ export function SessionProvider(props: React.PropsWithChildren) {
         else {
           console.log("Token invalid.");
           setToken(null);
+          setLastLogin(null);
         }
       }
     }
@@ -121,6 +127,8 @@ export function SessionProvider(props: React.PropsWithChildren) {
       console.log('Token set:', token); // Log token here
       setToken(token)
       console.log('Token set:', token); // Log token here
+      const lastLogin = new Date().toLocaleString();
+      setLastLogin(lastLogin);
     } catch (error) {
       console.error('Error during login:', error);
       // Handle error, show an error message, etc.
@@ -136,6 +144,7 @@ export function SessionProvider(props: React.PropsWithChildren) {
       },
     });
     setToken(null);
+    setLastLogin(null);
 
     // Later we will remove the token from the request headers
     // axios.defaults.headers.common['Authorization'] = '';
@@ -167,6 +176,8 @@ export function SessionProvider(props: React.PropsWithChildren) {
     console.log(data.message);
     const token = data.token;
     setToken(token);
+    const lastLogin = new Date().toLocaleString();
+    setLastLogin(lastLogin);
 
     // Later we will add the token to the request headers
     // axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
@@ -340,6 +351,7 @@ export function SessionProvider(props: React.PropsWithChildren) {
     unit,
     predictionJson,
     history,
+    lastLogin,
   };
 
   return (
