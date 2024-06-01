@@ -44,9 +44,9 @@ export default function HomePage() {
     const Sidebar = (
         <View style={styles.sidebar}>
             <TouchableOpacity onPress={() => {
-                router.push('/manual');
+                router.push('/manual/food');
             }}>
-                <Text>Manual input</Text>
+                <Text>Manual input - Food</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={toggleSidebar}>
                 <Text>Close Sidebar</Text>
