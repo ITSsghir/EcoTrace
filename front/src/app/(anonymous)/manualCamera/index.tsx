@@ -41,7 +41,7 @@ const OrderForm = () => {
             carbonFootprint: calculateCarbonFootprint(ingredient)
         }));
         router.push({
-            pathname: '/manual/resultFood',
+            pathname: '/manualCamera/result',
             params: { ingredients: JSON.stringify(calculatedFootprints) }
         });
     };
