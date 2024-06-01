@@ -8,6 +8,7 @@ const AuthContext = React.createContext<{
   signOut: () => void;
   signUp: (full_name: string, email: string, phone_number: string, password: string) => void;
   getPredictionVertexAI: (uri: string) => void;
+  getPredictionVertexAIText: (text: string) => void;
   token?: string | null;
   isLoading: boolean;
   full_name?: string;
@@ -29,6 +30,7 @@ const AuthContext = React.createContext<{
   signOut: () => null,
   signUp: () => null,
   getPredictionVertexAI: () => null,
+  getPredictionVertexAIText: () => null,
   token: null,
   isLoading: false,
   full_name: null,
@@ -311,6 +313,70 @@ export function SessionProvider(props: React.PropsWithChildren) {
     }
   }
 
+  const getPredictionVertexAIText = async (text: string) => {
+    console.log("Getting predictions");
+
+    if (!text) {
+      return;
+    }
+    try {
+      // Prompt for the model (for more information on the prompt, check the Vertex AI API documentation https://cloud.google.com/vertex-ai/generative-ai/docs/multimodal/design-multimodal-prompts?hl=fr)
+      const prompt = "A partir du JSON suivant:\n"
+        + text + "\n"
+        + "Fournissez la liste des attributs suivants:\n"
+        + "Nom du plat (à partir de l'attribut name dans le JSON), ingrédients (extraite du JSON fourni (ingrédients s'il y a lieu à partir de l'attribut description + quantité)), description (à partir de l'attribut description dans le JSON), date (à partir de l'attribut date dans le JSON), "
+        + "l'empreinte carbone totale de la recette, et l'unité, au format JSON, c'est à vous de fournir l'empreinte carbone totale et l'unité\n"
+        + "Exemple :\n"
+        + "{\n"
+        + "  \"nom\": \"plat de pâtes\",\n"
+        + "  \"description\": \"plat de pâtes avec tomate et spaghetti\",\n"
+        + "  \"date\": \"2022-12-31T23:59:59\",\n"
+        + "  \"ingredients\": [\n"
+        + "    {\n"
+        + "      \"nom\": \"tomate\",\n"
+        + "      \"quantité\": 100,\n"
+        + "      \"unité\": \"g\"\n"
+        + "    },\n"
+        + "    {\n"
+        + "      \"nom\": \"spaghetti\",\n"
+        + "      \"quantite\": 200,\n"
+        + "      \"unite\": \"g CO2z\"\n"
+        + "    }\n"
+        + "  ],\n"
+        + "  \"total_carbon_footprint\": 100,\n"
+        + "  \"unite\": \"g CO2e\"\n" // or "kg CO2e"
+        + "}"
+        + "Note: Veuillez remplacer les valeurs par les valeurs réelles (d'une façon logique, répartis les ingrédients et leur quantité d'une façon à s'additionner à la quantité totale du plat) et donner que le JSON demandé, et rien d'autre\n";
+
+      const url = `${process.env.EXPO_PUBLIC_AUTH_API_URL}/predict-text`;
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ 
+          text: text,
+          prompt: prompt
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch predictions');
+      }
+      const rawData = await response.json();
+      const predictionData = rawData.prediction;
+      console.log("rawData: " + rawData);
+      // Remove the '/n' characters from the response, and ```json from the beginning and ``` from the end
+      const data = predictionData.replace(/\n/g, '').replace('```json', '').replace('```', '');
+      // Parse the JSON data
+      const dataJSON = JSON.parse(data);
+      console.log("Data JSON: " + JSON.stringify(dataJSON));
+      setPredictionJson(JSON.stringify(dataJSON));
+    } catch (error) {
+      console.error("Error fetching predictions:", error);
+    }
+  }
+
   const verifyToken = async (token: string) => {
     const url = process.env.EXPO_PUBLIC_AUTH_API_URL + '/verify';
     const response = await fetch(url, {
@@ -336,6 +402,7 @@ export function SessionProvider(props: React.PropsWithChildren) {
     signOut: logout,
     signUp: register,
     getPredictionVertexAI,
+    getPredictionVertexAIText,
     token,
     isLoading,
     full_name,
