@@ -47,6 +47,35 @@ const styles = StyleSheet.create({
         justifyContent: 'center', 
         alignItems: 'center' 
     },
+    sidebarItem: {
+        padding: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: '#ccc',
+        flexDirection: 'column',
+        alignItems: 'stretch',
+    },
+    sidebarItemMini: {
+        padding: 10,
+        flexDirection: 'column',
+        alignItems: 'stretch',
+        borderBlockColor: '#ccc',
+        
+    },
+    sidebarItemText: {
+        fontSize: 16,
+        fontWeight: '500',
+    },
+    sidebarItemTextMini: {
+        fontSize: 14,
+        fontWeight: '400',
+    },
+    sidebarDropdown: {
+        padding: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: '#ccc',
+        flexDirection: 'column',
+        alignItems: 'stretch',
+    },
 });
 
 export default styles;

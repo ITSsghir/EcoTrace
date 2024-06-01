@@ -17,6 +17,7 @@ import { useSession } from "@/app/context/ctx";
 import Choices from "@/components/choices";
 import History from "@/components/history";
 import styles from "@/styles/home";
+import SidebarComponent from "@/components/sidebar";
 
 export default function HomePage() {
     const router = useRouter();
@@ -45,11 +46,20 @@ export default function HomePage() {
         <View style={styles.sidebar}>
             <TouchableOpacity onPress={() => {
                 router.push('/manual/food');
-            }}>
-                <Text>Manual input - Food</Text>
+            }} style={styles.sidebarItem}>
+                <Text style={styles.sidebarItemText}>Manual input - Food</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={toggleSidebar}>
-                <Text>Close Sidebar</Text>
+            <View style={styles.sidebarItem}>
+                <Text style={styles.sidebarItemText}>Manual input</Text>
+                {/* Add more manual input options here as a drop down list*/}
+            </View>
+            <TouchableOpacity onPress={() => {
+                router.push('/manual/destination');
+            }} style={styles.sidebarItem}>
+                <Text style={styles.sidebarItemText}>Manual input - Destination</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={toggleSidebar} style={styles.sidebarItem}>
+                <Text style={styles.sidebarItemText}>Close Sidebar</Text>
             </TouchableOpacity>
             {/* Add more sidebar items here */}
         </View>
@@ -79,7 +89,7 @@ export default function HomePage() {
             {isSidebarOpen && (
                 <>
                     <View style={styles.overlay} onTouchStart={closeSidebar} />
-                    {Sidebar}
+                    <SidebarComponent closeSidebar={closeSidebar} router={router} />
                 </>
             )}
             <Stack.Screen
