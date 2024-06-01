@@ -89,7 +89,7 @@ export default function HomePage() {
             {isSidebarOpen && (
                 <>
                     <View style={styles.overlay} onTouchStart={closeSidebar} />
-                    <SidebarComponent closeSidebar={closeSidebar} router={router} full_name={full_name} />
+                    <SidebarComponent closeSidebar={closeSidebar} router={router} full_name={full_name} handleSignOut={handleSignOut} />
                 </>
             )}
             <Stack.Screen
@@ -114,7 +114,7 @@ export default function HomePage() {
                             iconUrl={icons.profile} 
                             dimension={40}
                             handlePress={() => {
-                                handleSignOut()
+                                router.push('/profile')
                             }}
                         />
                     )
