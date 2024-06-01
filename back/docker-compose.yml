@@ -11,12 +11,15 @@ services:
     ports:
       - "3000:3000"
     volumes:
+      # If on Windows, use the following line
       - ${USERPROFILE}\AppData\Roaming\gcloud:/app/gcloud:/app/gcloud
+      # If on Linux or mac, use the following line
+      #- ~/.config/gcloud:/app/gcloud
     depends_on:
       - db
     environment:
       MYSQL_HOST: db
-      MYSQL_PORT: 3306
+      MYSQL_PORT: ${MYSQL_PORT}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
