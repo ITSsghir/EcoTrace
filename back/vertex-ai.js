@@ -1,12 +1,13 @@
 const { VertexAI } = require('@google-cloud/vertexai');
-const { default: axios } = require('axios');
-const fs = require('node:fs');
-const { URL } = require('node:url');
 
 // Initialize Vertex with your Cloud project and location
 const projectId = 'tactile-octagon-418317';
 const locationId = 'europe-west4';
-const model = 'gemini-pro-vision';
+
+// Image model
+const ImageModel = 'gemini-pro-vision';
+// Text model
+const TextModel = 'gemini-1.5-pro';
 
 /**
  * 
@@ -15,14 +16,18 @@ const model = 'gemini-pro-vision';
  */
 async function getFileAsBase64(filePath) {
     if (!filePath) {
-        return null;
+        // If no file is provided, we return a promise that rejects
+        return new Promise((_, reject) => {
+            reject('No file provided');
+        });
     }
-    // URLs don't work, revise later
-    if (filePath.startsWith('http') || filePath.startsWith('https')) {
-        const url = new URL(filePath);
-        const response = await axios.get(url, { responseType: 'arraybuffer' });
-        return Buffer.from(response.data).toString('base64');
-    }
+    // // URLs don't work, revise later
+    // if (filePath.startsWith('http') || filePath.startsWith('https')) {
+    //     const url = new URL(filePath);
+    //     const response = await axios.get(url, { responseType: 'arraybuffer' });
+    //     return Buffer.from(response.data).toString('base64');
+    // }
+    // We convert the file to base64 on the client side, so we can return it directly
     return filePath;
 }
 
@@ -52,16 +57,55 @@ function getMimeType(extension) {
     return extensionToMimeType[extension] || null;
 }
 
-/**
- * 
- * @param {string} projectId 
- * @param {dtring} projectLocation 
- * @param {dtring} model 
- * @param {string} inputFilePath 
- * @param {string} userPrompt 
- * @returns {Promise<string>} the response from the Vertex Vision AI API
- */
-async function callGeminiAPI(
+// Call gemini API for text
+async function callGeminiTextAPI(
+    projectId,
+    projectLocation,
+    model,
+    userPrompt
+) {
+    // Initialize Vertex with your Cloud project and location
+    const vertexAI = new VertexAI({
+        project: projectId,
+        location: projectLocation,
+    });
+
+    // Instantiate the model
+    const generativeTextModel = vertexAI.preview.getGenerativeModel({
+        model: model,
+    });
+
+    // Construct the request with the user question only
+    const textPart = {
+        text: userPrompt,
+    };
+    const requestPart = [textPart];
+
+    const request = {
+        contents: [{ role: "user", parts: requestPart }],
+    };
+
+    // Create the response stream
+    let aggregatedResponse;
+    try {
+        const responseStream = await generativeTextModel.generateContentStream(
+            request
+        );
+
+        // Wait for the response stream to complete
+        aggregatedResponse = await responseStream.response;
+    } catch (error) {
+        console.error("Error calling the API:", error);
+        return new Promise((_, reject) => {
+            reject(error);
+        });
+    }
+
+    return aggregatedResponse.candidates[0].content.parts[0].text;
+}
+
+// Call gemini API for image
+async function callGeminiVisionAPI(
     projectId,
     projectLocation,
     model,
@@ -131,13 +175,25 @@ async function callGeminiAPI(
  * @param {string} imagePath 
  * @returns {Promise<string>} the prediction from the API
  */
-async function predict(imagePath, extension, prompt) {
+async function predictImage(imagePath, extension, prompt) {
     if (!imagePath) {
         return new Promise((_, reject) => {
             reject('No image provided');
         });
     }
-    const response = await callGeminiAPI(projectId, locationId, model, imagePath, prompt, extension)
+    if (!extension) {
+        return new Promise((_, reject) => {
+            reject('No extension provided');
+        });
+    }
+
+    if (!prompt) {
+        return new Promise((_, reject) => {
+            reject('No prompt provided');
+        });
+    }
+
+    const response = await callGeminiVisionAPI(projectId, locationId, ImageModel, imagePath, prompt, extension)
             .then((prediction) => {
                 return new Promise((resolve) => {
                     resolve(prediction);
@@ -153,5 +209,31 @@ async function predict(imagePath, extension, prompt) {
     return response;
 }
 
+// Function to predict using only text prompt
+async function predictText(prompt) {
+    if (!prompt) {
+        return new Promise((_, reject) => {
+            reject('No prompt provided');
+        });
+    }
+    const response = await callGeminiTextAPI(projectId, locationId, TextModel, prompt)
+        .then((prediction) => {
+            return new Promise((resolve) => {
+                resolve(prediction);
+            });
+        })
+        .catch((err) => {
+            console.error(err);
+            return new Promise((_, reject) => {
+                reject('Error calling the API'+ err);
+            });
+        }      
+    );
+    return response;
+}
+
 // Export the function
-module.exports = { predict };
+module.exports = { 
+    predictImage,
+    predictText
+};

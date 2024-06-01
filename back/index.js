@@ -4,7 +4,7 @@ const dotenv = require('dotenv')
 dotenv.config();
 
 // Import the required modules
-const { predict } = require('./vertex-vision-ai.js');
+const { predictImage, predictText } = require('./vertex-ai.js');
 
 // Setup server (Express) 
 const express = require('express');
@@ -189,11 +189,12 @@ app.get('/users/:id/carbon_footprint', verifyToken, (req, res) => {
 
 
 // Modify the carbon footprint of the user by id
-app.put('/users/:id/carbon_footprint/:added', verifyToken, (req, res) => {
+app.put('/users/:id/carbon_footprint/', verifyToken, (req, res) => {
     const { id } = req.params;
-    const { added } = req.params;
+    const { carbonFootprint } = req.body;
+
     // Modify the carbon footprint of the user
-    updateCarbonFootprint(id, added);
+    updateCarbonFootprint(id, carbonFootprint);
     res.status(200).send('Carbon footprint modified');
 });
 
@@ -208,15 +209,36 @@ app.put('/users/:id', verifyToken, (req, res) => {
     res.status(200).send('User info has been modified');
 });
 
-// Post request to get Vertex AI prediction
-app.post('/predict', async (req, res) => {
+// Post request to predict the content of an image
+app.post('/predict-image', verifyToken, async (req, res) => {
     const { base64Image, extension , prompt } = req.body;
     
     console.log('Predicting...')
 
     try {
         // Get the prediction from Vertex AI
-        const prediction = await predict(base64Image, extension, prompt);
+        const prediction = await predictImage(base64Image, extension, prompt);
+
+        console.log('Prediction:', prediction);
+        const response = { message: 'Prediction successful', prediction: prediction };
+        res.status(200).send(response);
+    } 
+    catch (err) {
+        console.error('Error predicting:', err.message);
+        const response = { message: 'Error predicting: ' + err };
+        res.status(500).send(response);
+    }
+});
+
+// Post request to get response from the API using only text prompt
+app.post('/predict-text', verifyToken, async (req, res) => {
+    const { prompt } = req.body;
+    
+    console.log('Predicting...')
+
+    try {
+        // Get the prediction from Vertex AI
+        const prediction = await predictText(prompt);
 
         console.log('Prediction:', prediction);
         const response = { message: 'Prediction successful', prediction: prediction };
