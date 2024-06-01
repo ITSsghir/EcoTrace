@@ -3,8 +3,11 @@ import React, { useEffect } from "react";
 import { Image, SafeAreaView, Text, TouchableOpacity, View } from "react-native";
 import * as FileSystem from 'expo-file-system';
 import styles from "@/styles/camera";
+import { useSession } from "../context/ctx";
 
 export default function Preview() {
+
+    const { getPredictionVertexAI, predictionJson } = useSession();
 
     // Get the image from the camera(passed as a params from the camera component via the router)
     const router = useRouter();
@@ -68,78 +71,10 @@ export default function Preview() {
         }
       };
 
-      // Get the predictions from the server (Vertex Vision AI API)
-      const getPredictionVertexAI = async (uri : string) => {      
-        console.log("Getting predictions");
-
-        if (!uri) {
-          return;
-        }
-
-        const fileExtension = uri.split('.').pop();
-
-        // convert image to base64
-        const base64ImageData = await FileSystem.readAsStringAsync(uri, { 
-          encoding: FileSystem.EncodingType.Base64 
-        });
-
-        // Prompt for the model (for more information on the prompt, check the Vertex AI API documentation https://cloud.google.com/vertex-ai/generative-ai/docs/multimodal/design-multimodal-prompts?hl=fr)
-        const prompt = "Fournissez la liste de tous les attributs suivants :\n"
-          + "Nom du plat, ingrédients (estimation quantité, unité (en gramme)), l'empreinte carbone totale de la recette, et l'unité, au format JSON\n"
-          + "Exemple :\n"
-          + "{\n"
-          + "  \"ingredients\": [\n"
-          + "    {\n"
-          + "      \"nom\": \"tomate\",\n"
-          + "      \"quantité\": 100,\n"
-          + "      \"unité\": \"g\"\n"
-          + "    },\n"
-          + "    {\n"
-          + "      \"nom\": \"spaghetti\",\n"
-          + "      \"quantite\": 200,\n"
-          + "      \"unite\": \"g CO2z\"\n"
-          + "    }\n"
-          + "  ],\n"
-          + "  \"nom\": \"plat de pâtes\",\n"
-          + "  \"total_carbon_footprint\": 100,\n"
-          + "  \"unite\": \"g CO2e\"\n" // or "kg CO2e"
-          + "}";
-
-        const url = `${process.env.EXPO_PUBLIC_AUTH_API_URL}/predict`;
-        const response = await fetch(url, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ 
-            base64Image: base64ImageData,
-            extension: `${fileExtension}`,
-            prompt: prompt
-          }),
-        });
-
-        const data = await response.json();
-
-        return data;
-      }
-
       const handleGetPrediction = async () => {
-        const response = await getPredictionVertexAI(image);
-        const prediction = response.prediction;
-
-        // Trim the prediction (remove the '```json' and '```' from the string)
-        const predictionTrimmed = prediction.replace('```json', '').replace('```', '');
-        
-        // Store the prediction in a variable as a json object
-        const predictionJson = JSON.parse(predictionTrimmed);
-
-        console.log(predictionJson);
-        
-        // Send the prediction to the result page
-        router.push({
-          pathname: '/camera/(result)/[result]',
-          params: { result: predictionJson }
-        });
+        // Get the predictions from the server
+        await getPredictionVertexAI(image);
+        router.push('/camera/result');
       }
 
     return (

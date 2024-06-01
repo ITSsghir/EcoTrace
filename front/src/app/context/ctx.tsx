@@ -1,11 +1,13 @@
 import React, { useEffect } from 'react';
 import { useStorageState } from '@/hooks/useStorageState';
 import { JwtPayload, jwtDecode } from 'jwt-decode';
+import * as FileSystem from 'expo-file-system';
 
 const AuthContext = React.createContext<{
   signIn: (email: string, password: string) => void;
   signOut: () => void;
   signUp: (full_name: string, email: string, phone_number: string, password: string) => void;
+  getPredictionVertexAI: (uri: string) => void;
   token?: string | null;
   isLoading: boolean;
   full_name?: string;
@@ -19,11 +21,13 @@ const AuthContext = React.createContext<{
   monthly_unit?: string;
   balance?: number;
   unit?: string;
+  predictionJson?: string;
   history?: string[];
 }>({
   signIn: () => null,
   signOut: () => null,
   signUp: () => null,
+  getPredictionVertexAI: () => null,
   token: null,
   isLoading: false,
   full_name: null,
@@ -37,6 +41,7 @@ const AuthContext = React.createContext<{
   monthly_unit: 'kgCO2e',
   balance: 0,
   unit: 'kgCO2e',
+  predictionJson: null,
   history: [],
 });
 
@@ -65,6 +70,7 @@ export function SessionProvider(props: React.PropsWithChildren) {
   const [monthly_unit, setMonthlyUnit] = React.useState<string>('kgCO2e');
   const [balance, setBalance] = React.useState<number>(0);
   const [unit, setUnit] = React.useState<string>('kgCO2e');
+  const [predictionJson, setPredictionJson] = React.useState<any>(null);
 
   const [history, setHistory] = React.useState<string[]>([]);
 
@@ -224,6 +230,76 @@ export function SessionProvider(props: React.PropsWithChildren) {
     setUnit(unit);
   }
 
+  // Get the predictions from the server (Vertex Vision AI API)
+  const getPredictionVertexAI = async (uri : string) => {      
+    console.log("Getting predictions");
+
+    if (!uri) {
+      return;
+    }
+    try {
+      const fileExtension = uri.split('.').pop();
+
+      // convert image to base64
+      const base64ImageData = await FileSystem.readAsStringAsync(uri, { 
+        encoding: FileSystem.EncodingType.Base64 
+      });
+
+      // Prompt for the model (for more information on the prompt, check the Vertex AI API documentation https://cloud.google.com/vertex-ai/generative-ai/docs/multimodal/design-multimodal-prompts?hl=fr)
+      const prompt = "Fournissez la liste de tous les attributs suivants :\n"
+        + "Nom du plat, ingrédients (estimation quantité, unité (en gramme)), l'empreinte carbone totale de la recette, et l'unité, au format JSON\n"
+        + "Exemple :\n"
+        + "{\n"
+        + "  \"ingredients\": [\n"
+        + "    {\n"
+        + "      \"nom\": \"tomate\",\n"
+        + "      \"quantité\": 100,\n"
+        + "      \"unité\": \"g\"\n"
+        + "    },\n"
+        + "    {\n"
+        + "      \"nom\": \"spaghetti\",\n"
+        + "      \"quantite\": 200,\n"
+        + "      \"unite\": \"g CO2z\"\n"
+        + "    }\n"
+        + "  ],\n"
+        + "  \"nom\": \"plat de pâtes\",\n"
+        + "  \"total_carbon_footprint\": 100,\n"
+        + "  \"unite\": \"g CO2e\"\n" // or "kg CO2e"
+        + "}";
+
+      const url = `${process.env.EXPO_PUBLIC_AUTH_API_URL}/predict-image`;
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ 
+          base64Image: base64ImageData,
+          extension: `${fileExtension}`,
+          prompt: prompt
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch predictions');
+      }
+
+      console.log(response);
+
+      const rawData = await response.json();
+      const predictionData = rawData.prediction;
+      console.log("rawData: " + rawData);
+      // Remove the '/n' characters from the response, and ```json from the beginning and ``` from the end
+      const data = predictionData.replace(/\n/g, '').replace('```json', '').replace('```', '');
+      // Parse the JSON data
+      const dataJSON = JSON.parse(data);
+      console.log("Data JSON: " + JSON.stringify(dataJSON));
+      setPredictionJson(JSON.stringify(dataJSON));
+    } catch (error) {
+      console.error("Error fetching predictions:", error);
+    }
+  }
+
   const verifyToken = async (token: string) => {
     const url = process.env.EXPO_PUBLIC_AUTH_API_URL + '/verify';
     const response = await fetch(url, {
@@ -248,6 +324,7 @@ export function SessionProvider(props: React.PropsWithChildren) {
     signIn: login,
     signOut: logout,
     signUp: register,
+    getPredictionVertexAI,
     token,
     isLoading,
     full_name,
@@ -261,6 +338,7 @@ export function SessionProvider(props: React.PropsWithChildren) {
     monthly_unit,
     balance,
     unit,
+    predictionJson,
     history,
   };
 
