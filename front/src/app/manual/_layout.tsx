@@ -43,6 +43,57 @@ export default function HomeLayout() {
                 );
             }
         }} />
+        <Stack.Screen name="destination" options={{
+            headerTitle: 'Manual Input - Destination',
+            headerShown: true,
+            headerTitleStyle: {
+                fontWeight: 'bold',
+            },
+            headerLeft: () => {
+                return (
+                  <ScreenHeaderBtn 
+                    iconUrl={icons.back} handlePress={() => {
+                        router.back();
+                    }} 
+                    dimension={30} 
+                  />
+                );
+            }
+        }} />
+        <Stack.Screen name="clothes" options={{
+            headerTitle: 'Manual Input - Clothes',
+            headerShown: true,
+            headerTitleStyle: {
+                fontWeight: 'bold',
+            },
+            headerLeft: () => {
+                return (
+                  <ScreenHeaderBtn 
+                    iconUrl={icons.back} handlePress={() => {
+                        router.back();
+                    }} 
+                    dimension={30} 
+                  />
+                );
+            }
+        }} />
+        <Stack.Screen name="result" options={{
+            headerTitle: 'Manual Input - Result',
+            headerShown: true,
+            headerTitleStyle: {
+                fontWeight: 'bold',
+            },
+            headerLeft: () => {
+                return (
+                  <ScreenHeaderBtn 
+                    iconUrl={icons.back} handlePress={() => {
+                        router.back();
+                    }} 
+                    dimension={30} 
+                  />
+                );
+            }
+        }} />
     </Stack>
   );
 }
