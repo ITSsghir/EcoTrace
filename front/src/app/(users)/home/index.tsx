@@ -89,7 +89,7 @@ export default function HomePage() {
             {isSidebarOpen && (
                 <>
                     <View style={styles.overlay} onTouchStart={closeSidebar} />
-                    <SidebarComponent closeSidebar={closeSidebar} router={router} />
+                    <SidebarComponent closeSidebar={closeSidebar} router={router} full_name={full_name} />
                 </>
             )}
             <Stack.Screen

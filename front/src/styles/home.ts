@@ -13,6 +13,12 @@ const styles = StyleSheet.create({
         fontSize: 24,
         fontWeight: "bold",
     },
+    miniTitle: {
+        fontSize: 20,
+        fontWeight: "bold",
+        marginBottom: 20,
+        paddingVertical: 20,
+    },
     header: {
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -54,12 +60,21 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'stretch',
     },
+    sidebarItemClicked: {
+        padding: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: '#ccc',
+        flexDirection: 'column',
+        alignItems: 'stretch',
+        backgroundColor: '#f0f0f0',
+        borderRadius: 5,
+    },
     sidebarItemMini: {
         padding: 10,
         flexDirection: 'column',
         alignItems: 'stretch',
         borderBlockColor: '#ccc',
-        
+
     },
     sidebarItemText: {
         fontSize: 16,
