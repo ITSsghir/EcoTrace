@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import styles from "@/styles/home";
 
-export default function SidebarComponent({ full_name, closeSidebar, router }) {
+export default function SidebarComponent({ full_name, closeSidebar, router, handleSignOut }) {
     
     const [showDropdown, setShowDropdown] = useState(true);
     const [selectedOption, setSelectedOption] = useState('Home');
@@ -19,15 +19,6 @@ export default function SidebarComponent({ full_name, closeSidebar, router }) {
 
     const toggleDropdown = () => {
         setShowDropdown(!showDropdown);
-    }
-
-    const onUpdatePress = () => {
-        // Navigate to the profile page (not implemented yet)
-        //router.push('/profile');
-    }
-
-    const onDeletePress = () => {
-        // Handle delete account using the API (through ctx)
     }
 
     const renderDropdown = () => {
@@ -70,31 +61,40 @@ export default function SidebarComponent({ full_name, closeSidebar, router }) {
                 <Text style={styles.sidebarItemText}>Manual input</Text>
             </TouchableOpacity>
             {showDropdown && renderDropdown()}
-            <TouchableOpacity 
-                style={selectedOption === 'Update' ? styleClicked : styleNotClicked}
+            <TouchableOpacity
+                style={selectedOption === 'Services' ? styleClicked : styleNotClicked}
                 onPress={() => {
-                    setSelectedOption('Update');
-                    onUpdatePress();
+                    setSelectedOption('Services');
+                    router.push('/services');
                 }}
             >
-                <Text style={styles.sidebarItemText}>Update Account</Text>
+                <Text style={styles.sidebarItemText}>My Services</Text>
             </TouchableOpacity>
             <TouchableOpacity 
-                style={selectedOption === 'Delete' ? styleClicked : styleNotClicked}
+                style={selectedOption === 'Account' ? styleClicked : styleNotClicked}
+                onPress={() => {
+                    setSelectedOption('Account');
+                    router.push('/profile');
+                }}
+            >
+                <Text style={styles.sidebarItemText}>Account</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+                style={selectedOption === 'Settings' ? styleClicked : styleNotClicked}
                 onPress={
                     () => {
-                        setSelectedOption('Delete');
-                        onDeletePress();
+                        setSelectedOption('Settings');
+                        router.push('/settings');
                     }
                 }
             >
-                <Text style={styles.sidebarItemText}>Delete Account</Text>
+                <Text style={styles.sidebarItemText}>Settings & Help</Text>
             </TouchableOpacity>
             <TouchableOpacity
-                onPress={closeSidebar}
+                onPress={handleSignOut}
                 style={styles.sidebarItem}
             >
-                <Text style={styles.sidebarItemText}>Close Sidebar</Text>
+                <Text style={styles.sidebarItemText}>Log out</Text>
             </TouchableOpacity>
         </View>
     );
