@@ -2,6 +2,7 @@ import { StyleSheet, Dimensions } from 'react-native';
 import Colors from '@/constants/Colors'
 
 const screenWidth = Dimensions.get('window').width;
+const screenHeight = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
     container: {
@@ -55,6 +56,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         paddingVertical: 10,
         backgroundColor: Colors.primary,
+    },
+    noActivitiesTitle: {
+        fontSize: 20,
+        textAlign: 'center',
+        marginTop: screenHeight / 3,
     },
 });
 
