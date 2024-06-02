@@ -10,6 +10,7 @@ const icons: Icon = {
     car: require("../../(public)/icons/car.png"),
     destination: require("../../(public)/icons/destination.png"),   
     back: require("../../(public)/icons/back.png"),
+    history: require("../../(public)/icons/history.png"),
 };
 
 export default icons;
