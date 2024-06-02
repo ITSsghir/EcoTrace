@@ -9,6 +9,7 @@ const AuthContext = React.createContext<{
   signUp: (full_name: string, email: string, phone_number: string, password: string) => void;
   getPredictionVertexAI: (uri: string) => void;
   getPredictionVertexAIText: (text: string) => void;
+  createActivity: (activity: any) => void;
   token?: string | null;
   isLoading: boolean;
   full_name?: string;
@@ -23,7 +24,7 @@ const AuthContext = React.createContext<{
   balance?: number;
   unit?: string;
   predictionJson?: string;
-  history?: string[];
+  history?: string;
   lastLogin?: string;
 }>({
   signIn: () => null,
@@ -31,6 +32,7 @@ const AuthContext = React.createContext<{
   signUp: () => null,
   getPredictionVertexAI: () => null,
   getPredictionVertexAIText: () => null,
+  createActivity: () => null,
   token: null,
   isLoading: false,
   full_name: null,
@@ -45,7 +47,7 @@ const AuthContext = React.createContext<{
   balance: 0,
   unit: 'kgCO2e',
   predictionJson: null,
-  history: [],
+  history: null,
   lastLogin: null,
 });
 
@@ -63,6 +65,8 @@ export function useSession() {
 
 export function SessionProvider(props: React.PropsWithChildren) {
   const [[isLoading, token], setToken] = useStorageState('token');
+  const [[isloading, lastLogin], setLastLogin] = useStorageState('lastLogin');
+  const [history, setHistory] = React.useState<any>(null);
   const [userId, setUserId] = React.useState<number>(0);
   const [full_name, setFullName] = React.useState<string>('');
   const [email, setEmail] = React.useState<string>('');
@@ -75,13 +79,9 @@ export function SessionProvider(props: React.PropsWithChildren) {
   const [balance, setBalance] = React.useState<number>(0);
   const [unit, setUnit] = React.useState<string>('kgCO2e');
   const [predictionJson, setPredictionJson] = React.useState<any>(null);
-  const [[isloading, lastLogin], setLastLogin] = useStorageState('lastLogin');
-
-  const [history, setHistory] = React.useState<string[]>([]);
 
   // Set a timer to log out the user after the token expires
   useEffect(() => {
-
     if (token) {
       let decodedToken = jwtDecode<JwtPayload>(token);
       let currentDate = new Date();
@@ -92,11 +92,12 @@ export function SessionProvider(props: React.PropsWithChildren) {
         setToken(null);
         setLastLogin(null);
       } else {
-        console.log("Valid token");
         const verification = verifyToken(token);
         if (verification) {
           getUser(token);
           getCarbonFootprintInfo(userId);
+          getActivities(userId);
+          console.log(userId);
         }
         else {
           console.log("Token invalid.");
@@ -212,6 +213,9 @@ export function SessionProvider(props: React.PropsWithChildren) {
       setEmail(user.email);
       setPhoneNumber(user.phone_number);
       setPassword(user.password);
+
+      getActivities(user.id);
+      console.log('History: ' + history);
   }
 
   const getCarbonFootprintInfo = async (id: number) => {
@@ -243,6 +247,37 @@ export function SessionProvider(props: React.PropsWithChildren) {
     setUnit(unit);
   }
 
+    // Updated getActivities function
+    const getActivities = async (id: number) => {
+      try {
+        const url = `${process.env.EXPO_PUBLIC_AUTH_API_URL}/users/${id}/activities`;
+        const response = await fetch(url, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+  
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+  
+        const data = await response.json();
+  
+        // Ensure that the response contains the history data
+        if (data.history) {
+          setHistory(JSON.stringify(data.history));
+          console.log('History set:', data.history);
+        } else {
+          console.error('No history found in the response');
+        }
+  
+      } catch (error) {
+        console.error('Error fetching activities:', error);
+      }
+    };
+
   // Get the predictions from the server (Vertex Vision AI API)
   const getPredictionVertexAI = async (uri : string) => {      
     console.log("Getting predictions");
@@ -260,7 +295,7 @@ export function SessionProvider(props: React.PropsWithChildren) {
 
       // Prompt for the model (for more information on the prompt, check the Vertex AI API documentation https://cloud.google.com/vertex-ai/generative-ai/docs/multimodal/design-multimodal-prompts?hl=fr)
       const prompt = "Fournissez la liste de tous les attributs suivants :\n"
-        + "Nom du plat, ingrédients (estimation quantité, unité (en gramme)), l'empreinte carbone totale de la recette, et l'unité, au format JSON\n"
+        + "Nom du plat, ingrédients (estimation quantité, unité (en gramme)), l'empreinte carbone totale de la recette, une description de l'activité (J'ai mangé ....) et l'unité, au format JSON\n"
         + "Exemple :\n"
         + "{\n"
         + "  \"ingredients\": [\n"
@@ -276,6 +311,7 @@ export function SessionProvider(props: React.PropsWithChildren) {
         + "    }\n"
         + "  ],\n"
         + "  \"nom\": \"plat de pâtes\",\n"
+        + "  \"description\": \"J'ai mangé un plat de pâtes avec tomate et spaghetti\",\n"
         + "  \"total_carbon_footprint\": 100,\n"
         + "  \"unite\": \"g CO2e\"\n" // or "kg CO2e"
         + "}";
@@ -284,7 +320,8 @@ export function SessionProvider(props: React.PropsWithChildren) {
       const response = await fetch(url, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify({ 
           base64Image: base64ImageData,
@@ -352,7 +389,8 @@ export function SessionProvider(props: React.PropsWithChildren) {
       const response = await fetch(url, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify({ 
           text: text,
@@ -377,6 +415,34 @@ export function SessionProvider(props: React.PropsWithChildren) {
     }
   }
 
+  const createActivity = async (activity: any) => {
+    const url = process.env.EXPO_PUBLIC_AUTH_API_URL + '/activities';
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        user_id: userId,
+        name: activity.name,
+        activity_type: activity.activity_type,
+        description: activity.description,
+        carbon_footprint: activity.carbon_footprint,
+        unit: activity.unit,
+      }),
+    });
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    const data = await response.json().catch(error => {
+      console.error('Error parsing JSON:', error);
+    });
+    console.log(data.message);
+    getCarbonFootprintInfo(userId);
+    getActivities(userId);  
+  }
+
   const verifyToken = async (token: string) => {
     const url = process.env.EXPO_PUBLIC_AUTH_API_URL + '/verify';
     const response = await fetch(url, {
@@ -394,6 +460,7 @@ export function SessionProvider(props: React.PropsWithChildren) {
       throw error; // Rethrow the error to propagate it
     });
     console.log(data.message);
+    getCarbonFootprintInfo(userId);
     return true ? data.message === 'Token verified' : false;
   }
 
@@ -403,6 +470,7 @@ export function SessionProvider(props: React.PropsWithChildren) {
     signUp: register,
     getPredictionVertexAI,
     getPredictionVertexAIText,
+    createActivity,
     token,
     isLoading,
     full_name,
