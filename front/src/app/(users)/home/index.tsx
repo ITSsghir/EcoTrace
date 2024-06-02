@@ -22,7 +22,7 @@ import SidebarComponent from "@/components/sidebar";
 export default function HomePage() {
     const router = useRouter();
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-    const { daily_balance, daily_unit, balance, unit } = useSession();
+    const { daily_balance, daily_unit, balance, unit, history } = useSession();
 
     const { full_name, signOut } = useSession();
     // Sign out function
@@ -41,44 +41,9 @@ export default function HomePage() {
         setIsSidebarOpen(!isSidebarOpen);
     }
 
-    // Sidebar content
-    const Sidebar = (
-        <View style={styles.sidebar}>
-            <TouchableOpacity onPress={() => {
-                router.push('/manual/food');
-            }} style={styles.sidebarItem}>
-                <Text style={styles.sidebarItemText}>Manual input - Food</Text>
-            </TouchableOpacity>
-            <View style={styles.sidebarItem}>
-                <Text style={styles.sidebarItemText}>Manual input</Text>
-                {/* Add more manual input options here as a drop down list*/}
-            </View>
-            <TouchableOpacity onPress={() => {
-                router.push('/manual/destination');
-            }} style={styles.sidebarItem}>
-                <Text style={styles.sidebarItemText}>Manual input - Destination</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={toggleSidebar} style={styles.sidebarItem}>
-                <Text style={styles.sidebarItemText}>Close Sidebar</Text>
-            </TouchableOpacity>
-            {/* Add more sidebar items here */}
-        </View>
-    );
+    let historyJSON = JSON.parse(history);
 
-    let history = [
-        { id: '1', title: 'Activity 1', carbon_footprint: 0 , unit: 'KgCO2e', method: 'Camera' },
-        { id: '2', title: 'Activity 2', carbon_footprint: 0 , unit: 'KgCO2e', method: 'Microphone' },
-        { id: '3', title: 'Activity 3', carbon_footprint: 0 , unit: 'kgCO2e', method: 'Vehicle' },
-        { id: '4', title: 'Activity 4', carbon_footprint: 5 , unit: 'kgCO2e', method: 'Destination' },
-        { id: '5', title: 'Activity 5', carbon_footprint: 0 , unit: 'kgCO2e', method: 'Camera' },
-        { id: '6', title: 'Activity 6', carbon_footprint: 1 , unit: 'kgCO2e', method: 'Microphone' },
-        { id: '7', title: 'Activity 7', carbon_footprint: 0 , unit: 'kgCO2e', method: 'Vehicle' },
-        { id: '8', title: 'Activity 8', carbon_footprint: 7 , unit: 'kgCO2e', method: 'Destination' },
-        { id: '9', title: 'Activity 9', carbon_footprint: 0 , unit: 'kgCO2e', method: 'Camera' },
-        { id: '10', title: 'Activity 10', carbon_footprint: 0 , unit: 'kgCO2e', method: 'Microphone' },
-        { id: '11', title: 'Activity 11', carbon_footprint: 3 , unit: 'kgCO2e', method: 'Vehicle' },
-        { id: '12', title: 'Activity 12', carbon_footprint: 0 , unit: 'kgCO2e', method: 'Destination' }
-    ];    
+    // const { history } = useSession();
 
     useEffect(() => {
         LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
@@ -125,7 +90,7 @@ export default function HomePage() {
             <View style={styles.choicesContainer}>
                 <Choices />
             </View>
-            <History data={history} />
+            <History data={historyJSON} />
         </SafeAreaView>
     );
 };

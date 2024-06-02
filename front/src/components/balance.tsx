@@ -8,9 +8,9 @@ import styles from '@/styles/balance';
 // This component is a subcomponent of the Welcome component, it will contain the monthly carbon footprint balance of the user and the daily one as well
 export default function Balance({ balance, unit, daily_balance, daily_unit, full_name }) {
 
-    let FullBalance: string = balance + ' ' + unit;
+    let FullBalance: string = balance +  unit;
 
-    let DailyBalance : string = daily_balance + ' ' + daily_unit;
+    let DailyBalance : string = daily_balance +  daily_unit;
 
     return (
         <View style={ styles.card }>
