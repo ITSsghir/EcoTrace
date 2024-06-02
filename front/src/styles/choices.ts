@@ -1,4 +1,6 @@
 import { Dimensions, StyleSheet } from 'react-native';
+// Import styles from balance.ts as stylesBalance
+import stylesBalance from './balance';
 
 
 const screenWidth = Dimensions.get('window').width;
@@ -12,7 +14,7 @@ const styles = StyleSheet.create({
     choicesContainer: {
         borderRadius: 10 / 1.25,
         width: choicesContainerWidth,
-        height: screenHeight * 0.4,
+        height: screenHeight * 0.6 - stylesBalance.card.height,
         margin: 10,
     },
     subTitle: {

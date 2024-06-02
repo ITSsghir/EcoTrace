@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
         backgroundColor: colors.white,
         padding: 20,
         borderRadius: 10,
+        margin: 10,
         width: cardWidth,
         height: screenHeight * 145/812,
     },
