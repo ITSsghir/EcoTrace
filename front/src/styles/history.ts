@@ -17,12 +17,12 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     homeContainer: {
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.primary,
         borderRadius: 10 / 1.25,
         width: screenWidth * 0.9,
-        padding: 20,
+        padding: 0,
         margin: 10,
-        height: screenWidth * 19/20
+        height: screenHeight * 0.9,
     },
     title: {
         fontSize: 24,
@@ -61,6 +61,19 @@ const styles = StyleSheet.create({
         fontSize: 20,
         textAlign: 'center',
         marginTop: screenHeight / 3,
+    },
+    icon: {
+        width: 20,
+        height: 20,
+        borderRadius: 10 / 1.25,
+        marginTop: 18 * 0.125 * screenHeight / 100,
+        marginRight: -1 * screenWidth / 100,
+        marginLeft: 1 * screenWidth / 100,
+
+    },
+    titleContainer: {
+        flexDirection: 'row',
+        display: 'flex',
     },
 });
 

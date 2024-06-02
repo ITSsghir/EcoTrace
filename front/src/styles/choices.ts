@@ -2,6 +2,7 @@ import { Dimensions, StyleSheet } from 'react-native';
 
 
 const screenWidth = Dimensions.get('window').width;
+const screenHeight = Dimensions.get('window').height;
 const choicesContainerWidth = screenWidth * 0.9;
 const choiceButtonWidth = choicesContainerWidth / 4 - 10;
 const choiceIconWidth = choiceButtonWidth * 0.5;
@@ -9,11 +10,10 @@ const choiceTitleFontSize = screenWidth < 400 ? 12 : 14;
 
 const styles = StyleSheet.create({
     choicesContainer: {
-        flex: 1,
         borderRadius: 10 / 1.25,
         width: choicesContainerWidth,
-        height: choiceButtonWidth * 2 + 20,
-        margin: 10
+        height: screenHeight * 0.4,
+        margin: 10,
     },
     subTitle: {
         fontSize: choiceTitleFontSize,

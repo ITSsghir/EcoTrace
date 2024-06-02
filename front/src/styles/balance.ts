@@ -3,6 +3,7 @@ import { StyleSheet, Dimensions } from 'react-native';
 
 // Get the screen width
 const screenWidth = Dimensions.get('window').width;
+const screenHeight = Dimensions.get('window').height;
 const cardWidth = screenWidth * 0.9;
 // Font sizes based on the screen width
 const messageFontSize = screenWidth < 400 ? 16 : 20;
@@ -15,10 +16,9 @@ const styles = StyleSheet.create({
     card: {
         backgroundColor: colors.white,
         padding: 20,
-        margin: 10,
         borderRadius: 10,
         width: cardWidth,
-        height: 145,
+        height: screenHeight * 145/812,
     },
     message: {
         fontSize: messageFontSize,
