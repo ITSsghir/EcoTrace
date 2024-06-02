@@ -10,6 +10,7 @@ const AuthContext = React.createContext<{
   getPredictionVertexAI: (uri: string) => void;
   getPredictionVertexAIText: (text: string) => void;
   createActivity: (activity: any) => void;
+  updateUser: (user: any) => void;
   token?: string | null;
   isLoading: boolean;
   full_name?: string;
@@ -33,6 +34,7 @@ const AuthContext = React.createContext<{
   getPredictionVertexAI: () => null,
   getPredictionVertexAIText: () => null,
   createActivity: () => null,
+  updateUser: () => null,
   token: null,
   isLoading: false,
   full_name: null,
@@ -443,6 +445,40 @@ export function SessionProvider(props: React.PropsWithChildren) {
     getActivities(userId);  
   }
 
+  const updateUser = async (user: any) => {
+    // Check the passwords match
+    if (user.password !== user.confirmPassword) {
+      console.error('Passwords do not match');
+      return;
+    }
+
+    const url = process.env.EXPO_PUBLIC_AUTH_API_URL + '/users/' + userId;
+    const response = await fetch(url, {
+      method: 'PUT',
+      headers: {
+        'content-type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        full_name: user.full_name,
+        email: user.email,
+        phone_number: user.phone_number,
+        password: user.password,
+      }),
+    });
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    const data = await response.json().catch(error => {
+      console.error('Error parsing JSON:', error);
+    });
+    console.log(data.message);
+    setFullName(user.full_name);
+    setEmail(user.email);
+    setPhoneNumber(user.phone_number);
+    setPassword(user.password);
+  }
+
   const verifyToken = async (token: string) => {
     const url = process.env.EXPO_PUBLIC_AUTH_API_URL + '/verify';
     const response = await fetch(url, {
@@ -471,6 +507,7 @@ export function SessionProvider(props: React.PropsWithChildren) {
     getPredictionVertexAI,
     getPredictionVertexAIText,
     createActivity,
+    updateUser,
     token,
     isLoading,
     full_name,

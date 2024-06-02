@@ -22,7 +22,7 @@ const bodyParser = require('body-parser');
 const secretkey = process.env.SECRET_KEY;
 
 // Import modules
-const { initDatabase, createUser, checkLogin, getCarbonFootprintAll, getActivities, insertActivity, getUser } = require('./db.js');
+const { initDatabase, createUser, checkLogin, getCarbonFootprintAll, getActivities, insertActivity, getUser, updateUserInfo } = require('./db.js');
 
 app.use(cookieParser());
 app.use(bodyParser.json({ limit: '10mb' }));
@@ -201,12 +201,16 @@ app.get('/users/:id/activities', verifyToken, async (req, res) => {
 // Modify user info
 app.put('/users/:id', verifyToken, (req, res) => {
     const { id } = req.params;
-    // Desired modifications must be passed in JSON format (Application/JSON)
-    const { desiredModifications } = req.body;
-
-    // Modify the user info
-    updateUserInfo(id, desiredModifications);
-    res.status(200).send('User info has been modified');
+    // Modify the user
+    updateUserInfo(id, req.body)
+        .then(() => {
+            const response = { message: 'User info updated' };
+            res.status(200).send(response);
+        }).catch((err) => {
+            console.error('Error updating user info:', err.message);
+            const response = { message: 'Error updating user info: ' + err.message };
+            res.status(500).send(response);
+        });
 });
 
 // Post request to predict the content of an image

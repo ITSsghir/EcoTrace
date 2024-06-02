@@ -7,7 +7,7 @@ const { checkInputs } = require('./utils.js');
 const { resolve } = require('path');
 
 // Number of salt rounds for bcrypt
-const saltRounds =  10;
+const saltRounds = 10;
 
 // Database on port 3306 localhost, user root, password root
 let db;
@@ -85,7 +85,7 @@ const setupTables = (db) => {
     )`, (err) => {
         if (err) {
             console.error('Error creating user_goals table:', err.message);
-        } 
+        }
         else {
             console.log('Created user_goals table');
         }
@@ -140,7 +140,7 @@ const setupTables = (db) => {
     });
 }
 
-function initDatabase () {
+function initDatabase() {
     return new Promise((resolve, reject) => {
         connectToDatabase()
             .then((connection) => {
@@ -157,7 +157,7 @@ function initDatabase () {
 
 
 // functions to create a user and get a user
-async function createUser (full_name, email, phone_number, password) {
+async function createUser(full_name, email, phone_number, password) {
 
     // Check the inputs
     await checkInputs(full_name, email, phone_number, password);
@@ -182,7 +182,7 @@ async function createUser (full_name, email, phone_number, password) {
     });
 }
 
-async function getUser (email) {
+async function getUser(email) {
     return new Promise((resolve, reject) => {
         db.query('SELECT * FROM users WHERE email = ?', [email], (err, result) => {
             if (err) {
@@ -201,7 +201,7 @@ async function getUser (email) {
 }
 
 // Check login info
-async function checkLogin (email, password) {
+async function checkLogin(email, password) {
     if (!email || !password) {
         return new Promise((resolve, reject) => {
             reject(new Error('Missing required fields'));
@@ -243,34 +243,46 @@ async function checkLogin (email, password) {
     });
 }
 
+// Get user by id
+async function getUserById(id) {
+    return new Promise((resolve, reject) => {
+        db.query('SELECT * FROM users WHERE id = ?', [id], (err, result) => {
+            if (err) {
+                console.error('Error querying database:', err.message);
+                reject(err);
+            }
+            if (result.length === 0) {
+                resolve(null);
+            }
+            resolve(result[0]);
+        });
+    });
+}
+
 // Modify user info
-async function updateUserInfo(id, desiredModifications) {
-    if (!desiredModifications) {
+async function updateUserInfo(id, user) {
+    // Check if the user exists
+    const existingUser = await getUserById(id);
+    if (!existingUser) {
         return new Promise((resolve, reject) => {
-            reject(new Error('No modifications specified'));
+            reject(new Error('User not found'));
         });
     }
-    const keys = Object.keys(desiredModifications);
-    const values = Object.values(desiredModifications);
-    let query = 'UPDATE users SET ';
-    for (let i = 0; i < keys.length; i++) {
-        query += `${keys[i]} = '${values[i]}'`;
-        if (i !== keys.length - 1) {
-            query += ', ';
-        }
-    }
-    query += ` WHERE id = ${id}`;
-
+    // Check the inputs
+    await checkInputs(user.full_name, user.email, user.phone_number, user.password);
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(user.password, saltRounds);
     return new Promise((resolve, reject) => {
-        db.query(query, (err) => {
+        db.query('UPDATE users SET full_name = ?, email = ?, phone_number = ?, password = ? WHERE id = ?', [user.full_name, user.email, user.phone_number, hashedPassword, id], (err) => {
             if (err) {
-                console.error('Error modifying user:', err.message);
+                console.error('Error updating user:', err.message);
                 reject(err);
             }
             resolve();
         });
     });
 }
+
 
 async function getCarbonFootprintAll(id) {
     return new Promise((resolve, reject) => {
@@ -322,7 +334,7 @@ const calculateCarbonFootprint = (userId, callback) => {
     const dailyQuery = `SELECT SUM(carbon_footprint) AS daily
                         FROM user_activities
                         WHERE user_id = ? AND DATE(timestamp) = CURDATE()`;
-                        
+
     const monthlyQuery = `SELECT SUM(carbon_footprint) AS monthly
                           FROM user_activities
                           WHERE user_id = ? AND MONTH(timestamp) = MONTH(CURDATE()) AND YEAR(timestamp) = YEAR(CURDATE())`;
@@ -376,7 +388,7 @@ const calculateCarbonFootprint = (userId, callback) => {
 const insertActivity = (userId, name, activityType, description, carbonFootprint, unit) => {
     const query = `INSERT INTO user_activities (user_id, name, activity_type, description, carbon_footprint, unit, timestamp)
                    VALUES (?, ?, ?, ?, ?, ?, NOW())`;
-    return new Promise ((resolve, reject) => {
+    return new Promise((resolve, reject) => {
         db.query(query, [userId, name, activityType, description, carbonFootprint, unit], (err) => {
             if (err) {
                 console.error('Error inserting activity:', err.message);
