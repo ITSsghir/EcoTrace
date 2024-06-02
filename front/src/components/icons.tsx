@@ -11,6 +11,9 @@ const icons: Icon = {
     destination: require("../../(public)/icons/destination.png"),   
     back: require("../../(public)/icons/back.png"),
     history: require("../../(public)/icons/history.png"),
+    update: require("../../(public)/icons/update.png"),
+    delete: require("../../(public)/icons/delete.png"),
+    services: require("../../(public)/icons/services.png"),
 };
 
 export default icons;

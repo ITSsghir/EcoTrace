@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRouter } from 'expo-router';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, Dimensions } from 'react-native';
 import icons from '@/components/icons';
 import { useSession } from '@/app/context/ctx';
 
@@ -10,7 +10,6 @@ const Profile = () => {
     const { full_name, lastLogin, userId, deleteUser } = useSession();
 
     const onAccountPress = () => {
-        // Not implemented yet
         router.push({ pathname: '/profile/update' });
     };
 
@@ -24,40 +23,58 @@ const Profile = () => {
 
     return (
         <View style={styles.container}>
+            <Text style={styles.title}>User Profile</Text>
             <View style={styles.infoContainer}>
-                <Text style={styles.infoText}>Name: {full_name}</Text>
-                <Text style={styles.infoText}>Last Login: {lastLogin}</Text>
+                <View style={styles.info}>
+                    <Text style={styles.infoName}>Name:</Text>
+                    <Text style={styles.infoText}>  {full_name}</Text>
+                </View>
+                <View style={styles.info}>
+                    <Text style={styles.infoName}>Last Login:</Text>
+                    <Text style={styles.infoText}>  {lastLogin}</Text>
+                </View>
             </View>
+            <TouchableOpacity style={styles.button} onPress={() => router.push('/services')}>
+                <Image source={icons.services} style={styles.icon} />
+                <Text style={styles.buttonText}>Services</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={() => router.push('/history')}>
+                <Image source={icons.history} style={styles.icon} />
+                <Text style={styles.buttonText}>View History</Text>
+            </TouchableOpacity>
             <TouchableOpacity style={styles.button} onPress={onAccountPress}>
+                <Image source={icons.update} style={styles.icon} />
                 <Text style={styles.buttonText}>Update Account</Text>
             </TouchableOpacity>
             <TouchableOpacity style={[styles.button, styles.logoutButton]} onPress={onDeleteAccount}>
+                <Image source={icons.delete} style={styles.icon} />
                 <Text style={styles.buttonText}>Delete Account</Text>
             </TouchableOpacity>
         </View>
     );
 };
 
+const screenWidth = Dimensions.get('window').width;
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
         backgroundColor: '#f0f0f0',
         padding: 20,
     },
     title: {
-        fontSize: 28,
+        fontSize: 24,
         fontWeight: 'bold',
-        marginBottom: 20,
-        color: '#333',
+        color: '#4CAF50',
+        marginBottom: 25,
+        marginLeft: 5,
     },
     infoContainer: {
         backgroundColor: '#fff',
         padding: 20,
         borderRadius: 10,
         marginBottom: 20,
-        width: '100%',
+        width: screenWidth - 40,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.1,
@@ -68,6 +85,12 @@ const styles = StyleSheet.create({
         fontSize: 16,
         marginBottom: 10,
         color: '#555',
+    },
+    infoName: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        marginBottom: 10,
+        color: '#333',
     },
     button: {
         backgroundColor: '#4CAF50',
@@ -84,7 +107,7 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontSize: 16,
         fontWeight: 'bold',
-        marginLeft: 15,
+        marginLeft: 5
     },
     icon: {
         marginRight: 10,
@@ -93,6 +116,9 @@ const styles = StyleSheet.create({
     },
     logoutButton: {
         backgroundColor: '#d9534f',
+    },
+    info: {
+        flexDirection: 'row',
     },
 });
 

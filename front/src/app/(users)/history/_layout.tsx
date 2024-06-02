@@ -4,6 +4,7 @@ import { useSession } from "@/app/context/ctx";
 import LoadingScreen from "@/components/loading";
 import ScreenHeaderBtn from "@/components/ScreenHeaderBtn";
 import icons from "@/components/icons";
+import { View } from "react-native";
 
 export default function HistoryLayout() {
     const { token, isLoading } = useSession();
@@ -28,6 +29,9 @@ export default function HistoryLayout() {
             <Stack.Screen name="index" options={{
                 headerTitle: ' History', headerShown: true,
                 headerShadowVisible: false,
+                headerStyle: {
+                    backgroundColor: '#f0f0f0',
+                },
                 headerLeft: () =>(
                     <ScreenHeaderBtn 
                         iconUrl={icons.back} 

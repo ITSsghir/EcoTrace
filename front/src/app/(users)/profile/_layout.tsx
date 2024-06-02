@@ -26,8 +26,27 @@ export default function HistoryLayout() {
     return (
         <Stack>
             <Stack.Screen name="index" options={{
-                headerTitle: ' Profile', headerShown: true,
+                headerTitle: '', headerShown: true,
                 headerShadowVisible: false,
+                headerStyle: {
+                    backgroundColor: '#f0f0f0',
+                },
+                headerLeft: () =>(
+                    <ScreenHeaderBtn 
+                        iconUrl={icons.back} 
+                        dimension={30}
+                        handlePress={() => {
+                            router.back();
+                        }}
+                    />
+                ),
+            }} />
+            <Stack.Screen name="update" options={{
+                headerTitle: '', headerShown: true,
+                headerShadowVisible: false,
+                headerStyle: {
+                    backgroundColor: '#f0f0f0',
+                },
                 headerLeft: () =>(
                     <ScreenHeaderBtn 
                         iconUrl={icons.back} 

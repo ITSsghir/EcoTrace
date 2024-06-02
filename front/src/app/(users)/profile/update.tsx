@@ -40,34 +40,35 @@ const update = () => {
     // This component will be used to update the user's profile
     return (
         <View style={styles.container}>
-            <Text>User Profile</Text>
+            <Text style={styles.title}>Update Profile</Text>
+            <Text style={styles.inputText}>User Profile</Text>
             <TextInput
                 style={styles.input}
                 placeholder="Name"
                 onChangeText={setNewName}
                 value={full_name}
             />
-            <Text>Email</Text>
+            <Text style={styles.inputText}>Email</Text>
             <TextInput
                 style={styles.input}
                 placeholder="Email"
                 onChangeText={setNewEmail}
                 value={email}
             />
-            <Text>Phone Number</Text>
+            <Text style={styles.inputText}>Phone Number</Text>
             <TextInput
                 style={styles.input}
                 placeholder="Phone Number"
                 onChangeText={setNewPhoneNumber}
                 value={phone_number}
             />
-            <Text>Password</Text>
+            <Text style={styles.inputText}>Password</Text>
             <TextInput
                 style={styles.input}
                 placeholder="Password"
                 onChangeText={setNewPassword}
             />
-            <Text>Confirm Password</Text>
+            <Text style={styles.inputText}>Confirm Password</Text>
             <TextInput
                 style={styles.input}
                 placeholder="Confirm Password"
@@ -82,11 +83,18 @@ const update = () => {
     )
 }
 
-export default update
+export default update;
 
 const styles = StyleSheet.create({
     container: {
-        padding: 16, // Adjust padding as needed
+        padding: 20, // Adjust padding as needed
+    },
+    title: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        color: '#4CAF50',
+        marginBottom: 25,
+        marginLeft: 10,
     },
     descriptionInput: {
         borderWidth: 1,
@@ -101,16 +109,25 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#ccc',
         borderRadius: 4,
-        padding: 8,
+        padding: 10,
         marginTop: 8,
         marginBottom: 8,
+        marginLeft: 10,
+        marginRight: 10,
+    },
+    inputText: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: '#333',
+        marginTop: 10,
+        marginLeft: 10,
     },
     btn: {
         backgroundColor: 'blue',
         color: 'white',
         padding: 10,
         borderRadius: 5,
-        marginTop: 10,
+        marginTop: 20,
         width: '50%',
         alignItems: 'center',
         marginLeft: '25%',
