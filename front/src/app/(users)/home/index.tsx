@@ -87,9 +87,7 @@ export default function HomePage() {
             
             />
             <Balance full_name={full_name} balance={balance} daily_balance={daily_balance} unit={unit} daily_unit={daily_unit} />
-            <View style={styles.choicesContainer}>
-                <Choices />
-            </View>
+            <Choices />
             <History data={historyJSON} />
         </SafeAreaView>
     );
