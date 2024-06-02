@@ -1,7 +1,8 @@
 import { useRouter } from 'expo-router';
 import React from 'react';
-import { View, Text, FlatList, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, FlatList, ScrollView, TouchableOpacity, Image } from 'react-native';
 import styles from '@/styles/history';
+import icons from '@/components/icons';
 
 export default function History({data}) {
 
@@ -12,6 +13,11 @@ export default function History({data}) {
             return <Text>No data</Text>
         }
         // For each activity, render the activity
+        if (data.length === 0) {
+            return (
+                <Text style={styles.noActivitiesTitle}>No carbon footprint activities</Text>
+            );
+        }
         return data.map((item, index) => {
             return (
                 <View style={styles.activity} key={index}>
@@ -25,17 +31,23 @@ export default function History({data}) {
 
 
     return (
-            <ScrollView style={styles.homeContainer} showsVerticalScrollIndicator={false} horizontal={false}>
-                <TouchableOpacity
-                    onPress= {
-                        () => {
-                            router.push('/history')
-                        }
-                    }
-                >
-                <Text style={styles.title}>History</Text>
+        <TouchableOpacity
+            onPress= {
+                () => {
+                    router.push('/history')
+                }
+            }
+            style={styles.homeContainer}
+        >
+            <ScrollView showsVerticalScrollIndicator={false} horizontal={false}>
+                <View style={styles.titleContainer}>
+                    <Image source={icons.history} style={styles.icon} />
+                    <Text style={styles.title}>
+                        History
+                    </Text>
+                </View>
                 {renderItem(data)}
-                </TouchableOpacity>
             </ScrollView>
+        </TouchableOpacity>
     );
 }
