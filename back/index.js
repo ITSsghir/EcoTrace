@@ -22,7 +22,7 @@ const bodyParser = require('body-parser');
 const secretkey = process.env.SECRET_KEY;
 
 // Import modules
-const { initDatabase, createUser, checkLogin, getCarbonFootprintAll, updateCarbonFootprint, updateUserInfon, getUser } = require('./db.js');
+const { initDatabase, createUser, checkLogin, getCarbonFootprintAll, getActivities, insertActivity, getUser } = require('./db.js');
 
 app.use(cookieParser());
 app.use(bodyParser.json({ limit: '10mb' }));
@@ -46,16 +46,6 @@ const verifyToken = (req, res, next) => {
     }
     return next();
 };
-
-const verifyJWTToken = (token) => {
-    try {
-        const decoded = jwt.verify(token, secretkey);
-        return decoded;
-    } catch (err) {
-        console.error('Invalid token:', err.message);
-        return null;
-    }
-}
 
 // Register endpoint
 app.post('/register', async (req, res) => {
@@ -142,12 +132,12 @@ app.get('/logout', verifyToken, (req, res) => {
     res.status(200).send('Logout successful');
 });
 
-app.get('/users/:token', verifyToken, (req, res) => {
+app.get('/users/:token', verifyToken, async (req, res) => {
     const { token } = req.params;
     const decoded = jwt.verify(token, secretkey);
     const { email } = decoded;
     console.log('User info requested');
-    getUser(email)
+    await getUser(email)
         .then((user) => {
             const response = { message: 'User info retrieved', user };
             res.status(200).send(response);
@@ -161,10 +151,10 @@ app.get('/users/:token', verifyToken, (req, res) => {
 });
 
 // Get the carbon footprint of the user by id
-app.get('/users/:id/carbon_footprint', verifyToken, (req, res) => {
+app.get('/users/:id/carbon_footprint', verifyToken, async (req, res) => {
     const { id } = req.params;
     // Get the carbon footprint of the user
-    getCarbonFootprintAll(id)
+    await getCarbonFootprintAll(id)
         .then((carbonFootprint) => {
             if (carbonFootprint === null) {
                 // If no data found, send a specific response
@@ -172,10 +162,6 @@ app.get('/users/:id/carbon_footprint', verifyToken, (req, res) => {
                 res.status(404).send(response);
             } else {
                 let { daily, daily_unit, monthly, monthly_unit, total, total_unit } = carbonFootprint;
-                // Add CO2e units to the response
-                daily_unit += ' CO2e';
-                monthly_unit += ' CO2e';
-                total_unit += ' CO2e';
                 const response = { message: 'Carbon footprint retrieved', daily, daily_unit, monthly, monthly_unit, total, total_unit };
                 res.status(200).send(response);
             }
@@ -187,15 +173,29 @@ app.get('/users/:id/carbon_footprint', verifyToken, (req, res) => {
         });
 });
 
-
-// Modify the carbon footprint of the user by id
-app.put('/users/:id/carbon_footprint/', verifyToken, (req, res) => {
+// Get the history of activities of the user by id
+app.get('/users/:id/activities', verifyToken, async (req, res) => {
     const { id } = req.params;
-    const { carbonFootprint } = req.body;
-
-    // Modify the carbon footprint of the user
-    updateCarbonFootprint(id, carbonFootprint);
-    res.status(200).send('Carbon footprint modified');
+    // Get the activities of the user
+    await getActivities(id)
+        .then((activities) => {
+            if (activities === null) {
+                // If no data found, send a specific response
+                const response = { message: 'No activities found for this user' };
+                res.status(404).send(response);
+            } else {
+                const history = activities.map((activity) => {
+                    return { name: activity.name, activity_type: activity.activity_type, carbon_footprint: activity.carbon_footprint, unit: activity.unit };
+                });
+                const response = { message: 'Activities retrieved', history: history };
+                res.status(200).send(response);
+            }
+        })
+        .catch((err) => {
+            console.error('Error getting activities:', err.message);
+            const response = { message: 'Error getting activities: ' + err.message };
+            res.status(500).send(response);
+        });
 });
 
 // Modify user info
@@ -249,6 +249,21 @@ app.post('/predict-text', verifyToken, async (req, res) => {
         const response = { message: 'Error predicting: ' + err };
         res.status(500).send(response);
     }
+});
+
+// Post request to insert an activity
+app.post('/activities', verifyToken, async (req, res) => {
+    const { user_id, name, activity_type, carbon_footprint, description, unit } = req.body;
+    await insertActivity(user_id, name, activity_type, description, carbon_footprint, unit)
+        .then(() => {
+            const response = { message: 'Activity inserted' };
+            res.status(200).send(response);
+        })
+        .catch((err) => {
+            console.error('Error inserting activity:', err.message);
+            const response = { message: 'Error inserting activity: ' + err.message };
+            res.status(500).send(response);
+        });
 });
 
 app.get('/verify', verifyToken, (req, res) => {

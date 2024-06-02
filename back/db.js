@@ -4,6 +4,7 @@ const { createConnection } = require('mysql');
 const bcrypt = require('bcrypt');
 
 const { checkInputs } = require('./utils.js');
+const { resolve } = require('path');
 
 // Number of salt rounds for bcrypt
 const saltRounds =  10;
@@ -59,9 +60,11 @@ const setupTables = (db) => {
     db.query(`CREATE TABLE IF NOT EXISTS user_activities (
         id INT AUTO_INCREMENT PRIMARY KEY,
         user_id INT NOT NULL,
+        name VARCHAR(255) NOT NULL,
         activity_type VARCHAR(255) NOT NULL,
         description TEXT NOT NULL,
         carbon_footprint FLOAT NOT NULL,
+        unit VARCHAR(255) NOT NULL,
         timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )`, (err) => {
         if (err) {
@@ -224,7 +227,7 @@ async function checkLogin (email, password) {
                         reject(err);
                     }
                     if (result.length === 0) {
-                        db.query('INSERT INTO carbon_footprint (user_id, daily, daily_unit, monthly, monthly_unit, total, total_unit) VALUES (?, ?, ?, ?, ?, ?, ?)', [user.id, 0, 'kg', 0, 'kg', 0, 'kg'], (err) => {
+                        db.query('INSERT INTO carbon_footprint (user_id, daily, daily_unit, monthly, monthly_unit, total, total_unit) VALUES (?, ?, ?, ?, ?, ?, ?)', [user.id, 0, 'kg CO2e', 0, 'kg CO2e', 0, 'kg CO2e'], (err) => {
                             if (err) {
                                 console.error('Error inserting carbon footprint into database:', err.message);
                                 reject(err);
@@ -269,22 +272,6 @@ async function updateUserInfo(id, desiredModifications) {
     });
 }
 
-// Get the carbon footprint of the user by id
-async function getCarbonFootprint (id, time_period) {
-    return new Promise((resolve, reject) => {
-        db.query(`SELECT ${time_period} FROM carbon_footprint WHERE user_id = ${id}`, (err, result) => {
-            if (err) {
-                console.error('Error querying database:', err.message);
-                reject(err);
-            }
-            if (result.length === 0) {
-                resolve(null);
-            }
-            resolve(result[0][time_period]);
-        });
-    });
-}
-
 async function getCarbonFootprintAll(id) {
     return new Promise((resolve, reject) => {
         db.query(`SELECT daily, daily_unit, monthly, monthly_unit, total, total_unit FROM carbon_footprint WHERE user_id = ${id}`, (err, result) => {
@@ -296,49 +283,136 @@ async function getCarbonFootprintAll(id) {
             if (result.length === 0) {
                 resolve(null);
             }
-            resolve(result[0]);
+            resolve(result[result.length - 1]);
         });
     });
 }
 
-
 // Update the carbon footprint of the user by id
-async function updateCarbonFootprint (id, added) {
-    return new Promise((resolve, reject) => {
-        db.query(`SELECT * FROM carbon_footprint WHERE user_id = ${id}`, (err, result) => {
-            if (err) {
-                console.error('Error querying database:', err.message);
-                reject(err);
-            }
-            if (result.length === 0) {
-                // Add the carbon footprint to the existing one
-                db.query('INSERT INTO carbon_footprint (user_id, daily, weekly, monthly, yearly) VALUES (?, ?, ?, ?, ?)', [id, added, added, added, added], (err) => {
-                    if (err) {
-                        console.error('Error inserting carbon footprint into database:', err.message);
-                        reject(err);
-                    }
-                    resolve();
-                });
-            }
-            // Add the carbon footprint to the existing one
-            db.query(`UPDATE carbon_footprint SET daily = daily + ${added}, weekly = weekly + ${added}, monthly = monthly + ${added}, yearly = yearly + ${added5} WHERE user_id = ${id}`, (err) => {
+const updateCarbonFootprint = (userId) => {
+    calculateCarbonFootprint(userId, (footprint) => {
+        return new Promise((resolve, reject) => {
+            const query = `INSERT INTO carbon_footprint (user_id, daily, daily_unit, monthly, monthly_unit, total, total_unit, timestamp)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, NOW())
+                        ON DUPLICATE KEY UPDATE
+                        daily = VALUES(daily),
+                        monthly = VALUES(monthly),
+                        total = VALUES(total),
+                        daily_unit = VALUES(daily_unit),
+                        monthly_unit = VALUES(monthly_unit),
+                        total_unit = VALUES(total_unit),
+                        timestamp = VALUES(timestamp)`;
+            db.query(query, [userId, footprint.daily, footprint.daily_unit, footprint.monthly, footprint.monthly_unit, footprint.total, footprint.total_unit], (err) => {
                 if (err) {
                     console.error('Error updating carbon footprint:', err.message);
                     reject(err);
+
+                } else {
+                    console.log('Updated carbon footprint');
+                    resolve();
                 }
-                resolve();
             });
         });
     });
+};
+
+
+// Calculate the carbon footprint of the user by id
+const calculateCarbonFootprint = (userId, callback) => {
+    const dailyQuery = `SELECT SUM(carbon_footprint) AS daily
+                        FROM user_activities
+                        WHERE user_id = ? AND DATE(timestamp) = CURDATE()`;
+                        
+    const monthlyQuery = `SELECT SUM(carbon_footprint) AS monthly
+                          FROM user_activities
+                          WHERE user_id = ? AND MONTH(timestamp) = MONTH(CURDATE()) AND YEAR(timestamp) = YEAR(CURDATE())`;
+
+    const totalQuery = `SELECT SUM(carbon_footprint) AS total
+                        FROM user_activities
+                        WHERE user_id = ?`;
+
+    const unitQuery = `SELECT unit FROM user_activities WHERE user_id = ? LIMIT 1`;
+    return new Promise((resolve, reject) => {
+        db.query(unitQuery, [userId], (err, unitResult) => {
+            if (err) {
+                console.error('Error fetching unit:', err.message);
+                reject(err);
+            }
+            const unit = unitResult[0]?.unit || 'kg CO2e';
+            db.query(dailyQuery, [userId], (err, dailyResult) => {
+                if (err) {
+                    console.error('Error calculating daily footprint:', err.message);
+                    reject(err);
+                }
+                db.query(monthlyQuery, [userId], (err, monthlyResult) => {
+                    if (err) {
+                        console.error('Error calculating monthly footprint:', err.message);
+                        reject(err);
+                    }
+                    db.query(totalQuery, [userId], (err, totalResult) => {
+                        if (err) {
+                            console.error('Error calculating total footprint:', err.message);
+                            reject(err);
+                        }
+                        callback({
+                            daily: dailyResult[0].daily || 0,
+                            daily_unit: unit,
+                            monthly: monthlyResult[0].monthly || 0,
+                            monthly_unit: unit,
+                            total: totalResult[0].total || 0,
+                            total_unit: unit
+                        });
+
+                        resolve();
+                    });
+                });
+            });
+        });
+    });
+};
+
+
+// Insert an activity for the user
+const insertActivity = (userId, name, activityType, description, carbonFootprint, unit) => {
+    const query = `INSERT INTO user_activities (user_id, name, activity_type, description, carbon_footprint, unit, timestamp)
+                   VALUES (?, ?, ?, ?, ?, ?, NOW())`;
+    return new Promise ((resolve, reject) => {
+        db.query(query, [userId, name, activityType, description, carbonFootprint, unit], (err) => {
+            if (err) {
+                console.error('Error inserting activity:', err.message);
+                reject(err);
+            } else {
+                console.log('Inserted activity');
+                updateCarbonFootprint(userId);
+                resolve();
+            }
+        });
+    });
+};
+
+// Get all activities for the user
+const getActivities = (userId) => {
+    const query = `SELECT * FROM user_activities WHERE user_id = ?`;
+    return new Promise((resolve, reject) => {
+        db.query(query, [userId], (err, result) => {
+            if (err) {
+                console.error('Error fetching activities:', err.message);
+                reject(err);
+            }
+            resolve(result);
+        });
+    });
 }
+
 
 // Export the functions
 module.exports = {
     initDatabase,
     getUser,
+    getCarbonFootprintAll,
     createUser,
     checkLogin,
     updateUserInfo,
-    getCarbonFootprintAll,
-    updateCarbonFootprint
+    insertActivity,
+    getActivities
 };
