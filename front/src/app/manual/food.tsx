@@ -81,7 +81,7 @@ const Food = () => {
             </Picker>
 
             <TouchableOpacity onPress={() => { handleSubmit() }} style={styles.btn}>
-                <Text style={{ color: Colors.primary }}>Save</Text>
+                <Text style={{ color: Colors.primary }}>Send</Text>
             </TouchableOpacity>
         </View>
     )
