@@ -11,6 +11,7 @@ const AuthContext = React.createContext<{
   getPredictionVertexAIText: (text: string) => void;
   createActivity: (activity: any) => void;
   updateUser: (user: any) => void;
+  deleteUser: (id: number) => void;
   token?: string | null;
   isLoading: boolean;
   full_name?: string;
@@ -35,6 +36,7 @@ const AuthContext = React.createContext<{
   getPredictionVertexAIText: () => null,
   createActivity: () => null,
   updateUser: () => null,
+  deleteUser: () => null,
   token: null,
   isLoading: false,
   full_name: null,
@@ -91,8 +93,7 @@ export function SessionProvider(props: React.PropsWithChildren) {
       // JWT exp is in seconds
       if (decodedToken.exp * 1000 < currentDate.getTime()) {
         console.log("Token expired.");
-        setToken(null);
-        setLastLogin(null);
+        initialize();
       } else {
         const verification = verifyToken(token);
         if (verification) {
@@ -103,8 +104,7 @@ export function SessionProvider(props: React.PropsWithChildren) {
         }
         else {
           console.log("Token invalid.");
-          setToken(null);
-          setLastLogin(null);
+          initialize();
         }
       }
     }
@@ -148,11 +148,28 @@ export function SessionProvider(props: React.PropsWithChildren) {
         'Authorization': `Bearer ${token}`
       },
     });
-    setToken(null);
-    setLastLogin(null);
-
+    
+    initialize();
     // Later we will remove the token from the request headers
     // axios.defaults.headers.common['Authorization'] = '';
+  }
+
+  const initialize = async () => {
+    setToken(null);
+    setLastLogin(null);
+    setUserId(0);
+    setHistory(null);
+    setFullName('');
+    setEmail('');
+    setPhoneNumber('');
+    setPassword('');
+    setDailyBalance(0);
+    setDailyUnit('kgCO2e');
+    setMonthlyBalance(0);
+    setMonthlyUnit('kgCO2e');
+    setBalance(0);
+    setUnit('kgCO2e');
+    setPredictionJson(null);
   }
 
   const register = async (full_name: string, email: string, phone_number: string, password: string) => {
@@ -479,6 +496,26 @@ export function SessionProvider(props: React.PropsWithChildren) {
     setPassword(user.password);
   }
 
+  // Delete a user
+  const deleteUser = async (id: number) => {
+    const url = process.env.EXPO_PUBLIC_AUTH_API_URL + '/users/' + id;
+    const response = await fetch(url, {
+      method: 'DELETE',
+      headers: {
+        'content-type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    const data = await response.json().catch(error => {
+      console.error('Error parsing JSON:', error);
+    });
+    console.log(data.message);
+    logout();
+  }
+
   const verifyToken = async (token: string) => {
     const url = process.env.EXPO_PUBLIC_AUTH_API_URL + '/verify';
     const response = await fetch(url, {
@@ -508,6 +545,7 @@ export function SessionProvider(props: React.PropsWithChildren) {
     getPredictionVertexAIText,
     createActivity,
     updateUser,
+    deleteUser,
     token,
     isLoading,
     full_name,

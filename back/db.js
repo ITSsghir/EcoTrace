@@ -283,6 +283,39 @@ async function updateUserInfo(id, user) {
     });
 }
 
+// Delete user by id
+async function deleteUser(id) {
+    const user = await getUserById(id);
+    if (!user) {
+        return new Promise((resolve, reject) => {
+            reject(new Error('User not found'));
+        });
+    }
+    const query = 'DELETE FROM users WHERE id = ?';
+    return new Promise((resolve, reject) => {
+        db.query(query, [id], (err) => {
+            if (err) {
+                console.error('Error deleting user:', err.message);
+                reject(err);
+            }
+            db.query('DELETE FROM carbon_footprint WHERE user_id = ?', [id], (err) => {
+                if (err) {
+                    console.error('Error deleting carbon footprint:', err.message);
+                    reject(err);
+                }
+                db.query('DELETE FROM user_activities WHERE user_id = ?', [id], (err) => {
+                    if (err) {
+                        console.error('Error deleting user activities:', err.message);
+                        reject(err);
+                    }
+                    resolve();
+                });
+            });
+        });
+    });
+
+}
+
 
 async function getCarbonFootprintAll(id) {
     return new Promise((resolve, reject) => {
@@ -425,6 +458,7 @@ module.exports = {
     createUser,
     checkLogin,
     updateUserInfo,
+    deleteUser,
     insertActivity,
     getActivities
 };

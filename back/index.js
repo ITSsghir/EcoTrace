@@ -22,7 +22,7 @@ const bodyParser = require('body-parser');
 const secretkey = process.env.SECRET_KEY;
 
 // Import modules
-const { initDatabase, createUser, checkLogin, getCarbonFootprintAll, getActivities, insertActivity, getUser, updateUserInfo } = require('./db.js');
+const { initDatabase, createUser, checkLogin, getCarbonFootprintAll, getActivities, insertActivity, getUser, updateUserInfo, deleteUser } = require('./db.js');
 
 app.use(cookieParser());
 app.use(bodyParser.json({ limit: '10mb' }));
@@ -266,6 +266,21 @@ app.post('/activities', verifyToken, async (req, res) => {
         .catch((err) => {
             console.error('Error inserting activity:', err.message);
             const response = { message: 'Error inserting activity: ' + err.message };
+            res.status(500).send(response);
+        });
+});
+
+// Delete request to delete a user
+app.delete('/users/:id', verifyToken, async (req, res) => {
+    const { id } = req.params;
+    await deleteUser(id)
+        .then(() => {
+            const response = { message: 'User deleted' };
+            res.status(200).send(response);
+        })
+        .catch((err) => {
+            console.error('Error deleting user:', err.message);
+            const response = { message: 'Error deleting user: ' + err.message };
             res.status(500).send(response);
         });
 });

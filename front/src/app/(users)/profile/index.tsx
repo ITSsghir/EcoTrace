@@ -7,17 +7,19 @@ import { useSession } from '@/app/context/ctx';
 const Profile = () => {
     const router = useRouter();
 
-    const { full_name, lastLogin, userId } = useSession();
+    const { full_name, lastLogin, userId, deleteUser } = useSession();
 
     const onAccountPress = () => {
         // Not implemented yet
         router.push({ pathname: '/profile/update' });
     };
 
-    const onDeleteAccount = () => {
-        // Not implemented yet
-        // deleteAccount(userId);
-        router.push('/');
+    const onDeleteAccount = async () => {
+        // Delete the user account
+        await deleteUser(userId);
+
+        // Redirect to the home page
+        router.replace('/');
     };
 
     return (
