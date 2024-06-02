@@ -20,62 +20,14 @@ export default function Preview() {
 
     // Set the labels
     const [labels, setLabels] = React.useState<string | null>(null);
-    useEffect(() => {
-        console.log("Labels: ", labels);
-    }, [labels]);
     // Get the image from the params
     const image : string = params.image as string;
 
-    // Get the predictions from the server (Google cloud Vision API)
-    const getPrediction = async (uri : string) => {
-
-        console.log("Getting predictions");
-
-        if (!uri) {
-          return;
-        }
-        try {
-          const base64ImageData = await FileSystem.readAsStringAsync(uri, { 
-            encoding: FileSystem.EncodingType.Base64 
-          });          
-          
-          const body = {
-            requests: [
-              {
-                image: {
-                  content: base64ImageData,
-                },
-                features: [
-                  {
-                    type: 'LABEL_DETECTION',
-                    maxResults: 20,
-                  },
-                ],
-              },
-            ],
-          };
-          const response = await fetch(apiUrl, {
-            method: 'POST',
-            headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(body),
-          });
-          const responseJson = await response.json();
-          console.log(JSON.stringify(responseJson.responses));
-          setLabels(responseJson.responses[0].labelAnnotations[0].description);
-    
-        } catch (error) {
-          console.log(error);
-        }
-      };
-
-      const handleGetPrediction = async () => {
-        // Get the predictions from the server
-        await getPredictionVertexAI(image);
-        router.push('/camera/result');
-      }
+    const handleGetPrediction = async () => {
+      // Get the predictions from the server
+      await getPredictionVertexAI(image);
+      router.push('/camera/result');
+    }
 
     return (
         <SafeAreaView style={styles.PreviewStyles.container}>

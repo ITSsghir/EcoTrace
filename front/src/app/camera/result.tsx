@@ -6,7 +6,7 @@ import Colors from '@constants/Colors';
 
 const ResultFood = () => {
     
-    const { predictionJson } = useSession();
+    const { predictionJson, createActivity } = useSession();
 
     // Get the router
     const router = useRouter();
@@ -22,12 +22,21 @@ const ResultFood = () => {
     const ingredients = data.ingredients;
 
     // Calculate the total carbon footprint
-    let totalCarbonFootprint = data.total_carbon_footprint;
+    const totalCarbonFootprint = data.total_carbon_footprint;
+    const carbonFootprintUnit = data.unite;
 
     // Save the data to the server and return to the home page (for now, just return to the home page)
     const SaveData = async () => {
+        const req = {
+            name: "Alimentation - " + data.nom,
+            description: data.description || '',
+            activity_type: 'Camera',
+            date: data.date,
+            carbon_footprint: totalCarbonFootprint,
+            unit: data.unite,
+        }
         // Save the data to the server
-
+        await createActivity(req);
         // Return to the home page
         router.replace('/home');
     }
@@ -53,23 +62,19 @@ const ResultFood = () => {
                             </View>
                         )} /><View>
                             <Text style={styles.totalText}>
-                                Empreinte carbone totale: {totalCarbonFootprint}{data.unité}
+                                Empreinte carbone totale: {totalCarbonFootprint}{carbonFootprintUnit}
                             </Text>
                         </View>
                     </>
                 )}
-                <TouchableOpacity onPress={() => { router.replace('/home'); } } style={styles.btn}>
+                <TouchableOpacity onPress={() => {SaveData(); } } style={styles.btn}>
                     <Text style={{ color: Colors.primary }}>Sauvegarder et revenir à l'accueil</Text>
                 </TouchableOpacity>
             </View>
         );
     };
 
-    return (
-        <View style={styles.container}>
-                {ingredients.length > 0 ? renderResult() : <Text style={styles.emptyText}>No data</Text>}
-        </View>
-    );
+    return renderResult();
 };
 
 const width = Dimensions.get('window').width;
@@ -121,7 +126,7 @@ const styles = StyleSheet.create({
         marginLeft: width * 0.1,
         marginTop: 10,
         marginBottom: 10,
-        width: width * 0.8,
+        width: width * 0.8 - 30,
         borderRadius: 5,
     },
 });
