@@ -34,7 +34,7 @@ const update = () => {
 
         // Save the data to the server
         await updateUser(data);
-        router.replace('/home');
+        router.replace('/profile');
     }
 
     // This component will be used to update the user's profile
