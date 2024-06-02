@@ -3,55 +3,49 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView, FlatList, Dimensions } from 'react-native';
 import styles from '@/styles/history';
 import FilterBlock from '@/components/filterBlock';
-
-
-let history = [
-    { id: '1', title: 'Activity 1', carbon_footprint: 0 , unit: 'KgCO2e', method: 'Camera' },
-    { id: '2', title: 'Activity 2', carbon_footprint: 0 , unit: 'KgCO2e', method: 'Microphone' },
-    { id: '3', title: 'Activity 3', carbon_footprint: 0 , unit: 'kgCO2e', method: 'Vehicle' },
-    { id: '4', title: 'Activity 4', carbon_footprint: 5 , unit: 'kgCO2e', method: 'Destination' },
-    { id: '5', title: 'Activity 5', carbon_footprint: 0 , unit: 'kgCO2e', method: 'Camera' },
-    { id: '6', title: 'Activity 6', carbon_footprint: 1 , unit: 'kgCO2e', method: 'Microphone' },
-    { id: '7', title: 'Activity 7', carbon_footprint: 0 , unit: 'kgCO2e', method: 'Vehicle' },
-    { id: '8', title: 'Activity 8', carbon_footprint: 7 , unit: 'kgCO2e', method: 'Destination' },
-    { id: '9', title: 'Activity 9', carbon_footprint: 0 , unit: 'kgCO2e', method: 'Camera' },
-    { id: '10', title: 'Activity 10', carbon_footprint: 0 , unit: 'kgCO2e', method: 'Microphone' },
-    { id: '11', title: 'Activity 11', carbon_footprint: 3 , unit: 'kgCO2e', method: 'Vehicle' },
-    { id: '12', title: 'Activity 12', carbon_footprint: 0 , unit: 'kgCO2e', method: 'Destination' }
-];
+import { useSession } from '@/app/context/ctx';
 
 export default function History() {
+
+    const { history, daily_balance } = useSession();
+    const historyJSON = JSON.parse(history)
     const [activeFilter, setActiveFilter] = React.useState('All');
-    const [filteredHistory, setFilteredHistory] = React.useState(history);
+    const [filteredHistory, setFilteredHistory] = React.useState(historyJSON);
 
     const filterHistory = (filter) => {
-        let filtered = history;
+        let filtered = historyJSON;
         if (filter === 'High') {
-            filtered = history.filter(item => item.carbon_footprint > 5);
+            filtered = historyJSON.filter(item => item.carbon_footprint / daily_balance > 0.3);
         } else if (filter === 'Medium') {
-            filtered = history.filter(item => item.carbon_footprint > 1 && item.carbon_footprint <= 5);
+            filtered = historyJSON.filter(item => item.carbon_footprint / daily_balance <= 0.3 && item.carbon_footprint / daily_balance > 0.14);
         } else if (filter === 'Low') {
-            filtered = history.filter(item => item.carbon_footprint <= 1);
+            filtered = historyJSON.filter(item => item.carbon_footprint / daily_balance <= 0.14);
         }
-        setFilteredHistory(filtered);
+        setFilteredHistory(filtered); // Update filteredHistory, not history
         setActiveFilter(filter);
+    }
+    
+
+    const renderActivity = (filteredHistory: any) => {
+        // For each activity, render the activity
+        return filteredHistory.map((item, index) => {
+            return (
+                <View style={styles.activity} key={index}>
+                    <Text style={styles.subTitle}>{item.name}</Text>
+                    <Text style={styles.subSubTitle}>{item.carbon_footprint} {item.unit}</Text>
+                    <Text style={styles.subSubTitle}>{item.activity_type}</Text>
+                </View>
+            )
+        })
     }
 
     return (
         <View style={styles.historyContainer}>
             <FilterBlock filterHistory={filterHistory} activeFilter={activeFilter} />
             <ScrollView showsVerticalScrollIndicator={false}>
-                <FlatList
-                    data={filteredHistory}
-                    keyExtractor={item => item.id}
-                    renderItem={({ item }) => (
-                        <View style={styles.activity}>
-                            <Text style={styles.subTitle}>{item.title}</Text>
-                            <Text style={styles.subSubTitle}>{item.carbon_footprint + ' ' + item.unit}</Text>
-                            <Text style={styles.subSubTitle}>{item.method}</Text>
-                        </View>
-                    )}
-                />
+                <View>
+                    {renderActivity(filteredHistory)}
+                </View>
             </ScrollView>
         </View>
     )
