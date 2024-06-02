@@ -28,15 +28,19 @@ export default function History() {
 
     const renderActivity = (filteredHistory: any) => {
         // For each activity, render the activity
-        return filteredHistory.map((item, index) => {
-            return (
-                <View style={styles.activity} key={index}>
-                    <Text style={styles.subTitle}>{item.name}</Text>
-                    <Text style={styles.subSubTitle}>{item.carbon_footprint} {item.unit}</Text>
-                    <Text style={styles.subSubTitle}>{item.activity_type}</Text>
-                </View>
-            )
-        })
+        if (filteredHistory) {
+            return filteredHistory.map((item, index) => {
+                return (
+                    <View style={styles.activity} key={index}>
+                        <Text style={styles.subTitle}>{item.name}</Text>
+                        <Text style={styles.subSubTitle}>{item.carbon_footprint} {item.unit}</Text>
+                        <Text style={styles.subSubTitle}>{item.activity_type}</Text>
+                    </View>
+                )
+            })
+        } else {
+            return <Text>No data</Text>
+        }
     }
 
     return (

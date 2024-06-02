@@ -8,6 +8,10 @@ export default function History({data}) {
     const router = useRouter();
 
     const renderItem = (data) => {
+        if (!data) {
+            return <Text>No data</Text>
+        }
+        // For each activity, render the activity
         return data.map((item, index) => {
             return (
                 <View style={styles.activity} key={index}>
