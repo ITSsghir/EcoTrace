@@ -27,7 +27,7 @@ export default function HomeLayout() {
   return (
     <Stack>
         <Stack.Screen name="index" options={{
-            headerTitle: 'Settings & Help',
+            headerTitle: 'Vehicle',
             headerShown: true,
             headerTitleStyle: {
                 fontWeight: 'bold',
