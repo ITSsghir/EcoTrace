@@ -1,5 +1,6 @@
 // Setup dotenv
 const dotenv = require('dotenv')
+const cors = require('cors');
 // Load environment variables from .env file
 dotenv.config();
 
@@ -27,6 +28,9 @@ const { initDatabase, createUser, checkLogin, getCarbonFootprintAll, getActiviti
 app.use(cookieParser());
 app.use(bodyParser.json({ limit: '10mb' }));
 app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
+
+// Apply CORS policy (allow requests from any origin)
+app.use(cors());
 
 // Middleware to verify JWT token
 const verifyToken = (req, res, next) => {
