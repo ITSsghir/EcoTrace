@@ -14,14 +14,15 @@
         "resourceClass": "large"
       },
       "env": {
-        "APP_VARIANT": "development"
+        "APP_VARIANT": "development",
       }
     },
     "production": {
       "extends": "base",
       "channel": "production",
       "env": {
-        "APP_VARIANT": "production"
+        "APP_VARIANT": "production",
+
       }
     },
     "preview": {
@@ -32,7 +33,7 @@
         "simulator": true
       },
       "env": {
-        "APP_VARIANT": "production"
+        "APP_VARIANT": "production",
       }
     },
     "development": {
