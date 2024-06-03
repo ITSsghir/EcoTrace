@@ -84,6 +84,8 @@ export function SessionProvider(props: React.PropsWithChildren) {
   const [unit, setUnit] = React.useState<string>('kgCO2e');
   const [predictionJson, setPredictionJson] = React.useState<any>(null);
 
+  const EXPO_PUBLIC_AUTH_API_URL = "http://34.32.171.160:3000";
+
   // Set a timer to log out the user after the token expires
   useEffect(() => {
     if (token) {
@@ -112,7 +114,7 @@ export function SessionProvider(props: React.PropsWithChildren) {
 
   const login = async (email: string, password: string) => {
     try {
-      const url = process.env.EXPO_PUBLIC_AUTH_API_URL + '/login';
+      const url = EXPO_PUBLIC_AUTH_API_URL + '/login';
       console.log(url);
       const response = await fetch(url, {
         method: 'POST',
@@ -142,7 +144,7 @@ export function SessionProvider(props: React.PropsWithChildren) {
   
   const logout = () => {
     // GET request to the API to the endpoint /logout
-    fetch(process.env.EXPO_PUBLIC_AUTH_API_URL + '/logout', {
+    fetch(EXPO_PUBLIC_AUTH_API_URL + '/logout', {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`
@@ -175,7 +177,7 @@ export function SessionProvider(props: React.PropsWithChildren) {
   const register = async (full_name: string, email: string, phone_number: string, password: string) => {
     // POST request to the API to the endpoint /register
 
-    const url = process.env.EXPO_PUBLIC_AUTH_API_URL + '/register';
+    const url = EXPO_PUBLIC_AUTH_API_URL + '/register';
     console.log(url);
     const response = await fetch(url, {
       method: 'POST',
@@ -212,7 +214,7 @@ export function SessionProvider(props: React.PropsWithChildren) {
         return;
       }
 
-      const url = process.env.EXPO_PUBLIC_AUTH_API_URL + '/users/' + token;
+      const url = EXPO_PUBLIC_AUTH_API_URL + '/users/' + token;
       // Send the token as a parameter in the request
       const response = await fetch(url, {
         method: 'GET',
@@ -238,7 +240,7 @@ export function SessionProvider(props: React.PropsWithChildren) {
   }
 
   const getCarbonFootprintInfo = async (id: number) => {
-    const url = process.env.EXPO_PUBLIC_AUTH_API_URL + '/users/' + id + '/carbon_footprint';
+    const url = EXPO_PUBLIC_AUTH_API_URL + '/users/' + id + '/carbon_footprint';
     // Send the token as a parameter in the request
     const response = await fetch(url, {
       method: 'GET',
@@ -269,7 +271,7 @@ export function SessionProvider(props: React.PropsWithChildren) {
     // Updated getActivities function
     const getActivities = async (id: number) => {
       try {
-        const url = `${process.env.EXPO_PUBLIC_AUTH_API_URL}/users/${id}/activities`;
+        const url = `${EXPO_PUBLIC_AUTH_API_URL}/users/${id}/activities`;
         const response = await fetch(url, {
           method: 'GET',
           headers: {
@@ -335,7 +337,7 @@ export function SessionProvider(props: React.PropsWithChildren) {
         + "  \"unite\": \"g CO2e\"\n" // or "kg CO2e"
         + "}";
 
-      const url = `${process.env.EXPO_PUBLIC_AUTH_API_URL}/predict-image`;
+      const url = `${EXPO_PUBLIC_AUTH_API_URL}/predict-image`;
       const response = await fetch(url, {
         method: 'POST',
         headers: {
@@ -404,7 +406,7 @@ export function SessionProvider(props: React.PropsWithChildren) {
         + "}"
         + "Note: Veuillez remplacer les valeurs par les valeurs réelles (d'une façon logique, répartis les ingrédients et leur quantité d'une façon à s'additionner à la quantité totale du plat) et donner que le JSON demandé, et rien d'autre\n";
 
-      const url = `${process.env.EXPO_PUBLIC_AUTH_API_URL}/predict-text`;
+      const url = `${EXPO_PUBLIC_AUTH_API_URL}/predict-text`;
       const response = await fetch(url, {
         method: 'POST',
         headers: {
@@ -435,7 +437,7 @@ export function SessionProvider(props: React.PropsWithChildren) {
   }
 
   const createActivity = async (activity: any) => {
-    const url = process.env.EXPO_PUBLIC_AUTH_API_URL + '/activities';
+    const url = EXPO_PUBLIC_AUTH_API_URL + '/activities';
     const response = await fetch(url, {
       method: 'POST',
       headers: {
@@ -469,7 +471,7 @@ export function SessionProvider(props: React.PropsWithChildren) {
       return;
     }
 
-    const url = process.env.EXPO_PUBLIC_AUTH_API_URL + '/users/' + userId;
+    const url = EXPO_PUBLIC_AUTH_API_URL + '/users/' + userId;
     const response = await fetch(url, {
       method: 'PUT',
       headers: {
@@ -498,7 +500,7 @@ export function SessionProvider(props: React.PropsWithChildren) {
 
   // Delete a user
   const deleteUser = async (id: number) => {
-    const url = process.env.EXPO_PUBLIC_AUTH_API_URL + '/users/' + id;
+    const url = EXPO_PUBLIC_AUTH_API_URL + '/users/' + id;
     const response = await fetch(url, {
       method: 'DELETE',
       headers: {
@@ -517,7 +519,7 @@ export function SessionProvider(props: React.PropsWithChildren) {
   }
 
   const verifyToken = async (token: string) => {
-    const url = process.env.EXPO_PUBLIC_AUTH_API_URL + '/verify';
+    const url = EXPO_PUBLIC_AUTH_API_URL + '/verify';
     const response = await fetch(url, {
       method: 'GET',
       headers: {
